@@ -1,0 +1,89 @@
+---
+import { site } from '../../data/site';
+
+interface Props {
+  href?: string;
+  variant?: 'default' | 'inverse';
+  class?: string;
+}
+
+const { href = '/', variant = 'default', class: className } = Astro.props;
+const configuredLogo = variant === 'inverse' ? (site.brand.logoInverse ?? site.brand.logo) : site.brand.logo;
+---
+
+<a
+  class:list={['logo', `logo--${variant}`, { 'logo--image': configuredLogo }, className]}
+  href={href}
+  aria-label={`${site.name}, inicio`}
+>
+  {configuredLogo ? (
+    <img
+      src={configuredLogo.src}
+      width={configuredLogo.width}
+      height={configuredLogo.height}
+      alt=""
+      aria-hidden="true"
+      loading="eager"
+      decoding="async"
+    />
+  ) : (
+    <span class="logo__mark" aria-hidden="true">{(site.shortName ?? site.name).slice(0, 1)}</span>
+    <span class="logo__name">{site.shortName ?? site.name}</span>
+  )}
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-heading);
+    font-weight: 750;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .logo:hover {
+    color: var(--color-heading);
+  }
+
+  .logo__mark {
+    display: grid;
+    width: 2.4rem;
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: var(--radius-logo);
+    background: var(--color-action);
+    color: var(--color-on-action);
+    font-size: var(--text-md);
+  }
+
+  .logo__name {
+    overflow: hidden;
+    max-width: 15rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .logo--inverse {
+    color: var(--color-heading-on-inverse);
+  }
+
+  .logo--inverse:hover {
+    color: var(--color-heading-on-inverse);
+  }
+
+  .logo--inverse .logo__mark {
+    background: var(--color-accent);
+    color: var(--color-heading);
+  }
+
+  img {
+    width: auto;
+    max-width: min(12rem, 45vw);
+    max-height: 2.75rem;
+    object-fit: contain;
+  }
+</style>

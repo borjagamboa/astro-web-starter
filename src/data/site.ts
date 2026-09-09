@@ -13,9 +13,16 @@ export interface PrimaryAction {
   href: string;
 }
 
+export interface BrandImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface BrandAssets {
-  logo?: string;
-  logoAlt?: string;
+  logo?: BrandImage;
+  logoInverse?: BrandImage;
   favicon?: string;
 }
 
@@ -33,8 +40,10 @@ export interface SiteConfig {
   brand: BrandAssets;
 }
 
-export const site = {
+export const site: SiteConfig = {
+  // Neutral development defaults. Replace these values for every real project.
   name: 'Astro Web Starter',
+  shortName: 'Astro Starter',
   description: 'Base de desarrollo. Sustituye la configuración del proyecto antes de publicar.',
   language: 'es',
   locale: 'es-ES',

@@ -11,10 +11,10 @@ html {
   color: var(--color-text);
   font-family: var(--font-body);
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
-  min-width: 20rem;
   min-height: 100vh;
   margin: 0;
   background: var(--color-background);
@@ -22,6 +22,7 @@ body {
   font-size: var(--text-base);
   line-height: var(--line-height-body);
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 main {
@@ -35,6 +36,13 @@ h3 {
   font-family: var(--font-heading);
   line-height: var(--line-height-tight);
   text-wrap: balance;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block-start: 0;
 }
 
 p {
@@ -98,6 +106,23 @@ button {
   transform: translateY(0);
 }
 
+[data-reveal].reveal-ready {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+}
+
+[data-reveal='fade'].reveal-ready {
+  transform: none;
+}
+
+[data-reveal].reveal-ready.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -110,5 +135,10 @@ button {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+
+  [data-reveal].reveal-ready {
+    opacity: 1;
+    transform: none;
   }
 }

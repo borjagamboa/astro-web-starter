@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Composición geométrica de demostración</title>
+  <desc id="desc">Una retícula azul y gris con formas simples sobre fondo claro.</desc>
+  <rect width="1600" height="1000" fill="#eef1f5"/>
+  <g stroke="#d8dde7" stroke-width="2" opacity=".8">
+    <path d="M0 200h1600M0 400h1600M0 600h1600M0 800h1600"/>
+    <path d="M200 0v1000M400 0v1000M600 0v1000M800 0v1000M1000 0v1000M1200 0v1000M1400 0v1000"/>
+  </g>
+  <rect x="160" y="140" width="520" height="520" rx="56" fill="#3157c8"/>
+  <circle cx="1110" cy="360" r="230" fill="#dfe6ff"/>
+  <path d="M790 760h650L1115 470z" fill="#202634"/>
+  <rect x="280" y="770" width="300" height="70" rx="35" fill="#fff"/>
+</svg>

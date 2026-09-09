@@ -1,0 +1,96 @@
+---
+interface BaseProps {
+  src: string;
+  width: number;
+  height: number;
+  caption?: string;
+  ratio?: 'natural' | 'landscape' | 'square' | 'portrait';
+  fit?: 'cover' | 'contain';
+  variant?: 'plain' | 'rounded' | 'framed';
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+type Props = BaseProps & (
+  | { decorative: true; alt?: never }
+  | { decorative?: false; alt: string }
+);
+
+const {
+  src,
+  width,
+  height,
+  alt,
+  decorative = false,
+  caption,
+  ratio = 'natural',
+  fit = 'cover',
+  variant = 'rounded',
+  loading = 'lazy',
+  class: className,
+} = Astro.props;
+
+if (!decorative && !alt?.trim()) {
+  throw new Error('ContentImage requires non-empty alt text unless decorative is true.');
+}
+
+if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+  throw new Error('ContentImage requires positive width and height values.');
+}
+---
+
+<figure class:list={['content-image', `content-image--${variant}`, `content-image--${ratio}`, className]}>
+  <img
+    src={src}
+    width={width}
+    height={height}
+    alt={decorative ? '' : alt}
+    loading={loading}
+    decoding="async"
+    style={`--content-image-fit: ${fit};`}
+  />
+  {caption && !decorative && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .content-image {
+    margin: 0;
+  }
+
+  img {
+    width: 100%;
+    object-fit: var(--content-image-fit);
+    background: var(--color-surface-subtle);
+  }
+
+  .content-image--landscape img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .content-image--square img {
+    aspect-ratio: 1;
+  }
+
+  .content-image--portrait img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .content-image--rounded img,
+  .content-image--framed img {
+    border-radius: var(--radius-media);
+  }
+
+  .content-image--framed {
+    border: var(--border-subtle);
+    border-radius: calc(var(--radius-media) + var(--space-2));
+    padding: var(--space-2);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  figcaption {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

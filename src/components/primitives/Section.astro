@@ -1,0 +1,85 @@
+---
+interface Props {
+  as?: 'section' | 'div' | 'article' | 'aside';
+  surface?: 'default' | 'muted' | 'accent' | 'inverse';
+  spacing?: 'none' | 'compact' | 'normal' | 'spacious';
+  container?: 'narrow' | 'default' | 'wide' | 'full';
+  id?: string;
+  ariaLabelledby?: string;
+  class?: string;
+}
+
+const {
+  as = 'section',
+  surface = 'default',
+  spacing = 'normal',
+  container = 'default',
+  id,
+  ariaLabelledby,
+  class: className,
+} = Astro.props;
+const Tag = as;
+---
+
+<Tag
+  id={id}
+  class:list={['section', `section--${surface}`, `section--${spacing}`, className]}
+  aria-labelledby={ariaLabelledby}
+>
+  <div class:list={['section__inner', `section__inner--${container}`]}>
+    <slot />
+  </div>
+</Tag>
+
+<style>
+  .section {
+    position: relative;
+  }
+
+  .section--compact {
+    padding-block: var(--space-section-compact);
+  }
+
+  .section--normal {
+    padding-block: var(--space-section);
+  }
+
+  .section--spacious {
+    padding-block: var(--space-section-spacious);
+  }
+
+  .section--muted {
+    background: var(--color-surface-subtle);
+  }
+
+  .section--accent {
+    background: var(--color-accent-soft);
+  }
+
+  .section--inverse {
+    background: var(--color-surface-inverse);
+    color: var(--color-text-on-inverse);
+  }
+
+  .section__inner {
+    width: min(100% - (var(--gutter) * 2), var(--container-max));
+    margin-inline: auto;
+  }
+
+  .section__inner--narrow {
+    max-width: var(--container-narrow);
+  }
+
+  .section__inner--wide {
+    max-width: var(--container-wide);
+  }
+
+  .section__inner--full {
+    width: 100%;
+    max-width: none;
+  }
+
+  .section--inverse :global(:is(h1, h2, h3, a)) {
+    color: var(--color-heading-on-inverse);
+  }
+</style>

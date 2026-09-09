@@ -1,113 +1,262 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/primitives/Button.astro';
+import ContentImage from '../components/primitives/ContentImage.astro';
+import Section from '../components/primitives/Section.astro';
 import { site } from '../data/site';
 ---
 
-<BaseLayout>
-  <section class="starter-check">
-    <div class="container starter-check__panel">
-      <p class="starter-check__eyebrow">Entorno de desarrollo</p>
-      <h1>{site.name}</h1>
-      <p class="starter-check__lead">
-        La base Astro está activa. Esta página valida la configuración global, el layout y los
-        design tokens; no es una página destinada a producción.
+<BaseLayout title={`${site.name} · Demostración del CORE`}>
+  <Section surface="accent" spacing="spacious" container="wide" ariaLabelledby="showcase-title">
+    <div class="intro" data-reveal>
+      <p class="eyebrow">Entorno de desarrollo · CORE visual</p>
+      <h1 id="showcase-title">Una base neutral para construir con criterio.</h1>
+      <p class="lead">
+        Esta página comprueba jerarquía, ritmo, navegación y componentes esenciales. Es una
+        demostración técnica del starter, no una portada de negocio.
       </p>
-      <dl>
-        <div>
-          <dt>Idioma</dt>
-          <dd>{site.language}</dd>
-        </div>
-        <div>
-          <dt>Locale</dt>
-          <dd>{site.locale}</dd>
-        </div>
-        <div>
-          <dt>Estado</dt>
-          <dd>Base técnica preparada</dd>
-        </div>
-      </dl>
-      <p class="starter-check__notice">
-        Sustituye la configuración y esta página antes de publicar un proyecto real.
+      <div class="actions">
+        <Button href="#componentes" size="large">
+          Explorar componentes
+          <svg slot="icon" viewBox="0 0 20 20"><path d="M4 10h12m-5-5 5 5-5 5"></path></svg>
+        </Button>
+        <Button href="#sistema-visual" variant="secondary" size="large">Ver sistema visual</Button>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="componentes" spacing="spacious" ariaLabelledby="components-title">
+    <div class="section-heading" data-reveal>
+      <p class="eyebrow">Primitivas reutilizables</p>
+      <h2 id="components-title">Pocas piezas, combinaciones claras.</h2>
+      <p>
+        Los componentes concentran estructura, estados y accesibilidad sin imponer el contenido
+        de un proyecto futuro.
       </p>
     </div>
-  </section>
+
+    <div id="botones" class="showcase-row" data-reveal="fade">
+      <div>
+        <p class="showcase-label">Variantes</p>
+        <p>Acciones principales, alternativas y de bajo énfasis.</p>
+      </div>
+      <div class="button-samples" aria-label="Ejemplos de botones">
+        <Button>Primario</Button>
+        <Button variant="secondary">Secundario</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button disabled>Desactivado</Button>
+      </div>
+    </div>
+
+    <div class="showcase-row" data-reveal="fade">
+      <div>
+        <p class="showcase-label">Escala</p>
+        <p>Tres tamaños consistentes para contextos distintos.</p>
+      </div>
+      <div class="button-samples" aria-label="Tamaños de botones">
+        <Button size="small" variant="secondary">Pequeño</Button>
+        <Button size="medium" variant="secondary">Medio</Button>
+        <Button size="large" variant="secondary">Grande</Button>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="sistema-visual" surface="muted" spacing="spacious" container="wide" ariaLabelledby="system-title">
+    <div class="system-layout">
+      <div class="section-heading" data-reveal>
+        <p class="eyebrow">Sistema visual</p>
+        <h2 id="system-title">Semántica antes que decoración.</h2>
+        <p>
+          Los tokens nombran funciones —superficie, texto, acción y borde— para que una identidad
+          nueva pueda sustituir valores sin rehacer los componentes.
+        </p>
+      </div>
+      <dl class="token-list" data-reveal="fade">
+        <div><dt>Superficie</dt><dd><span class="swatch swatch--surface"></span><code>--color-surface</code></dd></div>
+        <div><dt>Acción</dt><dd><span class="swatch swatch--action"></span><code>--color-action</code></dd></div>
+        <div><dt>Acento</dt><dd><span class="swatch swatch--accent"></span><code>--color-accent</code></dd></div>
+        <div><dt>Texto</dt><dd><span class="swatch swatch--text"></span><code>--color-text</code></dd></div>
+      </dl>
+    </div>
+  </Section>
+
+  <Section id="imagen" spacing="spacious" container="wide" ariaLabelledby="image-title">
+    <div class="media-layout">
+      <div class="section-heading" data-reveal>
+        <p class="eyebrow">Contenido visual</p>
+        <h2 id="image-title">Imágenes estables desde el primer render.</h2>
+        <p>
+          Las dimensiones y la relación de aspecto reservan el espacio antes de cargar. La imagen
+          local es abstracta y existe solo para validar el componente.
+        </p>
+        <Button href="#showcase-title" variant="ghost" iconPosition="start">
+          Volver arriba
+          <svg slot="icon" viewBox="0 0 20 20"><path d="m5 12 5-5 5 5"></path></svg>
+        </Button>
+      </div>
+      <div data-reveal="fade">
+        <ContentImage
+          src="/images/starter-grid.svg"
+          width={1600}
+          height={1000}
+          alt="Composición abstracta de formas geométricas azules y grises sobre una retícula"
+          caption="Recurso local de desarrollo · 1600 × 1000"
+          ratio="landscape"
+          variant="framed"
+        />
+      </div>
+    </div>
+  </Section>
+
+  <Section surface="inverse" spacing="compact" container="wide" ariaLabelledby="closing-title">
+    <div class="closing" data-reveal="fade">
+      <div>
+        <p class="eyebrow eyebrow--inverse">Comprobación completa</p>
+        <h2 id="closing-title">El CORE ya puede recibir una identidad real.</h2>
+      </div>
+      <p>Header, navegación móvil, tipografía, superficies, imagen y Footer comparten el mismo sistema.</p>
+    </div>
+  </Section>
 </BaseLayout>
 
 <style>
-  .starter-check {
-    display: grid;
-    min-height: 100vh;
-    place-items: center;
-    padding-block: var(--space-7);
-    background:
-      radial-gradient(circle at top right, var(--color-accent), transparent 36rem),
-      var(--color-background);
-  }
+  .intro { max-width: 58rem; }
 
-  .starter-check__panel {
-    border: var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: clamp(var(--space-6), 7vw, var(--space-8));
-    background: var(--color-surface);
-    box-shadow: var(--shadow-md);
-  }
-
-  .starter-check__eyebrow {
+  .eyebrow,
+  .showcase-label {
     margin: 0 0 var(--space-3);
     color: var(--color-action);
     font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 800;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
   }
 
   h1 {
     max-width: 18ch;
-    margin: 0;
-    font-size: var(--text-xl);
+    margin-bottom: var(--space-5);
+    font-size: clamp(2.6rem, 7vw, 5.6rem);
   }
 
-  .starter-check__lead {
-    margin: var(--space-5) 0 0;
+  h2 {
+    max-width: 22ch;
+    margin-bottom: var(--space-4);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .lead {
     color: var(--color-text-muted);
-    font-size: var(--text-md);
+    font-size: var(--text-lg);
   }
 
-  dl {
-    display: grid;
+  .actions,
+  .button-samples {
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-3);
-    margin: var(--space-6) 0 0;
+    align-items: center;
   }
 
-  dl div {
+  .actions { margin-top: var(--space-6); }
+
+  .actions svg,
+  :global(.button) svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .section-heading { max-width: 44rem; }
+
+  .section-heading > p:last-child,
+  .showcase-row p,
+  .closing p { color: var(--color-text-muted); }
+
+  .showcase-row {
     display: grid;
-    gap: var(--space-1);
+    gap: var(--space-5);
     border-top: var(--border-subtle);
-    padding-top: var(--space-3);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
   }
 
-  dt {
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
+  .showcase-row p { margin-bottom: 0; }
+  .showcase-label { color: var(--color-heading); }
+
+  .system-layout,
+  .media-layout,
+  .closing {
+    display: grid;
+    gap: var(--space-7);
   }
 
-  dd {
+  .token-list {
     margin: 0;
-    color: var(--color-heading);
+    border-top: var(--border-subtle);
+  }
+
+  .token-list div {
+    display: grid;
+    grid-template-columns: minmax(7rem, 1fr) minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: center;
+    border-bottom: var(--border-subtle);
+    padding-block: var(--space-4);
+  }
+
+  .token-list dd {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .token-list code {
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-family: var(--font-mono);
+    font-size: var(--text-xs);
   }
 
-  .starter-check__notice {
-    margin: var(--space-6) 0 0;
-    border-left: 0.25rem solid var(--color-action);
-    padding: var(--space-3) var(--space-4);
-    background: var(--color-surface-subtle);
-    color: var(--color-text-muted);
+  .swatch {
+    width: 2rem;
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    border: var(--border-subtle);
+    border-radius: 50%;
   }
 
-  @media (min-width: 42rem) {
-    dl {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+  .swatch--surface { background: var(--color-surface); }
+  .swatch--action { background: var(--color-action); }
+  .swatch--accent { background: var(--color-accent); }
+  .swatch--text { background: var(--color-text); }
+  .eyebrow--inverse { color: var(--color-accent); }
+  .closing h2 { margin-bottom: 0; }
+
+  .closing p:last-child {
+    align-self: end;
+    margin: 0;
+    color: var(--color-text-on-inverse);
+  }
+
+  @media (min-width: 48rem) {
+    .showcase-row {
+      grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr);
+      align-items: center;
+    }
+
+    .system-layout,
+    .media-layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+    }
+
+    .closing {
+      grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
+      align-items: end;
     }
   }
 </style>
