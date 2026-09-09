@@ -9,13 +9,13 @@ Estas 12 respuestas bastan para empezar una primera versión local de una web se
 | # | Información esencial | Respuesta |
 | --- | --- | --- |
 | 1 | Nombre del negocio o proyecto | [Respuesta] |
-| 2 | Qué ofrece y qué resultado aporta | [Respuesta breve y verificable] |
+| 2 | Descripción pública: qué ofrece y qué resultado aporta | [Respuesta breve y verificable] |
 | 3 | Público principal | [Quién es, qué necesita y dónde actúa] |
 | 4 | Servicios, productos o contenidos prioritarios | [Lista ordenada] |
 | 5 | Páginas iniciales | [Inicio, servicios, contacto…] |
 | 6 | Acción principal | [Qué debe hacer la persona y adónde conduce] |
 | 7 | Datos de contacto publicables | [Teléfono, email, ubicación o ninguno] |
-| 8 | Identidad disponible | [Logo, colores, tipografías y ubicación de archivos] |
+| 8 | Identidad y configuración global disponibles | [Logo, colores, tipografías, dominio si existe, imagen OG y ubicación de archivos] |
 | 9 | Estilo visual deseado | [Tres adjetivos concretos] |
 | 10 | Referencias visuales | [Una a tres referencias y qué interesa de cada una] |
 | 11 | Contenido y assets disponibles | [Textos, fotos, vídeos, documentos y derechos] |

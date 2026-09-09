@@ -1,0 +1,66 @@
+---
+import { buildBreadcrumbSchema } from '../../lib/structured-data';
+
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: readonly BreadcrumbItem[];
+  ariaLabel?: string;
+  includeSchema?: boolean;
+}
+
+const {
+  items,
+  ariaLabel = 'Migas de pan',
+  includeSchema = true,
+} = Astro.props;
+
+if (items.some((item) => !item.label.trim())) {
+  throw new Error('Breadcrumb labels cannot be empty.');
+}
+
+const schema = includeSchema && Astro.site
+  ? buildBreadcrumbSchema(items, Astro.site, Astro.url.pathname)
+  : undefined;
+const jsonLd = schema ? JSON.stringify(schema).replace(/</g, '\\u003c') : undefined;
+---
+
+{items.length > 0 && (
+  <nav class="breadcrumbs" aria-label={ariaLabel}>
+    <ol>
+      {items.map((item, index) => {
+        const isCurrent = index === items.length - 1;
+        return (
+          <li>
+            {item.href && !isCurrent
+              ? <a href={item.href}>{item.label}</a>
+              : <span aria-current={isCurrent ? 'page' : undefined}>{item.label}</span>}
+          </li>
+        );
+      })}
+    </ol>
+  </nav>
+)}
+
+{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+
+<style>
+  .breadcrumbs { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li { display: inline-flex; min-width: 0; gap: var(--space-2); align-items: center; }
+  li + li::before { content: '/'; color: var(--color-border-strong); }
+  a { color: inherit; }
+  [aria-current='page'] { color: var(--color-heading); font-weight: 650; overflow-wrap: anywhere; }
+</style>

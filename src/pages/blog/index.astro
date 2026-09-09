@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import Card from '../../components/patterns/Card.astro';
+import CardGrid from '../../components/patterns/CardGrid.astro';
+import { site } from '../../data/site';
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getBlogSlug, isPublished, sortBlogPosts } from '../../lib/content';
+
+const posts = sortBlogPosts((await getCollection('blog')).filter(isPublished));
+const dateFormatter = new Intl.DateTimeFormat(site.locale, { dateStyle: 'long' });
+---
+
+<PageLayout
+  title="Blog"
+  metaTitle={`Blog · ${site.name}`}
+  description="Índice editorial de demostración para validar Content Collections y páginas de contenido."
+  eyebrow="Módulo editorial opcional"
+  breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Blog' }]}
+  prose={false}
+  contentContainer="wide"
+>
+  {posts.length > 0 ? (
+    <CardGrid columns={3} gap="large" ariaLabel="Artículos disponibles">
+      {posts.map((post) => (
+        <Card
+          eyebrow={dateFormatter.format(post.data.publishDate)}
+          badge={post.data.draft ? 'Borrador' : undefined}
+          title={post.data.title}
+          text={post.data.description}
+          href={`/blog/${getBlogSlug(post)}/`}
+          linkLabel="Leer artículo"
+          treatment="bordered"
+        />
+      ))}
+    </CardGrid>
+  ) : (
+    <p class="empty-state">No hay artículos publicados.</p>
+  )}
+</PageLayout>
+
+<style>
+  .empty-state {
+    margin: 0;
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: var(--card-padding);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { site } from '../../data/site';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getBlogSlug, isPublished } from '../../lib/content';
+
+export const getStaticPaths = async () => {
+  const posts = (await getCollection('blog')).filter(isPublished);
+  return posts.map((post) => ({
+    params: { slug: getBlogSlug(post) },
+    props: { post },
+  }));
+};
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<ArticleLayout
+  title={post.data.title}
+  metaTitle={`${post.data.title} · ${site.name}`}
+  description={post.data.description}
+  publishDate={post.data.publishDate}
+  updatedDate={post.data.updatedDate}
+  author={post.data.author}
+  tags={post.data.tags}
+  canonical={post.data.canonical}
+  image={post.data.image}
+  imageAlt={post.data.imageAlt}
+  noindex={post.data.noindex || post.data.draft}
+  breadcrumbs={[
+    { label: 'Inicio', href: '/' },
+    { label: 'Blog', href: '/blog/' },
+    { label: post.data.title },
+  ]}
+>
+  <Content />
+</ArticleLayout>

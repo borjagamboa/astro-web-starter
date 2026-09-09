@@ -23,7 +23,13 @@ export interface BrandImage {
 export interface BrandAssets {
   logo?: BrandImage;
   logoInverse?: BrandImage;
+  socialImage?: BrandImage;
   favicon?: string;
+}
+
+export interface OrganizationConfig {
+  name: string;
+  logo?: string;
 }
 
 export interface SiteConfig {
@@ -32,12 +38,12 @@ export interface SiteConfig {
   description: string;
   language: string;
   locale: string;
-  baseUrl?: string;
   contact?: SiteContact;
   socialLinks: readonly SocialLink[];
   location?: string;
   primaryAction?: PrimaryAction;
   brand: BrandAssets;
+  organization?: OrganizationConfig;
 }
 
 export const site: SiteConfig = {
@@ -47,10 +53,10 @@ export const site: SiteConfig = {
   description: 'Base de desarrollo. Sustituye la configuración del proyecto antes de publicar.',
   language: 'es',
   locale: 'es-ES',
-  baseUrl: undefined,
   contact: undefined,
   socialLinks: [],
   location: undefined,
   primaryAction: undefined,
   brand: {},
+  organization: undefined,
 } satisfies SiteConfig;

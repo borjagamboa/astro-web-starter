@@ -19,19 +19,19 @@ export const primaryNavigation = [
   { label: 'Inicio', href: '/' },
   {
     label: 'Catálogo',
-    href: '#catalogo',
+    href: '/#catalogo',
     children: [
-      { label: 'Features', href: '#features' },
-      { label: 'Evidencia', href: '#evidencia' },
-      { label: 'Contenido', href: '#contenido' },
+      { label: 'Features', href: '/#features' },
+      { label: 'Evidencia', href: '/#evidencia' },
+      { label: 'Contenido', href: '/#contenido' },
     ],
   },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Contacto', href: '/#contacto' },
 ] as const satisfies readonly NavigationItem[];
 
 export const navigationAction = {
   label: 'Revisar FAQ',
-  href: '#faq',
+  href: '/#faq',
 } as const satisfies NavigationAction;
 
 export const footerNavigation = [

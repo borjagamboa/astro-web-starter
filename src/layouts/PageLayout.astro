@@ -1,0 +1,94 @@
+---
+import Breadcrumbs, { type BreadcrumbItem } from '../components/navigation/Breadcrumbs.astro';
+import HeadingGroup from '../components/primitives/HeadingGroup.astro';
+import Prose from '../components/primitives/Prose.astro';
+import Section from '../components/primitives/Section.astro';
+import type { OpenGraphType } from '../lib/seo';
+import type { StructuredData } from '../lib/structured-data';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  eyebrow?: string;
+  breadcrumbs?: readonly BreadcrumbItem[];
+  canonical?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: OpenGraphType;
+  robots?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  schema?: StructuredData | readonly StructuredData[];
+  contentMeasure?: 'narrow' | 'default' | 'wide';
+  contentContainer?: 'narrow' | 'default' | 'wide';
+  prose?: boolean;
+  showHeader?: boolean;
+  showFooter?: boolean;
+}
+
+const {
+  title,
+  description,
+  metaTitle,
+  metaDescription,
+  eyebrow,
+  breadcrumbs = [],
+  canonical,
+  ogImage,
+  ogImageAlt,
+  ogType = 'website',
+  robots,
+  noindex,
+  nofollow,
+  schema,
+  contentMeasure = 'default',
+  contentContainer = 'narrow',
+  prose = true,
+  showHeader = true,
+  showFooter = true,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={metaTitle ?? title}
+  description={metaDescription ?? description}
+  canonical={canonical}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+  ogType={ogType}
+  robots={robots}
+  noindex={noindex}
+  nofollow={nofollow}
+  schema={schema}
+  showHeader={showHeader}
+  showFooter={showFooter}
+>
+  <Section spacing="compact" container="narrow" ariaLabelledby="page-title">
+    <div class="page-heading">
+      {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
+      <HeadingGroup
+        eyebrow={eyebrow}
+        title={title}
+        intro={description}
+        level="h1"
+        id="page-title"
+        measure="wide"
+        scale="display"
+      />
+      <slot name="intro" />
+    </div>
+  </Section>
+
+  <Section spacing="normal" container={contentContainer}>
+    {prose
+      ? <Prose measure={contentMeasure}><slot /></Prose>
+      : <slot />}
+  </Section>
+</BaseLayout>
+
+<style>
+  .page-heading { display: grid; gap: var(--space-6); }
+</style>
