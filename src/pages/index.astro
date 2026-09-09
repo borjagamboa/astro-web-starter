@@ -1,262 +1,200 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/primitives/Button.astro';
-import ContentImage from '../components/primitives/ContentImage.astro';
+import ActionPanel from '../components/patterns/ActionPanel.astro';
+import Card from '../components/patterns/Card.astro';
+import CardGrid from '../components/patterns/CardGrid.astro';
+import Hero from '../components/patterns/Hero.astro';
+import SplitContent from '../components/patterns/SplitContent.astro';
+import HeadingGroup from '../components/primitives/HeadingGroup.astro';
+import Highlight from '../components/primitives/Highlight.astro';
 import Section from '../components/primitives/Section.astro';
+import SectionDivider from '../components/primitives/SectionDivider.astro';
 import { site } from '../data/site';
+
+const gridImage = {
+  src: '/images/starter-grid.svg',
+  width: 1600,
+  height: 1000,
+  alt: 'Composición abstracta azul con retícula, círculo y formas geométricas',
+};
+
+const orbitImage = {
+  src: '/images/starter-orbit.svg',
+  width: 1600,
+  height: 1200,
+  alt: 'Composición abstracta de círculos, líneas y un rectángulo sobre fondo oscuro',
+};
 ---
 
-<BaseLayout title={`${site.name} · Demostración del CORE`}>
-  <Section surface="accent" spacing="spacious" container="wide" ariaLabelledby="showcase-title">
-    <div class="intro" data-reveal>
-      <p class="eyebrow">Entorno de desarrollo · CORE visual</p>
-      <h1 id="showcase-title">Una base neutral para construir con criterio.</h1>
-      <p class="lead">
-        Esta página comprueba jerarquía, ritmo, navegación y componentes esenciales. Es una
-        demostración técnica del starter, no una portada de negocio.
-      </p>
-      <div class="actions">
-        <Button href="#componentes" size="large">
-          Explorar componentes
-          <svg slot="icon" viewBox="0 0 20 20"><path d="M4 10h12m-5-5 5 5-5 5"></path></svg>
-        </Button>
-        <Button href="#sistema-visual" variant="secondary" size="large">Ver sistema visual</Button>
-      </div>
+<BaseLayout title={`${site.name} · Patterns de composición`}>
+  <Hero
+    id="composicion"
+    eyebrow="Escaparate temporal · Fase de patterns"
+    text="La misma base puede producir composiciones sobrias, editoriales o expresivas cambiando unas pocas decisiones de layout y tema."
+    primaryAction={{ label: 'Examinar las cards', href: '#cards' }}
+    secondaryAction={{ label: 'Ver texto + imagen', href: '#texto-media' }}
+    image={gridImage}
+    surface="accent"
+    size="large"
+    textWidth="wide"
+  >
+    <Fragment slot="title">Bloques con estructura; <Highlight tone="secondary">direcciones abiertas.</Highlight></Fragment>
+    <p class="development-note">Contenido ficticio para evaluar el sistema. No representa una web publicable.</p>
+  </Hero>
+
+  <SectionDivider shape="angle" from="accent" to="default" flip />
+
+  <Section id="cards" spacing="spacious" container="wide" ariaLabelledby="cards-title">
+    <HeadingGroup
+      eyebrow="Un contrato, varios usos"
+      title="Cards que cambian de voz sin cambiar de componente."
+      intro="Media, jerarquía, tratamiento y contenido son decisiones independientes. Estos ejemplos son deliberadamente distintos y no describen productos reales."
+      id="cards-title"
+      measure="wide"
+    />
+
+    <CardGrid columns={3} gap="large" ariaLabel="Tres tratamientos de Card" class="pattern-grid">
+      <Card
+        eyebrow="Muestra 01"
+        title="Entrada visual"
+        text="Una composición con media puede presentar un proyecto, una pieza editorial o un producto."
+        image={orbitImage}
+        href="#texto-media"
+        linkLabel="Continuar la muestra"
+        treatment="elevated"
+      />
+      <Card
+        eyebrow="Muestra 02"
+        badge="Borde"
+        title="Contenido estructurado"
+        text="El mismo patrón funciona sin imagen cuando la jerarquía del texto debe dominar."
+        href="#cta"
+        linkLabel="Ver el cierre"
+        treatment="bordered"
+      >
+        <ul class="card-notes">
+          <li>Slots opcionales</li>
+          <li>Altura coherente en grid</li>
+        </ul>
+      </Card>
+      <Card
+        eyebrow="Muestra 03"
+        title="Tratamiento editorial"
+        text="La variante quiet elimina el contenedor visual y deja que espacio, tipografía y ritmo construyan el carácter."
+        treatment="quiet"
+      >
+        <p slot="footer">El footer solo aparece cuando existe contenido.</p>
+      </Card>
+    </CardGrid>
+  </Section>
+
+  <SplitContent
+    id="texto-media"
+    eyebrow="Orden reversible"
+    title="La imagen inicia la lectura; el texto explica la intención."
+    text="SplitContent decide orden, superficie y alineación sin asumir servicios, sectores ni tipos de página. En móvil conserva una secuencia clara y apilada."
+    action={{ label: 'Ir al ActionPanel', href: '#cta' }}
+    image={orbitImage}
+    mediaPosition="start"
+    surface="inverse"
+    spacing="spacious"
+  >
+    <ul class="split-notes">
+      <li>Orden explícito, no trucos visuales.</li>
+      <li>Media con dimensiones reservadas.</li>
+      <li>Contenido adicional mediante slot.</li>
+    </ul>
+  </SplitContent>
+
+  <Section surface="muted" spacing="spacious" container="wide" ariaLabelledby="contrast-title">
+    <div class="contrast-layout">
+      <HeadingGroup
+        eyebrow="Cambio de cadencia"
+        title="No todos los bloques necesitan una caja."
+        intro="Una sección estrecha y centrada puede romper la repetición de splits y grids sin añadir otro pattern."
+        id="contrast-title"
+        align="center"
+        measure="compact"
+      />
+      <p class="display-sample" aria-hidden="true">Aa</p>
     </div>
   </Section>
 
-  <Section id="componentes" spacing="spacious" ariaLabelledby="components-title">
-    <div class="section-heading" data-reveal>
-      <p class="eyebrow">Primitivas reutilizables</p>
-      <h2 id="components-title">Pocas piezas, combinaciones claras.</h2>
-      <p>
-        Los componentes concentran estructura, estados y accesibilidad sin imponer el contenido
-        de un proyecto futuro.
-      </p>
-    </div>
-
-    <div id="botones" class="showcase-row" data-reveal="fade">
-      <div>
-        <p class="showcase-label">Variantes</p>
-        <p>Acciones principales, alternativas y de bajo énfasis.</p>
-      </div>
-      <div class="button-samples" aria-label="Ejemplos de botones">
-        <Button>Primario</Button>
-        <Button variant="secondary">Secundario</Button>
-        <Button variant="ghost">Ghost</Button>
-        <Button disabled>Desactivado</Button>
-      </div>
-    </div>
-
-    <div class="showcase-row" data-reveal="fade">
-      <div>
-        <p class="showcase-label">Escala</p>
-        <p>Tres tamaños consistentes para contextos distintos.</p>
-      </div>
-      <div class="button-samples" aria-label="Tamaños de botones">
-        <Button size="small" variant="secondary">Pequeño</Button>
-        <Button size="medium" variant="secondary">Medio</Button>
-        <Button size="large" variant="secondary">Grande</Button>
-      </div>
-    </div>
+  <Section id="cta" spacing="spacious" container="wide" ariaLabelledby="cta-title">
+    <HeadingGroup
+      eyebrow="Cierre configurable"
+      title="Una acción puede ser franja, panel o foco final."
+      intro="El énfasis procede de superficie, alineación y elevación; el componente no presupone la conversión ni el negocio."
+      id="cta-title"
+      measure="wide"
+    />
+    <ActionPanel
+      heading="Fin de la composición de prueba."
+      text="Los destinos también son ficticios: sirven para comprobar agrupación, contraste y comportamiento responsive."
+      eyebrow="ActionPanel destacado"
+      primaryAction={{ label: 'Volver al Hero', href: '#composicion' }}
+      secondaryAction={{ label: 'Revisar las cards', href: '#cards' }}
+      surface="accent"
+      alignment="split"
+      emphasis="featured"
+    />
   </Section>
 
-  <Section id="sistema-visual" surface="muted" spacing="spacious" container="wide" ariaLabelledby="system-title">
-    <div class="system-layout">
-      <div class="section-heading" data-reveal>
-        <p class="eyebrow">Sistema visual</p>
-        <h2 id="system-title">Semántica antes que decoración.</h2>
-        <p>
-          Los tokens nombran funciones —superficie, texto, acción y borde— para que una identidad
-          nueva pueda sustituir valores sin rehacer los componentes.
-        </p>
-      </div>
-      <dl class="token-list" data-reveal="fade">
-        <div><dt>Superficie</dt><dd><span class="swatch swatch--surface"></span><code>--color-surface</code></dd></div>
-        <div><dt>Acción</dt><dd><span class="swatch swatch--action"></span><code>--color-action</code></dd></div>
-        <div><dt>Acento</dt><dd><span class="swatch swatch--accent"></span><code>--color-accent</code></dd></div>
-        <div><dt>Texto</dt><dd><span class="swatch swatch--text"></span><code>--color-text</code></dd></div>
-      </dl>
-    </div>
-  </Section>
-
-  <Section id="imagen" spacing="spacious" container="wide" ariaLabelledby="image-title">
-    <div class="media-layout">
-      <div class="section-heading" data-reveal>
-        <p class="eyebrow">Contenido visual</p>
-        <h2 id="image-title">Imágenes estables desde el primer render.</h2>
-        <p>
-          Las dimensiones y la relación de aspecto reservan el espacio antes de cargar. La imagen
-          local es abstracta y existe solo para validar el componente.
-        </p>
-        <Button href="#showcase-title" variant="ghost" iconPosition="start">
-          Volver arriba
-          <svg slot="icon" viewBox="0 0 20 20"><path d="m5 12 5-5 5 5"></path></svg>
-        </Button>
-      </div>
-      <div data-reveal="fade">
-        <ContentImage
-          src="/images/starter-grid.svg"
-          width={1600}
-          height={1000}
-          alt="Composición abstracta de formas geométricas azules y grises sobre una retícula"
-          caption="Recurso local de desarrollo · 1600 × 1000"
-          ratio="landscape"
-          variant="framed"
-        />
-      </div>
-    </div>
-  </Section>
-
-  <Section surface="inverse" spacing="compact" container="wide" ariaLabelledby="closing-title">
-    <div class="closing" data-reveal="fade">
-      <div>
-        <p class="eyebrow eyebrow--inverse">Comprobación completa</p>
-        <h2 id="closing-title">El CORE ya puede recibir una identidad real.</h2>
-      </div>
-      <p>Header, navegación móvil, tipografía, superficies, imagen y Footer comparten el mismo sistema.</p>
-    </div>
+  <Section surface="inverse" spacing="compact" container="narrow" ariaLabelledby="demo-end-title">
+    <HeadingGroup
+      eyebrow="Solo desarrollo"
+      title="La página demuestra composición; no vende el starter."
+      intro="Antes de publicar un proyecto real deben sustituirse contenido, navegación, tema y assets de demostración."
+      id="demo-end-title"
+      align="center"
+      measure="default"
+    />
   </Section>
 </BaseLayout>
 
 <style>
-  .intro { max-width: 58rem; }
-
-  .eyebrow,
-  .showcase-label {
-    margin: 0 0 var(--space-3);
-    color: var(--color-action);
-    font-size: var(--text-xs);
-    font-weight: 800;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-
-  h1 {
-    max-width: 18ch;
-    margin-bottom: var(--space-5);
-    font-size: clamp(2.6rem, 7vw, 5.6rem);
-  }
-
-  h2 {
-    max-width: 22ch;
-    margin-bottom: var(--space-4);
-    font-size: clamp(2rem, 4vw, 3.5rem);
-  }
-
-  .lead {
+  .development-note {
+    margin: 0;
+    border-left: 0.2rem solid var(--color-secondary);
+    padding-left: var(--space-4);
     color: var(--color-text-muted);
-    font-size: var(--text-lg);
+    font-size: var(--text-sm);
   }
 
-  .actions,
-  .button-samples {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    align-items: center;
-  }
-
-  .actions { margin-top: var(--space-6); }
-
-  .actions svg,
-  :global(.button) svg {
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.8;
-  }
-
-  .section-heading { max-width: 44rem; }
-
-  .section-heading > p:last-child,
-  .showcase-row p,
-  .closing p { color: var(--color-text-muted); }
-
-  .showcase-row {
-    display: grid;
-    gap: var(--space-5);
-    border-top: var(--border-subtle);
+  .pattern-grid {
     margin-top: var(--space-7);
-    padding-top: var(--space-5);
   }
 
-  .showcase-row p { margin-bottom: 0; }
-  .showcase-label { color: var(--color-heading); }
-
-  .system-layout,
-  .media-layout,
-  .closing {
+  .card-notes,
+  .split-notes {
     display: grid;
-    gap: var(--space-7);
+    gap: var(--space-2);
+    margin: var(--space-2) 0 0;
+    padding-left: 1.2rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
   }
 
-  .token-list {
-    margin: 0;
-    border-top: var(--border-subtle);
-  }
-
-  .token-list div {
-    display: grid;
-    grid-template-columns: minmax(7rem, 1fr) minmax(0, 1fr);
-    gap: var(--space-4);
-    align-items: center;
-    border-bottom: var(--border-subtle);
-    padding-block: var(--space-4);
-  }
-
-  .token-list dd {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: var(--space-3);
-    margin: 0;
-  }
-
-  .token-list code {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-  }
-
-  .swatch {
-    width: 2rem;
-    aspect-ratio: 1;
-    flex: 0 0 auto;
-    border: var(--border-subtle);
-    border-radius: 50%;
-  }
-
-  .swatch--surface { background: var(--color-surface); }
-  .swatch--action { background: var(--color-action); }
-  .swatch--accent { background: var(--color-accent); }
-  .swatch--text { background: var(--color-text); }
-  .eyebrow--inverse { color: var(--color-accent); }
-  .closing h2 { margin-bottom: 0; }
-
-  .closing p:last-child {
-    align-self: end;
-    margin: 0;
+  .split-notes {
     color: var(--color-text-on-inverse);
   }
 
-  @media (min-width: 48rem) {
-    .showcase-row {
-      grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr);
-      align-items: center;
-    }
+  .contrast-layout {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-7);
+  }
 
-    .system-layout,
-    .media-layout {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: center;
-    }
+  .display-sample {
+    margin: 0;
+    color: var(--color-action);
+    font-size: clamp(7rem, 24vw, 16rem);
+    font-weight: 850;
+    letter-spacing: -0.09em;
+    line-height: 0.72;
+  }
 
-    .closing {
-      grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
-      align-items: end;
-    }
+  #cta > :global(.section__inner) > :global(.action-panel) {
+    margin-top: var(--space-7);
   }
 </style>

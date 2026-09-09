@@ -1,0 +1,67 @@
+---
+interface Props {
+  shape?: 'curve' | 'wave' | 'angle';
+  from?: 'default' | 'muted' | 'accent' | 'inverse';
+  to?: 'default' | 'muted' | 'accent' | 'inverse';
+  size?: 'small' | 'medium';
+  flip?: boolean;
+}
+
+const paths = {
+  curve: 'M0 38C320 104 1010 104 1440 24V96H0Z',
+  wave: 'M0 42C250 5 420 86 720 50C1010 16 1190 78 1440 35V96H0Z',
+  angle: 'M0 72L1440 18V96H0Z',
+};
+
+const {
+  shape = 'curve',
+  from = 'default',
+  to = 'muted',
+  size = 'medium',
+  flip = false,
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    'section-divider',
+    `section-divider--from-${from}`,
+    `section-divider--to-${to}`,
+    `section-divider--${size}`,
+    { 'section-divider--flip': flip },
+  ]}
+  aria-hidden="true"
+>
+  <svg viewBox="0 0 1440 96" preserveAspectRatio="none" focusable="false">
+    <path d={paths[shape]}></path>
+  </svg>
+</div>
+
+<style>
+  .section-divider {
+    height: var(--divider-height);
+    color: var(--divider-to);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .section-divider--small { --divider-height: clamp(1.5rem, 4vw, 3rem); }
+  .section-divider--medium { --divider-height: clamp(2.5rem, 6vw, 5rem); }
+
+  .section-divider--from-default { background: var(--color-background); }
+  .section-divider--from-muted { background: var(--color-surface-subtle); }
+  .section-divider--from-accent { background: var(--color-accent-soft); }
+  .section-divider--from-inverse { background: var(--color-surface-inverse); }
+  .section-divider--to-default { --divider-to: var(--color-background); }
+  .section-divider--to-muted { --divider-to: var(--color-surface-subtle); }
+  .section-divider--to-accent { --divider-to: var(--color-accent-soft); }
+  .section-divider--to-inverse { --divider-to: var(--color-surface-inverse); }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  path { fill: currentColor; }
+  .section-divider--flip svg { transform: scaleX(-1); }
+</style>

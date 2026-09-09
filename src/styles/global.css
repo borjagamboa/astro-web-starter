@@ -31,7 +31,8 @@ main {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   color: var(--color-heading);
   font-family: var(--font-heading);
   line-height: var(--line-height-tight);
@@ -41,6 +42,7 @@ h3 {
 h1,
 h2,
 h3,
+h4,
 p {
   margin-block-start: 0;
 }
@@ -108,19 +110,19 @@ button {
 
 [data-reveal].reveal-ready {
   opacity: 0;
-  transform: translateY(1.25rem);
+  translate: 0 1.25rem;
   transition:
     opacity 500ms ease,
-    transform 500ms ease;
+    translate 500ms ease;
 }
 
 [data-reveal='fade'].reveal-ready {
-  transform: none;
+  translate: none;
 }
 
 [data-reveal].reveal-ready.is-visible {
   opacity: 1;
-  transform: none;
+  translate: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -139,6 +141,6 @@ button {
 
   [data-reveal].reveal-ready {
     opacity: 1;
-    transform: none;
+    translate: none;
   }
 }

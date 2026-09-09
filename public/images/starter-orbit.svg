@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Composición orbital de demostración</title>
+  <desc id="desc">Círculos y líneas en tonos claros y cálidos sobre un fondo oscuro.</desc>
+  <rect width="1600" height="1200" fill="#151b28"/>
+  <circle cx="1050" cy="520" r="360" fill="none" stroke="#dfe6ff" stroke-width="90"/>
+  <circle cx="1050" cy="520" r="155" fill="#b66a3c"/>
+  <path d="M-80 980 720 180" stroke="#fff" stroke-width="42" opacity=".92"/>
+  <path d="M120 1200 860 460" stroke="#3157c8" stroke-width="180"/>
+  <rect x="1120" y="850" width="360" height="150" rx="75" fill="#f7e7dc"/>
+</svg>

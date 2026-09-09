@@ -18,19 +18,19 @@ export interface FooterNavigationGroup {
 export const primaryNavigation = [
   { label: 'Inicio', href: '/' },
   {
-    label: 'Componentes',
-    href: '#componentes',
+    label: 'Composición',
+    href: '#composicion',
     children: [
-      { label: 'Botones', href: '#botones' },
-      { label: 'Imagen', href: '#imagen' },
+      { label: 'Texto e imagen', href: '#texto-media' },
+      { label: 'Cards', href: '#cards' },
     ],
   },
-  { label: 'Sistema visual', href: '#sistema-visual' },
+  { label: 'CTA', href: '#cta' },
 ] as const satisfies readonly NavigationItem[];
 
 export const navigationAction = {
-  label: 'Revisar el CORE',
-  href: '#componentes',
+  label: 'Ver patterns',
+  href: '#composicion',
 } as const satisfies NavigationAction;
 
 export const footerNavigation = [

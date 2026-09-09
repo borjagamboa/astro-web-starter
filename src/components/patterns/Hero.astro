@@ -1,0 +1,185 @@
+---
+import Button from '../primitives/Button.astro';
+import ContentImage from '../primitives/ContentImage.astro';
+import HeadingGroup from '../primitives/HeadingGroup.astro';
+import Section from '../primitives/Section.astro';
+
+interface Action {
+  label: string;
+  href: string;
+}
+
+interface HeroImage {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  primaryAction?: Action;
+  secondaryAction?: Action;
+  image?: HeroImage;
+  alignment?: 'start' | 'center';
+  mediaPosition?: 'start' | 'end';
+  size?: 'compact' | 'standard' | 'large';
+  surface?: 'default' | 'muted' | 'accent' | 'inverse';
+  textWidth?: 'compact' | 'default' | 'wide';
+  id?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  text,
+  primaryAction,
+  secondaryAction,
+  image,
+  alignment = 'start',
+  mediaPosition = 'end',
+  size = 'standard',
+  surface = 'default',
+  textWidth = 'default',
+  id,
+} = Astro.props;
+const hasMediaSlot = Astro.slots.has('media');
+const hasMedia = Boolean(image || hasMediaSlot);
+
+if (!title?.trim() && !Astro.slots.has('title')) {
+  throw new Error('Hero requires a title prop or title slot.');
+}
+
+if (image && hasMediaSlot) {
+  throw new Error('Hero accepts either an image prop or media slot, not both.');
+}
+---
+
+<Section
+  id={id}
+  surface={surface}
+  spacing="none"
+  container="full"
+  class:list={['hero-section', `hero-section--${surface}`]}
+>
+  <div
+    class:list={[
+      'hero',
+      `hero--${alignment}`,
+      `hero--${size}`,
+      `hero--media-${mediaPosition}`,
+      `hero--surface-${surface}`,
+      { 'hero--with-media': hasMedia },
+    ]}
+  >
+    <div class="hero__copy" data-reveal>
+      <HeadingGroup
+        eyebrow={eyebrow}
+        title={title}
+        intro={text}
+        level="h1"
+        align={alignment}
+        measure={textWidth}
+        tone={surface === 'inverse' ? 'inverse' : 'default'}
+        scale="display"
+      >
+        {Astro.slots.has('title') && <Fragment slot="title"><slot name="title" /></Fragment>}
+      </HeadingGroup>
+
+      {(primaryAction || secondaryAction) && (
+        <div class="hero__actions">
+          {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
+          {secondaryAction && <Button href={secondaryAction.href} variant="secondary" size="large">{secondaryAction.label}</Button>}
+        </div>
+      )}
+      <slot />
+    </div>
+
+    {hasMedia && (
+      <div class="hero__media" data-reveal="fade">
+        {image && (
+          <ContentImage
+            src={image.src}
+            width={image.width}
+            height={image.height}
+            alt={image.alt}
+            ratio="landscape"
+            variant="plain"
+            loading="eager"
+          />
+        )}
+        <slot name="media" />
+      </div>
+    )}
+  </div>
+</Section>
+
+<style>
+  .hero {
+    display: grid;
+    width: min(100% - (var(--gutter) * 2), var(--container-wide));
+    min-height: var(--hero-min-height);
+    margin-inline: auto;
+    gap: clamp(var(--space-6), 6vw, var(--space-8));
+    align-items: center;
+    padding-block: var(--hero-padding);
+  }
+
+  .hero--compact {
+    --hero-min-height: var(--hero-height-compact);
+    --hero-padding: var(--space-section-compact);
+  }
+
+  .hero--standard {
+    --hero-min-height: var(--hero-height-standard);
+    --hero-padding: var(--space-section);
+  }
+
+  .hero--large {
+    --hero-min-height: var(--hero-height-large);
+    --hero-padding: var(--space-section-spacious);
+  }
+
+  .hero__copy {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-6);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .hero--center {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hero--center .hero__actions { justify-content: center; }
+
+  .hero__media {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: var(--radius-hero-media);
+    box-shadow: var(--shadow-media);
+  }
+
+  .hero__media :global(img) {
+    min-height: clamp(18rem, 48vw, 36rem);
+  }
+
+  @media (min-width: 52rem) {
+    .hero--with-media:not(.hero--center) {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
+    }
+
+    .hero--media-start .hero__media { grid-column: 1; grid-row: 1; }
+    .hero--media-start .hero__copy { grid-column: 2; grid-row: 1; }
+    .hero--center.hero--with-media { grid-template-rows: auto auto; }
+    .hero--center .hero__media { width: min(100%, 64rem); }
+  }
+</style>

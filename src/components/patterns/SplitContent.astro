@@ -1,0 +1,112 @@
+---
+import Button from '../primitives/Button.astro';
+import ContentImage from '../primitives/ContentImage.astro';
+import HeadingGroup from '../primitives/HeadingGroup.astro';
+import Section from '../primitives/Section.astro';
+
+interface Action {
+  label: string;
+  href: string;
+}
+
+interface SplitImage {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  text?: string;
+  action?: Action;
+  image?: SplitImage;
+  mediaPosition?: 'start' | 'end';
+  alignment?: 'start' | 'center';
+  surface?: 'default' | 'muted' | 'accent' | 'inverse';
+  spacing?: 'compact' | 'normal' | 'spacious';
+  id?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  text,
+  action,
+  image,
+  mediaPosition = 'end',
+  alignment = 'center',
+  surface = 'default',
+  spacing = 'normal',
+  id,
+} = Astro.props;
+const hasMediaSlot = Astro.slots.has('media');
+
+if (!image && !hasMediaSlot) {
+  throw new Error('SplitContent requires an image prop or media slot.');
+}
+
+if (image && hasMediaSlot) {
+  throw new Error('SplitContent accepts either an image prop or media slot, not both.');
+}
+---
+
+<Section id={id} surface={surface} spacing={spacing} container="wide" class:list={[`split-section--${surface}`]}>
+  <div class:list={[
+    'split-content',
+    `split-content--media-${mediaPosition}`,
+    `split-content--${alignment}`,
+    `split-content--surface-${surface}`,
+  ]}>
+    {mediaPosition === 'start' && (
+      <div class="split-content__media" data-reveal="fade">
+        {image && <ContentImage {...image} ratio="landscape" variant="rounded" />}
+        <slot name="media" />
+      </div>
+    )}
+
+    <div class="split-content__copy" data-reveal>
+      <HeadingGroup
+        eyebrow={eyebrow}
+        title={title}
+        intro={text}
+        measure="default"
+        tone={surface === 'inverse' ? 'inverse' : 'default'}
+      />
+      <slot />
+      {action && <Button href={action.href} variant="secondary">{action.label}</Button>}
+    </div>
+
+    {mediaPosition === 'end' && (
+      <div class="split-content__media" data-reveal="fade">
+        {image && <ContentImage {...image} ratio="landscape" variant="rounded" />}
+        <slot name="media" />
+      </div>
+    )}
+  </div>
+</Section>
+
+<style>
+  .split-content {
+    display: grid;
+    gap: clamp(var(--space-6), 7vw, var(--space-8));
+  }
+
+  .split-content__copy {
+    display: grid;
+    min-width: 0;
+    align-content: start;
+    gap: var(--space-5);
+  }
+
+  .split-content--center .split-content__copy { align-content: center; }
+  .split-content__media { min-width: 0; }
+
+  @media (min-width: 48rem) {
+    .split-content {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+  }
+</style>

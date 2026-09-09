@@ -1,0 +1,22 @@
+---
+interface Props {
+  tone?: 'action' | 'accent' | 'secondary';
+}
+
+const { tone = 'accent' } = Astro.props;
+---
+
+<span class:list={['highlight', `highlight--${tone}`]}><slot /></span>
+
+<style>
+  .highlight {
+    padding-inline: 0.06em;
+    background: linear-gradient(transparent 58%, var(--highlight-color) 58% 92%, transparent 92%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .highlight--action { --highlight-color: var(--color-action-soft); }
+  .highlight--accent { --highlight-color: var(--color-accent); }
+  .highlight--secondary { --highlight-color: var(--color-secondary-soft); }
+</style>

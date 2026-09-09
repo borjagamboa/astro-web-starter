@@ -1,0 +1,170 @@
+---
+import ContentImage from '../primitives/ContentImage.astro';
+
+interface CardImage {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface Props {
+  title?: string;
+  text?: string;
+  eyebrow?: string;
+  badge?: string;
+  href?: string;
+  linkLabel?: string;
+  image?: CardImage;
+  headingLevel?: 'h2' | 'h3' | 'h4';
+  treatment?: 'quiet' | 'bordered' | 'elevated';
+  class?: string;
+}
+
+const {
+  title,
+  text,
+  eyebrow,
+  badge,
+  href,
+  linkLabel = 'Ver más',
+  image,
+  headingLevel = 'h3',
+  treatment = 'bordered',
+  class: className,
+} = Astro.props;
+const Heading = headingLevel;
+const hasMedia = Boolean(image || Astro.slots.has('media'));
+
+if (!title?.trim() && !Astro.slots.has('title')) {
+  throw new Error('Card requires a title prop or title slot.');
+}
+
+if (image && Astro.slots.has('media')) {
+  throw new Error('Card accepts either an image prop or media slot, not both.');
+}
+---
+
+<article class:list={['card', `card--${treatment}`, { 'card--with-media': hasMedia }, className]}>
+  {hasMedia && (
+    <div class="card__media">
+      {image && <ContentImage {...image} ratio="landscape" variant="plain" />}
+      <slot name="media" />
+    </div>
+  )}
+
+  <div class="card__body">
+    {(eyebrow || badge) && (
+      <div class="card__meta">
+        {eyebrow && <p>{eyebrow}</p>}
+        {badge && <span>{badge}</span>}
+      </div>
+    )}
+    <Heading><slot name="title">{title}</slot></Heading>
+    {text && <p class="card__text">{text}</p>}
+    <slot />
+    {href && <a class="card__link" href={href}>{linkLabel}<span aria-hidden="true"> →</span></a>}
+  </div>
+
+  {Astro.slots.has('footer') && <footer class="card__footer"><slot name="footer" /></footer>}
+</article>
+
+<style>
+  .card {
+    display: flex;
+    min-width: 0;
+    min-height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+    transition:
+      border-color var(--transition-base),
+      box-shadow var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .card--quiet { background: transparent; }
+  .card--bordered { border: var(--border-subtle); }
+  .card--elevated { box-shadow: var(--shadow-card); }
+
+  .card--bordered:hover,
+  .card--elevated:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.2rem);
+  }
+
+  .card__media { overflow: hidden; }
+
+  .card__media :global(img) {
+    border-radius: 0;
+    transition: transform var(--transition-base);
+  }
+
+  .card:hover .card__media :global(img) { transform: scale(1.02); }
+
+  .card__body {
+    display: grid;
+    flex: 1;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--card-padding);
+  }
+
+  .card--quiet .card__body { padding-inline: 0; }
+  .card--quiet .card__footer { border-top: 0; padding-inline: 0; }
+
+  .card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .card__meta p,
+  .card__meta span {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: 750;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .card__meta span {
+    border-radius: var(--radius-pill);
+    padding: var(--space-1) var(--space-2);
+    background: var(--color-secondary-soft);
+    color: var(--color-heading);
+  }
+
+  .card :global(:is(h2, h3, h4)) { margin: 0; }
+
+  .card__text {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .card__link {
+    width: fit-content;
+    margin-top: var(--space-2);
+    color: var(--color-action);
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .card__footer {
+    border-top: var(--border-subtle);
+    margin-top: auto;
+    padding: var(--space-4) var(--card-padding);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover { transform: none; }
+    .card:hover .card__media :global(img) { transform: none; }
+  }
+</style>

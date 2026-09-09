@@ -1,0 +1,109 @@
+---
+import Button from '../primitives/Button.astro';
+import HeadingGroup from '../primitives/HeadingGroup.astro';
+
+interface Action {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  heading: string;
+  text?: string;
+  eyebrow?: string;
+  primaryAction: Action;
+  secondaryAction?: Action;
+  surface?: 'default' | 'accent' | 'inverse';
+  alignment?: 'start' | 'center' | 'split';
+  emphasis?: 'plain' | 'subtle' | 'featured';
+  as?: 'section' | 'aside';
+  id?: string;
+}
+
+const {
+  heading,
+  text,
+  eyebrow,
+  primaryAction,
+  secondaryAction,
+  surface = 'accent',
+  alignment = 'split',
+  emphasis = 'featured',
+  as = 'aside',
+  id,
+} = Astro.props;
+const Tag = as;
+---
+
+<Tag
+  id={id}
+  class:list={['action-panel', `action-panel--${surface}`, `action-panel--${alignment}`, `action-panel--${emphasis}`]}
+  aria-labelledby={id ? `${id}-title` : undefined}
+  data-reveal="fade"
+>
+  <HeadingGroup
+    eyebrow={eyebrow}
+    title={heading}
+    intro={text}
+    id={id ? `${id}-title` : undefined}
+    align={alignment === 'center' ? 'center' : 'start'}
+    measure="default"
+    tone={surface === 'inverse' ? 'inverse' : 'default'}
+  />
+  <div class="action-panel__actions">
+    <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>
+    {secondaryAction && <Button href={secondaryAction.href} variant="secondary" size="large">{secondaryAction.label}</Button>}
+  </div>
+</Tag>
+
+<style>
+  .action-panel {
+    position: relative;
+    display: grid;
+    gap: var(--space-6);
+    overflow: hidden;
+    border-radius: var(--radius-panel);
+    padding: clamp(var(--space-5), 6vw, var(--space-8));
+  }
+
+  .action-panel--subtle { border: var(--border-subtle); }
+  .action-panel--plain { border-radius: 0; box-shadow: none; }
+  .action-panel--featured { box-shadow: var(--shadow-panel); }
+  .action-panel--default { background: var(--color-surface); }
+  .action-panel--accent { background: var(--color-accent-soft); }
+  .action-panel--inverse { background: var(--color-surface-inverse); color: var(--color-text-on-inverse); }
+
+  .action-panel--featured::after {
+    content: '';
+    position: absolute;
+    right: -5rem;
+    bottom: -7rem;
+    width: 18rem;
+    aspect-ratio: 1;
+    border: 3.5rem solid var(--color-secondary-soft);
+    border-radius: 50%;
+    opacity: 0.42;
+    pointer-events: none;
+  }
+
+  .action-panel > * { position: relative; z-index: 1; }
+
+  .action-panel__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .action-panel--center { justify-items: center; text-align: center; }
+  .action-panel--center .action-panel__actions { justify-content: center; }
+
+  @media (min-width: 52rem) {
+    .action-panel--split {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .action-panel--split .action-panel__actions { justify-content: end; }
+  }
+</style>
