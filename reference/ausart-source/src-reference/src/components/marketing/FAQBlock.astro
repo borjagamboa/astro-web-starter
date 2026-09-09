@@ -1,0 +1,52 @@
+---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items?: FAQItem[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+<div class="faq">
+  {items.length > 0 ? (
+    items.map((item) => (
+      <details>
+        <summary>{item.question}</summary>
+        <p>{item.answer}</p>
+      </details>
+    ))
+  ) : (
+    <p class="placeholder-note">Pronto reuniremos aquí las dudas más habituales, con respuestas claras y revisadas.</p>
+  )}
+</div>
+
+<style>
+  .faq {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  details {
+    border: 1px solid rgb(0 69 95 / 12%);
+    border-radius: var(--radius-xl);
+    padding: 1rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+
+  summary {
+    color: var(--brand-blue);
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  p {
+    margin-bottom: 0;
+    color: var(--color-muted);
+  }
+</style>
+

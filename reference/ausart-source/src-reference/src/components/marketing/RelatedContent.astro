@@ -1,0 +1,66 @@
+---
+interface Item {
+  title: string;
+  href: string;
+  description?: string;
+}
+
+interface Props {
+  title?: string;
+  items?: Item[];
+}
+
+const { title = 'Lectura relacionada', items = [] } = Astro.props;
+const visibleItems = items.slice(0, 3);
+---
+
+{visibleItems.length > 0 && (
+  <aside class="related" aria-labelledby="related-title">
+    <h2 id="related-title">{title}</h2>
+    <div class="related-grid">
+      {visibleItems.map((item) => (
+        <a class="related-item" href={item.href}>
+          <strong>{item.title}</strong>
+          {item.description && <span>{item.description}</span>}
+        </a>
+      ))}
+    </div>
+  </aside>
+)}
+
+<style>
+  .related {
+    margin-top: 2rem;
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+  }
+
+  .related-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .related-item {
+    display: grid;
+    gap: 0.25rem;
+    border: 1px solid rgb(0 69 95 / 12%);
+    border-radius: var(--radius-xl);
+    padding: 1rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+  }
+
+  strong {
+    color: var(--brand-blue);
+  }
+
+  span {
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+</style>
+

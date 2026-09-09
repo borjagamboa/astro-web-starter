@@ -1,0 +1,120 @@
+---
+import Button from '../common/Button.astro';
+import { ctas } from '../../data/ctas';
+
+interface Props {
+  variant?: keyof typeof ctas;
+  title?: string;
+  description?: string;
+  href?: string;
+  label?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+  eyebrow?: string;
+}
+
+const selected = ctas[Astro.props.variant ?? 'primary'];
+const {
+  title = selected.title,
+  description = selected.text,
+  href = selected.href,
+  label = selected.label,
+  secondaryHref,
+  secondaryLabel,
+  eyebrow = '[PROJECT_NAME]',
+} = Astro.props;
+---
+
+<aside class="cta">
+  <div>
+    <p class="eyebrow">{eyebrow}</p>
+    <h2>{title}</h2>
+    <p>{description}</p>
+  </div>
+  <div class="cta__actions">
+    <Button href={href}>{label}</Button>
+    {secondaryHref && secondaryLabel && <Button href={secondaryHref} variant="secondary">{secondaryLabel}</Button>}
+  </div>
+</aside>
+
+<style>
+  .cta {
+    position: relative;
+    display: grid;
+    width: min(100%, var(--container));
+    margin-inline: auto;
+    gap: clamp(1rem, 3vw, 1.5rem);
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid rgb(var(--brand-blue-rgb) / 10%);
+    border-radius: var(--radius-3xl);
+    padding: clamp(1.35rem, 4vw, 2.4rem);
+    background:
+      radial-gradient(circle at 86% 18%, rgb(var(--brand-green-rgb) / 28%), transparent 31%),
+      radial-gradient(circle at 10% 86%, rgb(var(--brand-pink-rgb) / 17%), transparent 26%),
+      linear-gradient(135deg, rgb(255 255 255 / 92%), rgb(var(--brand-cream-rgb) / 86%)),
+      var(--brand-cream);
+    color: var(--color-text);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    right: -2.2rem;
+    bottom: -2.4rem;
+    width: clamp(150px, 20vw, 230px);
+    aspect-ratio: 1;
+    background: var(--brand-blue);
+    opacity: 0.045;
+    mask: url('/images/brand/logo-mark.svg') center / contain no-repeat;
+    -webkit-mask: url('/images/brand/logo-mark.svg') center / contain no-repeat;
+    pointer-events: none;
+  }
+
+  .cta > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .eyebrow {
+    color: var(--brand-brown-soft);
+  }
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    max-width: 20ch;
+    color: var(--brand-blue);
+    font-size: clamp(1.55rem, 3vw, 2.2rem);
+  }
+
+  p:not(.eyebrow) {
+    max-width: 62ch;
+    margin-top: 0.5rem;
+    color: var(--color-muted);
+    font-size: var(--text-md);
+    line-height: 1.62;
+  }
+
+  @media (min-width: 720px) {
+    .cta {
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding-inline: clamp(1.8rem, 4vw, 2.6rem);
+    }
+
+    .cta__actions {
+      justify-content: end;
+    }
+  }
+</style>
+

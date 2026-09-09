@@ -1,0 +1,233 @@
+---
+import ReviewCard from './ReviewCard.astro';
+import { reviews } from '../../data/reviews';
+
+const approvedReviews = reviews
+  .filter((review) => review.visible && review.consentStatus === 'approved')
+  .sort((a, b) => Number(b.featured) - Number(a.featured));
+
+const hasMultipleReviews = approvedReviews.length > 1;
+---
+
+{approvedReviews.length > 0 ? (
+  <section class="reviews" aria-labelledby="reviews-title" data-reviews-widget>
+    <div class="reviews-heading">
+      <div>
+        <p class="eyebrow">Reseñas de Google</p>
+        <h2 id="reviews-title">Lo que dicen de [PROJECT_NAME]</h2>
+        <p>
+          Opiniones publicadas por familias y personas que han confiado en [PROJECT_NAME].
+        </p>
+      </div>
+      {hasMultipleReviews && (
+        <div class="reviews-controls" aria-label="Controles del carrusel de reseñas">
+          <button type="button" class="reviews-button" data-reviews-prev aria-label="Reseña anterior">&lsaquo;</button>
+          <button type="button" class="reviews-button" data-reviews-next aria-label="Reseña siguiente">&rsaquo;</button>
+        </div>
+      )}
+    </div>
+    <div class="reviews-viewport" data-reviews-track tabindex="0" aria-label="Carrusel de reseñas">
+      <div class="reviews-track">
+        {approvedReviews.map((review) => (
+          <div class="reviews-slide">
+            <ReviewCard review={review} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="reviews reviews-empty" aria-labelledby="reviews-empty-title">
+    <div class="reviews-fallback">
+      <p class="eyebrow">Reseñas de Google</p>
+      <h2 id="reviews-empty-title">Lo que dicen de [PROJECT_NAME]</h2>
+      <p>Pronto incorporaremos reseñas verificadas.</p>
+    </div>
+  </section>
+)}
+
+<script>
+  const widgets = document.querySelectorAll('[data-reviews-widget]');
+
+  widgets.forEach((widget) => {
+    const track = widget.querySelector('[data-reviews-track]');
+    const prev = widget.querySelector('[data-reviews-prev]');
+    const next = widget.querySelector('[data-reviews-next]');
+
+    if (!(track instanceof HTMLElement)) return;
+
+    const scrollByCard = (direction: number) => {
+      const slide = track.querySelector('.reviews-slide');
+      const innerTrack = track.querySelector('.reviews-track');
+      const gap = innerTrack instanceof HTMLElement ? parseFloat(getComputedStyle(innerTrack).columnGap) || 0 : 0;
+      const amount = slide instanceof HTMLElement ? slide.offsetWidth + gap : track.clientWidth;
+      track.scrollBy({ left: amount * direction, behavior: 'smooth' });
+    };
+
+    const updateControls = () => {
+      const canScroll = track.scrollWidth > track.clientWidth + 2;
+      const atStart = track.scrollLeft <= 2;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+
+      if (prev instanceof HTMLButtonElement) {
+        prev.hidden = !canScroll;
+        prev.disabled = atStart;
+      }
+
+      if (next instanceof HTMLButtonElement) {
+        next.hidden = !canScroll;
+        next.disabled = atEnd;
+      }
+    };
+
+    prev?.addEventListener('click', () => scrollByCard(-1));
+    next?.addEventListener('click', () => scrollByCard(1));
+    track.addEventListener('scroll', updateControls, { passive: true });
+    window.addEventListener('resize', updateControls);
+    updateControls();
+  });
+</script>
+
+<style>
+  .reviews {
+    --reviews-gap: 1rem;
+    display: grid;
+    width: min(100%, var(--container));
+    margin-inline: auto;
+    gap: clamp(1.1rem, 3vw, 1.5rem);
+  }
+
+  .reviews-heading {
+    display: grid;
+    gap: 1rem;
+    align-items: end;
+  }
+
+  h2 {
+    max-width: 18ch;
+    margin: 0;
+  }
+
+  .reviews-heading p:not(.eyebrow) {
+    max-width: 62ch;
+    margin: 0.75rem 0 0;
+    color: var(--color-muted);
+  }
+
+  .reviews-controls {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.65rem;
+    align-items: center;
+  }
+
+  .reviews-button {
+    display: inline-grid;
+    width: 2.9rem;
+    height: 2.9rem;
+    place-items: center;
+    border: var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background:
+      linear-gradient(180deg, var(--color-surface), rgb(var(--brand-cream-rgb) / 72%)),
+      var(--color-surface);
+    color: var(--brand-blue);
+    cursor: pointer;
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: var(--shadow-card);
+    transition: border-color 160ms ease, color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .reviews-button:hover {
+    border-color: rgb(var(--brand-pink-rgb) / 78%);
+    color: var(--brand-brown-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .reviews-button:disabled {
+    cursor: default;
+    opacity: 0.38;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .reviews-button[hidden] {
+    display: none;
+  }
+
+  .reviews-viewport {
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-block: 0.25rem 0.9rem;
+    scroll-padding-inline: 0;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: var(--brand-pink) rgb(var(--brand-cream-rgb) / 80%);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reviews-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reviews-track {
+    display: flex;
+    gap: var(--reviews-gap);
+    align-items: stretch;
+  }
+
+  .reviews-slide {
+    display: flex;
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+  }
+
+  .reviews-empty {
+    border: var(--border-subtle);
+    border-radius: var(--radius-2xl);
+    padding: clamp(1.1rem, 3vw, 1.5rem);
+    background:
+      linear-gradient(135deg, var(--surface-pink-tint), var(--surface-green-tint)),
+      var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+
+  .reviews-fallback {
+    max-width: 620px;
+  }
+
+  .reviews-fallback h2,
+  .reviews-fallback p {
+    margin: 0;
+  }
+
+  .reviews-fallback p:not(.eyebrow) {
+    margin-top: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 720px) {
+    .reviews-heading {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .reviews-controls {
+      justify-content: flex-end;
+    }
+
+    .reviews-slide {
+      flex-basis: calc((100% - var(--reviews-gap)) / 2);
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .reviews-slide {
+      flex-basis: calc((100% - var(--reviews-gap) - var(--reviews-gap)) / 3);
+    }
+  }
+</style>
+

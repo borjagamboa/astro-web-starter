@@ -1,0 +1,99 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { site } from '../../data/site';
+
+interface Props {
+  variant?: 'horizontal' | 'complete' | 'vertical' | 'mark' | 'text';
+  href?: string;
+  label?: string;
+}
+
+const { variant = 'horizontal', href = '/', label = `${site.brandName} - inicio` } = Astro.props;
+
+const logoMap = {
+  horizontal: site.logoHorizontal,
+  complete: site.logo,
+  vertical: site.logoVertical,
+  mark: site.logoMark,
+  text: '',
+};
+
+const logoPath = logoMap[variant];
+const publicPath = logoPath ? join(process.cwd(), 'public', logoPath.replace(/^\//, '')) : '';
+const hasAsset = Boolean(logoPath && existsSync(publicPath));
+const fallbackText = variant === 'mark' ? site.shortName : site.brandName;
+---
+
+<a class:list={['logo', `logo-${variant}`]} href={href} aria-label={label}>
+  {hasAsset ? (
+    <img src={logoPath} alt={site.brandAlt} loading="eager" decoding="async" />
+  ) : (
+    <span class="logo-fallback" aria-hidden="true">{fallbackText}</span>
+  )}
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    color: var(--brand-blue);
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 48px;
+    object-fit: contain;
+  }
+
+  .logo-horizontal {
+    width: clamp(145px, 12vw, 165px);
+  }
+
+  .logo-complete {
+    width: clamp(160px, 18vw, 210px);
+  }
+
+  .logo-vertical {
+    width: clamp(118px, 14vw, 160px);
+  }
+
+  .logo-mark {
+    width: 42px;
+  }
+
+  .logo-mark .logo-fallback {
+    display: grid;
+    width: 2.45rem;
+    height: 2.45rem;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    background: var(--brand-blue);
+    color: #fff;
+    font-size: var(--text-xs);
+  }
+
+  .logo-horizontal .logo-fallback,
+  .logo-complete .logo-fallback,
+  .logo-vertical .logo-fallback,
+  .logo-text .logo-fallback {
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 420px) {
+    img {
+      max-height: 40px;
+    }
+
+    .logo-horizontal {
+      width: clamp(120px, 38vw, 140px);
+    }
+  }
+</style>
+

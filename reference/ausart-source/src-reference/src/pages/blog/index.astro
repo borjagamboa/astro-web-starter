@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Section from '../../components/common/Section.astro';
+import BlogCard from '../../components/marketing/BlogCard.astro';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<PageLayout
+  title="Blog"
+  description="[BLOG_INDEX_DESCRIPTION]"
+  eyebrow="Blog"
+>
+  <Section>
+    {posts.length > 0 ? (
+      <div class="blog-grid">
+        {posts.map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/blog/${post.data.slug}/`}
+            pubDate={post.data.pubDate}
+            category={post.data.category}
+            image={post.data.featuredImage}
+            imageAlt={post.data.featuredImageAlt}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="placeholder-note">
+        Todavía no hay artículos publicados. Pronto aparecerán aquí los nuevos contenidos del blog.
+      </p>
+    )}
+  </Section>
+</PageLayout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    gap: clamp(1rem, 3vw, 1.35rem);
+  }
+
+  @media (min-width: 720px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

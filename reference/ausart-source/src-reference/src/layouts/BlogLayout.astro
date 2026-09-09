@@ -1,0 +1,88 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/common/Breadcrumbs.astro';
+import ContentImage from '../components/common/ContentImage.astro';
+import CTA from '../components/marketing/CTA.astro';
+import RelatedContent from '../components/marketing/RelatedContent.astro';
+
+interface RelatedItem {
+  title: string;
+  href: string;
+  description?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  metaTitle?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
+  category?: string;
+  author?: string;
+  canonical?: string;
+  image?: string;
+  imageAlt?: string;
+  relatedItems?: RelatedItem[];
+}
+
+const {
+  title,
+  description,
+  metaTitle,
+  pubDate,
+  updatedDate,
+  category,
+  author,
+  canonical,
+  image,
+  imageAlt,
+  relatedItems = [],
+} = Astro.props;
+const dateFormatter = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' });
+---
+
+<BaseLayout title={metaTitle ?? title} description={description} canonical={canonical} image={image}>
+  <article class="blog-article article-shell">
+    <header class="page-header">
+      <Breadcrumbs items={[{ label: 'Blog', href: '/blog/' }, { label: title }]} />
+      <p class="page-eyebrow">{category ?? 'Blog'}</p>
+      <h1 class="page-title">{title}</h1>
+      <p class="page-description">{description}</p>
+      <p class="meta">
+        {pubDate && <time datetime={pubDate.toISOString()}>{dateFormatter.format(pubDate)}</time>}
+        {author && <span>{author}</span>}
+        {updatedDate && <span>Actualizado: {dateFormatter.format(updatedDate)}</span>}
+      </p>
+      <span class="page-rule" aria-hidden="true"></span>
+    </header>
+
+    {image && imageAlt && <ContentImage src={image} alt={imageAlt} />}
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <CTA variant="blogFinal" />
+    <RelatedContent items={relatedItems} />
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-article {
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .prose {
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0.85rem 0 0;
+    color: var(--color-muted);
+    font-size: var(--text-sm);
+  }
+</style>
+

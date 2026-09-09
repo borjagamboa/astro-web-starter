@@ -1,0 +1,110 @@
+---
+import Logo from './Logo.astro';
+import { footerNavigation, legalNavigation } from '../../data/navigation';
+import { site } from '../../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <Logo variant="complete" />
+      <p>{site.description}</p>
+      <p class="local">Zona: {site.location}</p>
+    </div>
+    <nav aria-label="Navegación secundaria">
+      <h2>Secciones</h2>
+      {footerNavigation.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+    {legalNavigation.length > 0 && (
+      <nav aria-label="Navegación legal">
+        <h2>Legal</h2>
+        {legalNavigation.map((item) => (
+          <a href={item.href}>{item.label}</a>
+        ))}
+      </nav>
+    )}
+  </div>
+  <div class="container legal">
+    <span>(c) {year} {site.brandName}</span>
+    <span>{site.legalNotice}</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 4px solid var(--brand-pink);
+    margin-top: 4rem;
+    padding-block: clamp(2rem, 5vw, 3rem);
+    background:
+      linear-gradient(180deg, var(--brand-cream), #fffaf3),
+      var(--brand-cream);
+    color: var(--color-muted);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .footer-brand {
+    display: grid;
+    gap: 0.65rem;
+    align-content: start;
+  }
+
+  .footer-brand p {
+    margin: 0;
+  }
+
+  .local {
+    color: var(--brand-blue);
+    font-weight: 800;
+  }
+
+  nav {
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
+  }
+
+  h2 {
+    margin: 0 0 0.25rem;
+    color: var(--brand-blue);
+    font-size: 1rem;
+  }
+
+  nav a {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--brand-blue);
+  }
+
+  .legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border-top: 1px solid rgb(0 69 95 / 12%);
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    font-size: var(--text-sm);
+  }
+
+  @media (min-width: 800px) {
+    .footer-grid {
+      grid-template-columns: 1.4fr repeat(auto-fit, minmax(180px, 0.8fr));
+      align-items: start;
+    }
+
+    .legal {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+</style>
+

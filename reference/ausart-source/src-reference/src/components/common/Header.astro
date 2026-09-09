@@ -1,0 +1,437 @@
+---
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { primaryNavigation, navigationCtas } from '../../data/navigation';
+import { site } from '../../data/site';
+
+const phoneHref = `tel:${site.contactPhone.replace(/\s/g, '')}`;
+const instagramUrl = site.socialLinks.instagram;
+const hasInstagramUrl = instagramUrl.startsWith('http');
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-lockup">
+      <Logo variant="horizontal" />
+      <div class="brand-context">
+        <span>[PROJECT_TAGLINE]</span>
+        <a href={phoneHref}>{site.contactPhone}</a>
+      </div>
+    </div>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
+      Menú
+    </button>
+
+    <nav id="primary-navigation" class="nav" aria-label="Navegación principal" data-nav>
+      <div class="nav-links">
+        {primaryNavigation.map((item, index) => (
+          <div class:list={['nav-item', { 'nav-item--has-children': item.children }]}>
+            {item.children ? (
+              <div class="nav-parent">
+                <a href={item.href}>{item.label}</a>
+                <button
+                  class="submenu-toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls={`submenu-${index}`}
+                  data-submenu-toggle
+                >
+                  <span class="visually-hidden">Abrir submenú de {item.label}</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m7 10 5 5 5-5"></path>
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <a href={item.href}>{item.label}</a>
+            )}
+            {item.children && (
+              <div id={`submenu-${index}`} class="submenu" aria-label={`Submenú de ${item.label}`}>
+                {item.children.map((child) => (
+                  <a href={child.href}>{child.label}</a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div class="nav-actions">
+        {hasInstagramUrl ? (
+          <a class="social-link" href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram de [PROJECT_NAME]">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1"></circle>
+            </svg>
+          </a>
+        ) : (
+          <span class="social-link social-link--pending" aria-label="Instagram de [PROJECT_NAME]">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1"></circle>
+            </svg>
+          </span>
+        )}
+        {navigationCtas[0] && (
+          <Button href={navigationCtas[0].href}>{navigationCtas[0].label}</Button>
+        )}
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const submenuToggles = document.querySelectorAll<HTMLButtonElement>('[data-submenu-toggle]');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    nav?.toggleAttribute('data-open', !isOpen);
+
+    if (isOpen) {
+      submenuToggles.forEach((submenuToggle) => {
+        submenuToggle.setAttribute('aria-expanded', 'false');
+        submenuToggle.closest('.nav-item')?.removeAttribute('data-submenu-open');
+      });
+    }
+  });
+
+  submenuToggles.forEach((submenuToggle) => {
+    submenuToggle.addEventListener('click', () => {
+      const item = submenuToggle.closest<HTMLElement>('.nav-item');
+      const willOpen = submenuToggle.getAttribute('aria-expanded') !== 'true';
+
+      submenuToggles.forEach((otherToggle) => {
+        if (otherToggle !== submenuToggle) {
+          otherToggle.setAttribute('aria-expanded', 'false');
+          otherToggle.closest('.nav-item')?.removeAttribute('data-submenu-open');
+        }
+      });
+
+      submenuToggle.setAttribute('aria-expanded', String(willOpen));
+      item?.toggleAttribute('data-submenu-open', willOpen);
+    });
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid rgb(var(--brand-blue-rgb) / 9%);
+    background: rgb(255 255 255 / 91%);
+    box-shadow: 0 10px 30px rgb(var(--brand-blue-rgb) / 7%);
+    backdrop-filter: blur(16px);
+  }
+
+  .header-inner {
+    display: grid;
+    width: min(calc(100% - 2rem), 1440px);
+    margin-inline: auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.8rem;
+    align-items: center;
+    padding-block: 0.9rem;
+  }
+
+  .brand-lockup {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  }
+
+  .brand-context {
+    display: none;
+    min-width: 0;
+    border-left: 1px solid rgb(var(--brand-blue-rgb) / 14%);
+    padding-left: 1rem;
+  }
+
+  .brand-context span,
+  .brand-context a {
+    white-space: nowrap;
+  }
+
+  .brand-context span {
+    color: var(--color-muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .brand-context a {
+    color: var(--brand-blue);
+    font-size: 0.91rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .menu-toggle {
+    border: 1px solid rgb(var(--brand-blue-rgb) / 20%);
+    border-radius: var(--radius-pill);
+    padding: 0.58rem 0.95rem;
+    background: var(--color-surface);
+    color: var(--brand-blue);
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .nav {
+    display: none;
+    grid-column: 1 / -1;
+    gap: 0.9rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.9rem;
+    max-height: calc(100svh - 5.5rem);
+    overflow-y: auto;
+  }
+
+  .nav[data-open] {
+    display: grid;
+  }
+
+  .nav-links,
+  .nav-actions {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav a {
+    color: var(--brand-blue);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .nav-item > a,
+  .nav-parent > a {
+    display: block;
+    padding: 0.45rem 0;
+  }
+
+  .nav-parent {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .submenu-toggle {
+    display: grid;
+    width: 2.6rem;
+    height: 2.6rem;
+    place-items: center;
+    border: 1px solid rgb(var(--brand-blue-rgb) / 14%);
+    border-radius: 50%;
+    padding: 0;
+    background: rgb(var(--brand-cream-rgb) / 58%);
+    color: var(--brand-blue);
+    cursor: pointer;
+  }
+
+  .submenu-toggle svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    transition: transform 180ms ease;
+  }
+
+  .submenu-toggle[aria-expanded='true'] svg {
+    transform: rotate(180deg);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  .nav a:hover {
+    color: var(--brand-brown-soft);
+  }
+
+  .nav-actions {
+    align-items: center;
+  }
+
+  .social-link {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 1px solid rgb(var(--brand-blue-rgb) / 14%);
+    border-radius: 50%;
+    background: rgb(var(--brand-cream-rgb) / 72%);
+  }
+
+  .social-link svg {
+    width: 1.18rem;
+    height: 1.18rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+  }
+
+  .social-link--pending {
+    cursor: default;
+    opacity: 0.72;
+  }
+
+  .nav :global(.button) {
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .submenu {
+    display: none;
+    margin: 0.25rem 0 0.55rem;
+    border-left: 2px solid rgb(var(--brand-pink-rgb) / 65%);
+    padding-left: 1rem;
+    font-size: var(--text-sm);
+  }
+
+  .nav-item[data-submenu-open] .submenu {
+    display: grid;
+  }
+
+  .submenu a {
+    padding: 0.45rem 0;
+  }
+
+  @media (min-width: 720px) {
+    .brand-context {
+      display: grid;
+      gap: 0.12rem;
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .header-inner {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: clamp(1rem, 2vw, 2.35rem);
+      min-height: 5.65rem;
+      padding-block: 1.08rem;
+    }
+
+    .brand-context {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .nav {
+      display: flex;
+      min-width: 0;
+      grid-column: auto;
+      align-items: center;
+      justify-content: flex-end;
+      gap: clamp(0.58rem, 0.9vw, 1rem);
+      border-top: 0;
+      padding-top: 0;
+      max-height: none;
+      overflow: visible;
+    }
+
+    .nav-links,
+    .nav-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      gap: clamp(0.42rem, 0.65vw, 0.78rem);
+    }
+
+    .nav-actions {
+      flex-shrink: 0;
+      gap: 0.55rem;
+    }
+
+    .nav-item > a,
+    .nav-parent > a {
+      padding: 0.45rem 0;
+      white-space: nowrap;
+      font-size: clamp(0.88rem, 0.76vw, 0.96rem);
+    }
+
+    .nav-parent {
+      display: block;
+    }
+
+    .submenu-toggle {
+      display: none;
+    }
+
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      right: -0.7rem;
+      left: -0.7rem;
+      height: 0.65rem;
+    }
+
+    .submenu {
+      position: absolute;
+      top: calc(100% + 0.35rem);
+      left: 0;
+      z-index: 40;
+      display: none;
+      min-width: 270px;
+      border: 1px solid rgb(var(--brand-blue-rgb) / 12%);
+      border-top: 3px solid var(--brand-pink);
+      border-radius: var(--radius-xl);
+      padding: 0.8rem 1rem;
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .nav :global(.button) {
+      white-space: nowrap;
+      padding-inline: clamp(0.72rem, 0.9vw, 0.95rem);
+      font-size: clamp(0.86rem, 0.76vw, 0.94rem);
+    }
+
+    .nav-item:hover .submenu,
+    .nav-item:focus-within .submenu {
+      display: grid;
+    }
+  }
+
+  @media (min-width: 1320px) {
+    .header-inner {
+      padding-block: 1.12rem;
+    }
+
+    .brand-context {
+      display: grid;
+      gap: 0.12rem;
+    }
+
+    .brand-context span {
+      font-size: 0.8rem;
+    }
+
+    .brand-context a {
+      font-size: 0.96rem;
+    }
+  }
+</style>
