@@ -1,0 +1,83 @@
+---
+import Card from './Card.astro';
+import CardGrid from './CardGrid.astro';
+
+interface FeatureVisual {
+  src: string;
+  width: number;
+  height: number;
+}
+
+interface FeatureItem {
+  title: string;
+  text?: string;
+  href?: string;
+  linkLabel?: string;
+  index?: string | number;
+  badge?: string;
+  visual?: FeatureVisual;
+}
+
+interface Props {
+  items: readonly FeatureItem[];
+  columns?: 2 | 3 | 4;
+  gap?: 'small' | 'medium' | 'large';
+  treatment?: 'quiet' | 'bordered' | 'elevated';
+  showIndex?: boolean;
+  ariaLabel?: string;
+}
+
+const {
+  items,
+  columns = 3,
+  gap = 'medium',
+  treatment = 'bordered',
+  showIndex = false,
+  ariaLabel = 'Elementos destacados',
+} = Astro.props;
+---
+
+{items.length > 0 && (
+  <CardGrid columns={columns} gap={gap} ariaLabel={ariaLabel}>
+    {items.map((item, itemIndex) => {
+      const visibleIndex = item.index ?? String(itemIndex + 1).padStart(2, '0');
+      return (
+        <Card
+          title={item.title}
+          text={item.text}
+          href={item.href}
+          linkLabel={item.linkLabel}
+          badge={item.badge}
+          treatment={treatment}
+        >
+          {(item.visual || showIndex) && (
+            <Fragment slot="visual">
+              {item.visual ? (
+                <img
+                  src={item.visual.src}
+                  width={item.visual.width}
+                  height={item.visual.height}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <span class="feature-index" aria-hidden="true">{visibleIndex}</span>
+              )}
+            </Fragment>
+          )}
+        </Card>
+      );
+    })}
+  </CardGrid>
+)}
+
+<style>
+  .feature-index {
+    color: var(--color-action);
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: 800;
+    line-height: 1;
+  }
+</style>

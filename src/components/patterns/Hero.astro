@@ -75,18 +75,30 @@ if (image && hasMediaSlot) {
     ]}
   >
     <div class="hero__copy" data-reveal>
-      <HeadingGroup
-        eyebrow={eyebrow}
-        title={title}
-        intro={text}
-        level="h1"
-        align={alignment}
-        measure={textWidth}
-        tone={surface === 'inverse' ? 'inverse' : 'default'}
-        scale="display"
-      >
-        {Astro.slots.has('title') && <Fragment slot="title"><slot name="title" /></Fragment>}
-      </HeadingGroup>
+      {Astro.slots.has('title') ? (
+        <HeadingGroup
+          eyebrow={eyebrow}
+          intro={text}
+          level="h1"
+          align={alignment}
+          measure={textWidth}
+          tone={surface === 'inverse' ? 'inverse' : 'default'}
+          scale="display"
+        >
+          <Fragment slot="title"><slot name="title" /></Fragment>
+        </HeadingGroup>
+      ) : (
+        <HeadingGroup
+          eyebrow={eyebrow}
+          title={title}
+          intro={text}
+          level="h1"
+          align={alignment}
+          measure={textWidth}
+          tone={surface === 'inverse' ? 'inverse' : 'default'}
+          scale="display"
+        />
+      )}
 
       {(primaryAction || secondaryAction) && (
         <div class="hero__actions">

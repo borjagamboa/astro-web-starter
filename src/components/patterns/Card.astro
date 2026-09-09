@@ -35,6 +35,7 @@ const {
 } = Astro.props;
 const Heading = headingLevel;
 const hasMedia = Boolean(image || Astro.slots.has('media'));
+const hasVisual = Astro.slots.has('visual');
 
 if (!title?.trim() && !Astro.slots.has('title')) {
   throw new Error('Card requires a title prop or title slot.');
@@ -54,6 +55,7 @@ if (image && Astro.slots.has('media')) {
   )}
 
   <div class="card__body">
+    {hasVisual && <div class="card__visual"><slot name="visual" /></div>}
     {(eyebrow || badge) && (
       <div class="card__meta">
         {eyebrow && <p>{eyebrow}</p>}
@@ -81,7 +83,7 @@ if (image && Astro.slots.has('media')) {
     transition:
       border-color var(--transition-base),
       box-shadow var(--transition-base),
-      transform var(--transition-base);
+      translate var(--transition-base);
   }
 
   .card--quiet { background: transparent; }
@@ -92,17 +94,17 @@ if (image && Astro.slots.has('media')) {
   .card--elevated:hover {
     border-color: var(--color-border-strong);
     box-shadow: var(--shadow-card-hover);
-    transform: translateY(-0.2rem);
+    translate: 0 -0.2rem;
   }
 
   .card__media { overflow: hidden; }
 
   .card__media :global(img) {
     border-radius: 0;
-    transition: transform var(--transition-base);
+    transition: scale var(--transition-base);
   }
 
-  .card:hover .card__media :global(img) { transform: scale(1.02); }
+  .card:hover .card__media :global(img) { scale: 1.02; }
 
   .card__body {
     display: grid;
@@ -114,6 +116,20 @@ if (image && Astro.slots.has('media')) {
 
   .card--quiet .card__body { padding-inline: 0; }
   .card--quiet .card__footer { border-top: 0; padding-inline: 0; }
+
+  .card__visual {
+    display: grid;
+    width: 3rem;
+    min-height: 3rem;
+    place-items: center;
+    color: var(--color-action);
+  }
+
+  .card__visual :global(:is(svg, img)) {
+    width: 100%;
+    max-height: 3rem;
+    object-fit: contain;
+  }
 
   .card__meta {
     display: flex;
@@ -164,7 +180,7 @@ if (image && Astro.slots.has('media')) {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .card:hover { transform: none; }
-    .card:hover .card__media :global(img) { transform: none; }
+    .card:hover { translate: none; }
+    .card:hover .card__media :global(img) { scale: none; }
   }
 </style>

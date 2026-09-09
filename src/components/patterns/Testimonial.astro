@@ -1,0 +1,122 @@
+---
+interface Avatar {
+  src: string;
+  width: number;
+  height: number;
+}
+
+interface Source {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  quote: string;
+  name?: string;
+  context?: string;
+  rating?: number;
+  ratingMax?: number;
+  source?: Source;
+  avatar?: Avatar;
+  treatment?: 'quiet' | 'bordered' | 'elevated';
+}
+
+const {
+  quote,
+  name,
+  context,
+  rating,
+  ratingMax = 5,
+  source,
+  avatar,
+  treatment = 'bordered',
+} = Astro.props;
+const hasAttribution = Boolean(name || context || source || avatar);
+
+if (rating !== undefined && (rating < 0 || rating > ratingMax || ratingMax <= 0)) {
+  throw new Error('Testimonial rating must be between 0 and ratingMax.');
+}
+---
+
+<figure class:list={['testimonial', `testimonial--${treatment}`]}>
+  {rating !== undefined && (
+    <p class="testimonial__rating" aria-label={`Valoración: ${rating} de ${ratingMax}`}>
+      <strong>{rating}</strong><span aria-hidden="true">/{ratingMax}</span>
+    </p>
+  )}
+  <blockquote><p>“{quote}”</p></blockquote>
+  {hasAttribution && (
+    <figcaption>
+      {avatar && <img src={avatar.src} width={avatar.width} height={avatar.height} alt="" loading="lazy" decoding="async" />}
+      <span class="testimonial__identity">
+        {name && <strong>{name}</strong>}
+        {context && <span>{context}</span>}
+      </span>
+      {source && (
+        source.href
+          ? <a href={source.href}>{source.label}</a>
+          : <span class="testimonial__source">{source.label}</span>
+      )}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .testimonial {
+    display: grid;
+    min-height: 100%;
+    align-content: space-between;
+    gap: var(--space-5);
+    margin: 0;
+    border-radius: var(--radius-card);
+    padding: var(--card-padding);
+    background: var(--color-surface);
+  }
+
+  .testimonial--quiet { padding-inline: 0; background: transparent; }
+  .testimonial--bordered { border: var(--border-subtle); }
+  .testimonial--elevated { box-shadow: var(--shadow-card); }
+
+  .testimonial__rating {
+    margin: 0;
+    color: var(--color-action);
+    font-family: var(--font-mono);
+  }
+
+  .testimonial__rating strong { font-size: var(--text-lg); }
+  .testimonial__rating span { color: var(--color-text-muted); }
+
+  blockquote { margin: 0; }
+
+  blockquote p {
+    margin: 0;
+    color: var(--color-heading);
+    font-size: var(--text-lg);
+    font-weight: 650;
+    line-height: 1.45;
+  }
+
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  figcaption img {
+    width: 2.75rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .testimonial__identity {
+    display: grid;
+    margin-right: auto;
+  }
+
+  .testimonial__identity strong { color: var(--color-heading); }
+  .testimonial__source { text-decoration: underline; text-underline-offset: 0.18em; }
+</style>
