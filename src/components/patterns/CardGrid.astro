@@ -4,6 +4,8 @@ interface Props {
   gap?: 'small' | 'medium' | 'large';
   align?: 'start' | 'stretch';
   width?: 'default' | 'wide' | 'full';
+  layout?: 'fixed' | 'auto-fit';
+  minItemWidth?: 'small' | 'medium' | 'large';
   ariaLabel?: string;
   class?: string;
 }
@@ -13,6 +15,8 @@ const {
   gap = 'medium',
   align = 'stretch',
   width = 'full',
+  layout = 'fixed',
+  minItemWidth = 'medium',
   ariaLabel,
   class: className,
 } = Astro.props;
@@ -25,6 +29,8 @@ const {
     `card-grid--${gap}`,
     `card-grid--${align}`,
     `card-grid--width-${width}`,
+    `card-grid--${layout}`,
+    `card-grid--min-${minItemWidth}`,
     className,
   ]}
   aria-label={ariaLabel}
@@ -47,14 +53,20 @@ const {
   .card-grid--width-default { max-width: var(--container-max); }
   .card-grid--width-wide { max-width: var(--container-wide); }
   .card-grid--width-full { max-width: none; }
+  .card-grid--min-small { --grid-min-item: var(--grid-min-small); }
+  .card-grid--min-medium { --grid-min-item: var(--grid-min-medium); }
+  .card-grid--min-large { --grid-min-item: var(--grid-min-large); }
+  .card-grid--auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min-item)), 1fr));
+  }
 
   @media (min-width: 38rem) {
-    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card-grid--fixed { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
   @media (min-width: 64rem) {
-    .card-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .card-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .card-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card-grid--fixed.card-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card-grid--fixed.card-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card-grid--fixed.card-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
 </style>

@@ -1,207 +1,175 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactBlock from '../components/patterns/ContactBlock.astro';
-import FAQ from '../components/patterns/FAQ.astro';
-import FeatureGrid from '../components/patterns/FeatureGrid.astro';
-import Hero from '../components/patterns/Hero.astro';
-import Stats from '../components/patterns/Stats.astro';
-import Testimonial from '../components/patterns/Testimonial.astro';
+import ActionPanel from '../components/patterns/ActionPanel.astro';
+import Card from '../components/patterns/Card.astro';
 import CardGrid from '../components/patterns/CardGrid.astro';
-import HeadingGroup from '../components/primitives/HeadingGroup.astro';
-import Prose from '../components/primitives/Prose.astro';
+import ContentSplit from '../components/patterns/ContentSplit.astro';
+import Hero from '../components/patterns/Hero.astro';
+import SectionHeading from '../components/patterns/SectionHeading.astro';
+import Button from '../components/primitives/Button.astro';
 import Section from '../components/primitives/Section.astro';
+import SectionDivider from '../components/primitives/SectionDivider.astro';
 import { site } from '../data/site';
 
-const features = [
-  {
-    index: 'A1',
-    badge: 'Contenido',
-    title: 'Capacidad indexada',
-    text: 'Un número, título y texto bastan para explicar servicios, ventajas, pasos o capacidades.',
-  },
-  {
-    index: 'B2',
-    badge: 'Enlace opcional',
-    title: 'Card con destino',
-    text: 'El enlace aparece solo cuando existe una ruta útil y una etiqueta clara.',
-    href: '#contenido',
-    linkLabel: 'Ver contenido editorial',
-  },
-  {
-    index: 'C3',
-    title: 'Jerarquía flexible',
-    text: 'La cantidad y el tratamiento cambian según el inventario real, sin rellenar una plantilla fija.',
-  },
-] as const;
-
-const stats = [
-  { value: '2–4', label: 'Datos por bloque', context: 'Un rango breve y legible en móvil.' },
-  { value: '0', label: 'JavaScript para FAQ', context: 'Interacción nativa con details y summary.' },
-  { value: '320 px', label: 'Ancho mínimo revisado', context: 'El contenido se apila sin perder jerarquía.' },
-  { value: '1', label: 'Fuente por dato', context: 'Cada cifra real debe poder verificarse.' },
-] as const;
-
-const testimonials = [
-  {
-    quote: 'Texto ficticio para revisar una cita sin atribución, valoración ni fuente.',
-  },
-  {
-    quote: 'La identidad aparece solo cuando el proyecto aporta datos públicos y autorizados.',
-    name: 'Perfil ficticio A',
-    context: 'Contexto de demostración',
-  },
-  {
-    quote: 'La procedencia puede mostrarse como texto aunque no exista un enlace externo.',
-    source: { label: 'Fuente de ejemplo' },
-  },
-] as const;
-
-const faqItems = [
-  {
-    question: '¿La FAQ necesita JavaScript?',
-    answer: 'No. Usa elementos details y summary, conserva el contenido visible en el HTML y funciona sin scripts.',
-  },
-  {
-    question: '¿Deben mostrarse todos los campos opcionales?',
-    answer: 'No. Cada pattern elimina de forma limpia los metadatos, enlaces, visuales o atribuciones que no recibe.',
-  },
-  {
-    question: '¿Estas secciones forman una plantilla obligatoria?',
-    answer: 'No. Este índice es un catálogo interno. En un proyecto se seleccionan y ordenan los bloques según contenido, identidad y prioridad comercial.',
-  },
-] as const;
+const gridImage = { src: '/images/starter-grid.svg', width: 1600, height: 1000, alt: 'Retícula abstracta de demostración' };
+const orbitImage = { src: '/images/starter-orbit.svg', width: 1600, height: 1200, alt: 'Órbitas abstractas de demostración' };
 ---
 
-<BaseLayout title={`${site.name} · Catálogo de contenido`}>
+<BaseLayout title={`${site.name} · Showcase de composición`} description="Showcase interno de patrones visuales reutilizables del starter.">
   <Hero
-    id="catalogo"
-    eyebrow="Catálogo interno · Solo desarrollo"
-    title="Patterns de contenido preparados para combinarse."
-    text="Features, evidencia, preguntas, contacto y lectura larga comparten una base accesible sin imponer la forma de una web final."
-    primaryAction={{ label: 'Ver features', href: '#features' }}
-    secondaryAction={{ label: 'Revisar FAQ', href: '#faq' }}
+    id="inicio"
+    layout="split"
+    size="large"
     surface="accent"
-    size="compact"
+    eyebrow="Showcase interno · Hero split"
+    title="Una base visual capaz de cambiar de voz."
+    text="La composición separa contenido y medio sin fijar una marca, un sector ni una dirección artística definitiva."
+    primaryAction={{ label: 'Explorar variantes', href: '#heroes' }}
+    secondaryAction={{ label: 'Ver la retícula', href: '#grid' }}
+    image={gridImage}
     textWidth="wide"
   >
-    <p class="development-note">Todos los textos, perfiles y cifras de esta página son material explícito de demostración.</p>
+    <p class="demo-note">Contenido local y ficticio para revisar el sistema, no para publicar.</p>
   </Hero>
 
-  <Section id="features" spacing="spacious" container="wide" ariaLabelledby="features-title">
-    <HeadingGroup
-      eyebrow="Oferta y proceso"
-      title="Una base para servicios, ventajas, capacidades o pasos."
-      intro="El pattern reutiliza Card y CardGrid. Puede mostrar índice, badge, visual y enlace sin exigir ninguno de ellos."
-      id="features-title"
+  <Section id="heroes" spacing="compact" container="wide" ariaLabelledby="heroes-title">
+    <SectionHeading
+      id="heroes-title"
+      eyebrow="Tres estructuras reales"
+      title="El Hero cambia la composición, no solo la alineación."
+      text="Split, centered e immersive responden a jerarquías visuales distintas y conservan la misma API editorial."
       measure="wide"
     />
-    <div class="pattern-content">
-      <FeatureGrid items={features} columns={3} gap="large" showIndex ariaLabel="Tres variantes de feature" />
+  </Section>
+
+  <Hero
+    layout="centered"
+    headingLevel="h2"
+    size="compact"
+    surface="inverse"
+    eyebrow="Hero centered · Sin imagen"
+    title="La tipografía también puede ocupar el centro."
+    text="Una variante de alta claridad para manifiestos, lanzamientos o entradas editoriales que no necesitan un recurso visual."
+    primaryAction={{ label: 'Acción principal', href: '#cta' }}
+    textWidth="wide"
+  >
+    <div slot="decoration" class="type-decoration">02</div>
+  </Hero>
+
+  <Hero
+    layout="immersive"
+    headingLevel="h2"
+    size="large"
+    surface="inverse"
+    eyebrow="Hero immersive · Medio de fondo"
+    title="Una escena preparada para crecer."
+    text="El contenido, el medio y la decoración viven en capas separadas para admitir futuras experiencias sin rehacer el CORE."
+    primaryAction={{ label: 'Ver contenido dividido', href: '#split' }}
+    secondaryAction={{ label: 'Seguir explorando', href: '#cards' }}
+    image={orbitImage}
+    textWidth="wide"
+  />
+
+  <ContentSplit
+    id="split"
+    eyebrow="ContentSplit"
+    title="Ritmo editorial con control de proporción."
+    text="Texto, acciones y medio siguen siendo independientes. La imagen puede cambiar de lado y de ratio sin alterar el orden semántico principal."
+    image={gridImage}
+    mediaPosition="start"
+    mediaRatio="portrait"
+    balance="media"
+    surface="muted"
+    spacing="spacious"
+  >
+    <p class="editorial-copy">El slot de contenido admite párrafos, listas o microcomposiciones propias. El pattern solo establece relación espacial y medida.</p>
+    <div slot="actions" class="inline-actions">
+      <Button href="#cards">Revisar cards</Button>
+      <Button href="#grid" variant="ghost">Ver grid</Button>
+    </div>
+  </ContentSplit>
+
+  <Section id="cards" spacing="spacious" container="wide" ariaLabelledby="cards-title">
+    <SectionHeading
+      id="cards-title"
+      eyebrow="Card"
+      title="Tres tratamientos, una estructura flexible."
+      text="Los visuales, metadatos, enlaces y pies son optativos. Plain, bordered y elevated no presuponen dominio ni tipo de contenido."
+      measure="wide"
+    />
+    <CardGrid columns={3} gap="large" ariaLabel="Tratamientos visuales de Card" class="showcase-grid">
+      <Card treatment="plain" eyebrow="Plain" title="Contenido sin contenedor" text="Útil cuando la retícula y el espacio ya aportan suficiente estructura." href="#cta" linkLabel="Continuar">
+        <svg slot="visual" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M8 34 24 8l16 26H8Z" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="29" r="5" fill="currentColor"/></svg>
+      </Card>
+      <Card treatment="bordered" eyebrow="Bordered" badge="Meta" title="Límite explícito" text="El borde agrupa información sin elevar visualmente todo el bloque.">
+        <p>El cuerpo libre puede ampliar la descripción con contenido editorial breve.</p>
+      </Card>
+      <Card treatment="elevated" eyebrow="Elevated" title="Medio y profundidad" text="La sombra crea una capa clara cuando la composición necesita más contraste." image={orbitImage}>
+        <span slot="footer">Pie opcional de demostración</span>
+      </Card>
+    </CardGrid>
+  </Section>
+
+  <SectionDivider width="wide" />
+
+  <Section id="grid" spacing="spacious" container="wide" ariaLabelledby="grid-title">
+    <SectionHeading
+      id="grid-title"
+      eyebrow="Grid genérico"
+      title="La retícula organiza cualquier bloque, no solo cards."
+      text="El modo auto-fit adapta el número de columnas a un ancho mínimo semántico; el modo fijo conserva composiciones de dos, tres o cuatro columnas."
+      align="center"
+      measure="wide"
+    />
+    <CardGrid layout="auto-fit" minItemWidth="small" gap="medium" ariaLabel="Ejemplo auto-fit con cuatro bloques" class="showcase-grid metric-grid">
+      <div class="metric"><strong>2</strong><span>columnas fijas</span></div>
+      <div class="metric"><strong>3</strong><span>columnas fijas</span></div>
+      <div class="metric"><strong>4</strong><span>columnas fijas</span></div>
+      <div class="metric"><strong>Auto</strong><span>ajuste fluido</span></div>
+    </CardGrid>
+  </Section>
+
+  <Section id="cta" surface="inverse" spacing="spacious" container="full" ariaLabel="Cierres de llamada a la acción">
+    <div class="cta-wrap">
+      <ActionPanel
+        layout="band"
+        emphasis="plain"
+        surface="inverse"
+        alignment="start"
+        eyebrow="CTA band"
+        heading="Un cierre ancho para una idea principal."
+        text="La banda puede vivir a todo el ancho y recibir un visual propio sin imponer decoración desde el componente."
+        primaryAction={{ label: 'Volver al inicio', href: '#inicio' }}
+        secondaryAction={{ label: 'Revisar heroes', href: '#heroes' }}
+      >
+        <img slot="visual" src="/images/starter-grid.svg" width="1600" height="1000" alt="" loading="lazy" />
+      </ActionPanel>
     </div>
   </Section>
 
-  <Section id="evidencia" surface="muted" spacing="spacious" container="wide" ariaLabelledby="evidence-title">
-    <HeadingGroup
-      eyebrow="Evidencia estructurada"
-      title="Datos y testimonios solo cuando existe una fuente real."
-      intro="La demo usa cifras técnicas del propio catálogo y atribuciones marcadas como ficticias; ningún dato debe trasladarse a producción."
-      id="evidence-title"
-      measure="wide"
+  <Section spacing="compact" container="wide">
+    <ActionPanel
+      layout="contained"
+      emphasis="featured"
+      surface="accent"
+      alignment="split"
+      eyebrow="CTA contained"
+      heading="Una acción contenida conserva su propio borde visual."
+      text="Puede insertarse entre secciones sin convertirse en una plantilla de página."
+      primaryAction={{ label: 'Acción de muestra', href: '#inicio' }}
     />
-    <div class="pattern-content evidence-stack">
-      <Stats items={stats} treatment="bordered" ariaLabel="Características técnicas del catálogo" />
-      <CardGrid columns={3} gap="medium" ariaLabel="Variantes de testimonio ficticio">
-        {testimonials.map((item) => <Testimonial {...item} />)}
-      </CardGrid>
-    </div>
-  </Section>
-
-  <Section spacing="spacious" container="narrow">
-    <FAQ
-      id="faq"
-      eyebrow="Interacción nativa"
-      heading="Preguntas frecuentes sin depender de scripts."
-      intro="Cada respuesta procede de un único array de datos y conserva semántica de documento."
-      items={faqItems}
-      openFirst
-    />
-  </Section>
-
-  <Section id="contenido" surface="accent" spacing="spacious" container="narrow" ariaLabelledby="content-title">
-    <HeadingGroup
-      eyebrow="Lectura larga"
-      title="Ritmo editorial con una medida controlada."
-      intro="Prose aplica una base consistente a contenido semántico sin convertirse en un CMS ni imponer su estructura."
-      id="content-title"
-    />
-    <Prose as="article" class="pattern-content">
-      <h2>Un cuerpo de contenido predecible</h2>
-      <p>Los párrafos mantienen una longitud cómoda. Los títulos, listas, enlaces, citas, imágenes y tablas básicas reciben estilos coherentes dentro de este contexto.</p>
-      <h3>Qué puede contener</h3>
-      <ul>
-        <li>Secciones con jerarquía de títulos.</li>
-        <li>Listas ordenadas o sin ordenar.</li>
-        <li><a href="#contacto">Enlaces reconocibles y con foco visible</a>.</li>
-      </ul>
-      <blockquote><p>Una cita editorial es contenido; no implica que exista una persona testimonial.</p></blockquote>
-      <table>
-        <thead><tr><th>Medida</th><th>Uso sugerido</th></tr></thead>
-        <tbody>
-          <tr><td>Estrecha</td><td>Lectura continua</td></tr>
-          <tr><td>Amplia</td><td>Tablas o contenido mixto</td></tr>
-        </tbody>
-      </table>
-    </Prose>
-  </Section>
-
-  <Section spacing="spacious" container="wide">
-    <ContactBlock
-      id="contacto"
-      eyebrow="Cierre visual"
-      heading="Contacto directo o espacio para una integración futura."
-      text="Teléfono, email, ubicación, CTA y formulario son opcionales. La demo no configura destinos reales."
-      action={{ label: 'Volver al catálogo', href: '#catalogo' }}
-      surface="inverse"
-    >
-      <div slot="form" class="form-placeholder" aria-label="Vista previa del slot de formulario">
-        <strong>Slot de formulario</strong>
-        <p>Reserva visual sin proveedor, backend ni envío activo.</p>
-        <span>Campo futuro</span>
-        <span>Mensaje futuro</span>
-      </div>
-    </ContactBlock>
   </Section>
 </BaseLayout>
 
 <style>
-  .development-note {
-    margin: 0;
-    border-left: 0.2rem solid var(--color-secondary);
-    padding-left: var(--space-4);
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .pattern-content { margin-top: var(--space-7); }
-
-  .evidence-stack {
-    display: grid;
-    gap: var(--space-7);
-  }
-
-  .form-placeholder {
-    display: grid;
-    gap: var(--space-3);
-  }
-
-  .form-placeholder p { margin: 0; color: var(--color-text-muted); }
-
-  .form-placeholder span {
-    display: block;
-    border: var(--border-subtle);
-    border-radius: var(--radius-control);
-    padding: var(--space-4);
-    color: var(--color-text-muted);
-    background: var(--color-surface-subtle);
-  }
+  .demo-note { margin: 0; border-left: 0.2rem solid var(--color-secondary); padding-left: var(--space-4); color: var(--color-text-muted); font-size: var(--text-sm); }
+  .type-decoration { position: absolute; top: 50%; left: 50%; color: rgb(255 255 255 / 5%); font: 800 clamp(16rem, 45vw, 38rem)/0.7 var(--font-heading); translate: -50% -50%; }
+  .editorial-copy { max-width: var(--measure-copy); margin: 0; color: var(--color-text-muted); }
+  .inline-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .showcase-grid { margin-top: var(--space-7); }
+  .metric { display: grid; min-height: 11rem; align-content: space-between; border-top: var(--border-strong); padding-block: var(--space-4); }
+  .metric strong { color: var(--color-heading); font-size: var(--text-xl); }
+  .metric span { color: var(--color-text-muted); }
+  .cta-wrap { width: 100%; }
+  @media (max-width: 34rem) { .inline-actions { align-items: stretch; flex-direction: column; } .inline-actions :global(*) { width: 100%; } }
 </style>

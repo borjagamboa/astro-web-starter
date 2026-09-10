@@ -1,0 +1,20 @@
+# Sistema de composición
+
+El CORE separa tres niveles: los tokens definen decisiones visuales, los primitives resuelven fundamentos y los patterns establecen relaciones de composición. Las páginas seleccionan y ordenan esas piezas; no deben asumir que existe una plantilla universal.
+
+## Patterns disponibles
+
+- `SectionHeading` unifica eyebrow, título e introducción sin duplicar `HeadingGroup`.
+- `Hero` ofrece estructuras `split`, `centered` e `immersive`. Medio, copy y decoración son capas independientes.
+- `ContentSplit` relaciona texto y medio con posición, ratio y balance configurables.
+- `Card` admite contenido, visual, medio, metadatos, enlace y pie optativos con tratamientos `plain`, `bordered` y `elevated`.
+- `CardGrid` organiza contenido arbitrario en columnas fijas o mediante `auto-fit`.
+- `ActionPanel` ofrece cierre `contained` o `band` y un slot visual opcional.
+
+## Variación entre proyectos
+
+La identidad debe cambiar desde tokens, assets, tipografía, densidad y composición de página. Un nuevo pattern solo se justifica cuando cambia una relación semántica o estructural recurrente; una diferencia de color, radio, alineación o contenido pertenece a tokens, props o slots.
+
+## Efectos avanzados
+
+El CORE no implementa tilt, parallax, cursor tracking, SVG animado, GSAP ni WebGL. Los slots de medio y decoración crean puntos de extensión, y las microinteracciones existentes usan propiedades CSS individuales para no reservar `transform`. Un efecto que necesite recorte exterior o stacking complejo debe envolverse en la página o en un componente especializado, sin ampliar el pattern genérico.

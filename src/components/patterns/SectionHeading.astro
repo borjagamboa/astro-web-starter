@@ -1,0 +1,42 @@
+---
+import HeadingGroup from '../primitives/HeadingGroup.astro';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  level?: 'h1' | 'h2' | 'h3';
+  align?: 'start' | 'center';
+  measure?: 'compact' | 'default' | 'wide';
+  tone?: 'default' | 'inverse';
+  id?: string;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  text,
+  level = 'h2',
+  align = 'start',
+  measure = 'default',
+  tone = 'default',
+  id,
+  class: className,
+} = Astro.props;
+
+if (!title?.trim() && !Astro.slots.has('title')) {
+  throw new Error('SectionHeading requires a title prop or title slot.');
+}
+---
+
+{Astro.slots.has('title') ? (
+  <HeadingGroup eyebrow={eyebrow} intro={text} level={level} align={align} measure={measure} tone={tone} id={id} class={className}>
+    <Fragment slot="title"><slot name="title" /></Fragment>
+    <slot />
+  </HeadingGroup>
+) : (
+  <HeadingGroup eyebrow={eyebrow} title={title} intro={text} level={level} align={align} measure={measure} tone={tone} id={id} class={className}>
+    <slot />
+  </HeadingGroup>
+)}

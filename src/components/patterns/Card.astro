@@ -17,7 +17,7 @@ interface Props {
   linkLabel?: string;
   image?: CardImage;
   headingLevel?: 'h2' | 'h3' | 'h4';
-  treatment?: 'quiet' | 'bordered' | 'elevated';
+  treatment?: 'plain' | 'quiet' | 'bordered' | 'elevated';
   class?: string;
 }
 
@@ -86,6 +86,7 @@ if (image && Astro.slots.has('media')) {
       translate var(--transition-base);
   }
 
+  .card--plain,
   .card--quiet { background: transparent; }
   .card--bordered { border: var(--border-subtle); }
   .card--elevated { box-shadow: var(--shadow-card); }
@@ -114,8 +115,8 @@ if (image && Astro.slots.has('media')) {
     padding: var(--card-padding);
   }
 
-  .card--quiet .card__body { padding-inline: 0; }
-  .card--quiet .card__footer { border-top: 0; padding-inline: 0; }
+  :is(.card--plain, .card--quiet) .card__body { padding-inline: 0; }
+  :is(.card--plain, .card--quiet) .card__footer { border-top: 0; padding-inline: 0; }
 
   .card__visual {
     display: grid;

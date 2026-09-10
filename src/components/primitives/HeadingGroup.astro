@@ -52,9 +52,9 @@ if (!title?.trim() && !Astro.slots.has('title')) {
     max-width: var(--measure-heading);
   }
 
-  .heading-group--compact { --measure-heading: 32rem; }
-  .heading-group--default { --measure-heading: 44rem; }
-  .heading-group--wide { --measure-heading: 58rem; }
+  .heading-group--compact { --measure-heading: var(--measure-heading-compact); }
+  .heading-group--default { --measure-heading: var(--measure-heading-default); }
+  .heading-group--wide { --measure-heading: var(--measure-heading-wide); }
 
   .heading-group--center {
     margin-inline: auto;
@@ -75,10 +75,10 @@ if (!title?.trim() && !Astro.slots.has('title')) {
     margin: 0;
   }
 
-  .heading-group--standard :global(h1) { font-size: clamp(2.5rem, 6vw, 4.5rem); }
-  .heading-group--standard :global(h2) { font-size: clamp(1.9rem, 4vw, 3.25rem); }
-  .heading-group--standard :global(h3) { font-size: clamp(1.35rem, 2.4vw, 2rem); }
-  .heading-group--display :global(h1) { font-size: clamp(2.65rem, 7vw, 5.75rem); }
+  .heading-group--standard :global(h1) { font-size: var(--text-title); }
+  .heading-group--standard :global(h2) { font-size: var(--text-section); }
+  .heading-group--standard :global(h3) { font-size: var(--text-subsection); }
+  .heading-group--display :global(:is(h1, h2, h3)) { font-size: var(--text-display); }
 
   .heading-group__intro {
     margin: 0;

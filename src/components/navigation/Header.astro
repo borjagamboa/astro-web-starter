@@ -194,15 +194,17 @@ const isCurrent = (href: string) => {
     height: 0.125rem;
     border-radius: var(--radius-pill);
     background: currentColor;
-    transition: transform var(--transition-fast);
+    transition: translate var(--transition-fast), rotate var(--transition-fast);
   }
 
   .menu-toggle[aria-expanded='true'] .menu-toggle__icon i:first-child {
-    transform: translateY(0.2rem) rotate(45deg);
+    translate: 0 0.2rem;
+    rotate: 45deg;
   }
 
   .menu-toggle[aria-expanded='true'] .menu-toggle__icon i:last-child {
-    transform: translateY(-0.2rem) rotate(-45deg);
+    translate: 0 -0.2rem;
+    rotate: -45deg;
   }
 
   .primary-navigation {
@@ -272,11 +274,11 @@ const isCurrent = (href: string) => {
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.8;
-    transition: transform var(--transition-fast);
+    transition: rotate var(--transition-fast);
   }
 
   .submenu-toggle[aria-expanded='true'] svg {
-    transform: rotate(180deg);
+    rotate: 180deg;
   }
 
   .submenu {

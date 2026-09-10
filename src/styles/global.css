@@ -100,12 +100,12 @@ button {
   border-radius: var(--radius-sm);
   background: var(--color-heading);
   color: var(--color-surface);
-  transform: translateY(-200%);
+  translate: 0 -200%;
 }
 
 .skip-link:focus {
   color: var(--color-surface);
-  transform: translateY(0);
+  translate: 0;
 }
 
 [data-reveal].reveal-ready {

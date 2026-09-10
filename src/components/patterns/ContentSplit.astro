@@ -1,0 +1,68 @@
+---
+import Button from '../primitives/Button.astro';
+import ContentImage from '../primitives/ContentImage.astro';
+import HeadingGroup from '../primitives/HeadingGroup.astro';
+import Section from '../primitives/Section.astro';
+
+interface Action { label: string; href: string; }
+interface SplitImage { src: string; width: number; height: number; alt: string; }
+interface Props {
+  eyebrow?: string;
+  title: string;
+  text?: string;
+  action?: Action;
+  image?: SplitImage;
+  mediaPosition?: 'start' | 'end';
+  mediaRatio?: 'natural' | 'landscape' | 'square' | 'portrait';
+  balance?: 'equal' | 'copy' | 'media';
+  alignment?: 'start' | 'center';
+  surface?: 'default' | 'muted' | 'accent' | 'inverse';
+  spacing?: 'compact' | 'normal' | 'spacious';
+  id?: string;
+}
+
+const {
+  eyebrow, title, text, action, image, mediaPosition = 'end',
+  mediaRatio = 'landscape', balance = 'equal', alignment = 'center',
+  surface = 'default', spacing = 'normal', id,
+} = Astro.props;
+const hasMediaSlot = Astro.slots.has('media');
+if (!image && !hasMediaSlot) throw new Error('ContentSplit requires an image prop or media slot.');
+if (image && hasMediaSlot) throw new Error('ContentSplit accepts either an image prop or media slot, not both.');
+---
+
+<Section id={id} surface={surface} spacing={spacing} container="wide">
+  <div class:list={['content-split', `content-split--media-${mediaPosition}`, `content-split--${alignment}`, `content-split--${balance}`]}>
+    <div class="content-split__media" data-reveal="fade">
+      {image && <ContentImage {...image} ratio={mediaRatio} variant="rounded" />}
+      <slot name="media" />
+    </div>
+    <div class="content-split__copy" data-reveal>
+      <HeadingGroup eyebrow={eyebrow} title={title} intro={text} measure="default" tone={surface === 'inverse' ? 'inverse' : 'default'} />
+      <slot />
+      {(action || Astro.slots.has('actions')) && (
+        <div class="content-split__actions">
+          {action && <Button href={action.href} variant="secondary">{action.label}</Button>}
+          <slot name="actions" />
+        </div>
+      )}
+    </div>
+  </div>
+</Section>
+
+<style>
+  .content-split { display: grid; gap: clamp(var(--space-6), 7vw, var(--space-8)); }
+  .content-split__copy { display: grid; min-width: 0; align-content: start; gap: var(--space-5); }
+  .content-split--center .content-split__copy { align-content: center; }
+  .content-split__media { min-width: 0; }
+  .content-split__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  @media (min-width: 48rem) {
+    .content-split { grid-template-columns: var(--split-columns, minmax(0, 1fr) minmax(0, 1fr)); align-items: stretch; }
+    .content-split--copy { --split-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+    .content-split--media { --split-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+    .content-split--media-start .content-split__media { grid-column: 1; grid-row: 1; }
+    .content-split--media-start .content-split__copy { grid-column: 2; grid-row: 1; }
+    .content-split--media-end .content-split__copy { grid-column: 1; grid-row: 1; }
+    .content-split--media-end .content-split__media { grid-column: 2; grid-row: 1; }
+  }
+</style>

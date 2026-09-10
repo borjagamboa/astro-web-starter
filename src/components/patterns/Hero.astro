@@ -4,18 +4,8 @@ import ContentImage from '../primitives/ContentImage.astro';
 import HeadingGroup from '../primitives/HeadingGroup.astro';
 import Section from '../primitives/Section.astro';
 
-interface Action {
-  label: string;
-  href: string;
-}
-
-interface HeroImage {
-  src: string;
-  width: number;
-  height: number;
-  alt: string;
-}
-
+interface Action { label: string; href: string; }
+interface HeroImage { src: string; width: number; height: number; alt: string; }
 interface Props {
   eyebrow?: string;
   title?: string;
@@ -23,83 +13,48 @@ interface Props {
   primaryAction?: Action;
   secondaryAction?: Action;
   image?: HeroImage;
+  layout?: 'split' | 'centered' | 'immersive';
+  /** @deprecated Use layout="centered" instead. */
   alignment?: 'start' | 'center';
   mediaPosition?: 'start' | 'end';
   size?: 'compact' | 'standard' | 'large';
   surface?: 'default' | 'muted' | 'accent' | 'inverse';
   textWidth?: 'compact' | 'default' | 'wide';
+  headingLevel?: 'h1' | 'h2';
   id?: string;
 }
 
 const {
-  eyebrow,
-  title,
-  text,
-  primaryAction,
-  secondaryAction,
-  image,
-  alignment = 'start',
-  mediaPosition = 'end',
-  size = 'standard',
-  surface = 'default',
-  textWidth = 'default',
-  id,
+  eyebrow, title, text, primaryAction, secondaryAction, image,
+  layout: requestedLayout, alignment, mediaPosition = 'end', size = 'standard',
+  surface = 'default', textWidth = 'default', headingLevel = 'h1', id,
 } = Astro.props;
+const layout = requestedLayout ?? (alignment === 'center' ? 'centered' : 'split');
 const hasMediaSlot = Astro.slots.has('media');
 const hasMedia = Boolean(image || hasMediaSlot);
+const inverseTone = surface === 'inverse' || (layout === 'immersive' && hasMedia);
 
-if (!title?.trim() && !Astro.slots.has('title')) {
-  throw new Error('Hero requires a title prop or title slot.');
-}
-
-if (image && hasMediaSlot) {
-  throw new Error('Hero accepts either an image prop or media slot, not both.');
-}
+if (!title?.trim() && !Astro.slots.has('title')) throw new Error('Hero requires a title prop or title slot.');
+if (image && hasMediaSlot) throw new Error('Hero accepts either an image prop or media slot, not both.');
 ---
 
-<Section
-  id={id}
-  surface={surface}
-  spacing="none"
-  container="full"
-  class:list={['hero-section', `hero-section--${surface}`]}
->
-  <div
-    class:list={[
-      'hero',
-      `hero--${alignment}`,
-      `hero--${size}`,
-      `hero--media-${mediaPosition}`,
-      `hero--surface-${surface}`,
-      { 'hero--with-media': hasMedia },
-    ]}
-  >
+<Section id={id} surface={surface} spacing="none" container="full" class:list={['hero-section', `hero-section--${layout}`]}>
+  <div class:list={['hero', `hero--${layout}`, `hero--${size}`, `hero--media-${mediaPosition}`, { 'hero--with-media': hasMedia }]}>
+    {hasMedia && (
+      <div class="hero__media" data-reveal="fade">
+        {image && <ContentImage {...image} ratio="landscape" variant="plain" loading="eager" />}
+        <slot name="media" />
+      </div>
+    )}
+    {Astro.slots.has('decoration') && <div class="hero__decoration" aria-hidden="true"><slot name="decoration" /></div>}
     <div class="hero__copy" data-reveal>
       {Astro.slots.has('title') ? (
-        <HeadingGroup
-          eyebrow={eyebrow}
-          intro={text}
-          level="h1"
-          align={alignment}
-          measure={textWidth}
-          tone={surface === 'inverse' ? 'inverse' : 'default'}
-          scale="display"
-        >
+        <HeadingGroup eyebrow={eyebrow} intro={text} level={headingLevel} align={layout === 'centered' ? 'center' : 'start'} measure={textWidth} tone={inverseTone ? 'inverse' : 'default'} scale="display">
           <Fragment slot="title"><slot name="title" /></Fragment>
         </HeadingGroup>
       ) : (
-        <HeadingGroup
-          eyebrow={eyebrow}
-          title={title}
-          intro={text}
-          level="h1"
-          align={alignment}
-          measure={textWidth}
-          tone={surface === 'inverse' ? 'inverse' : 'default'}
-          scale="display"
-        />
+        <HeadingGroup eyebrow={eyebrow} title={title} intro={text} level={headingLevel} align={layout === 'centered' ? 'center' : 'start'} measure={textWidth} tone={inverseTone ? 'inverse' : 'default'} scale="display" />
       )}
-
       {(primaryAction || secondaryAction) && (
         <div class="hero__actions">
           {primaryAction && <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>}
@@ -108,28 +63,12 @@ if (image && hasMediaSlot) {
       )}
       <slot />
     </div>
-
-    {hasMedia && (
-      <div class="hero__media" data-reveal="fade">
-        {image && (
-          <ContentImage
-            src={image.src}
-            width={image.width}
-            height={image.height}
-            alt={image.alt}
-            ratio="landscape"
-            variant="plain"
-            loading="eager"
-          />
-        )}
-        <slot name="media" />
-      </div>
-    )}
   </div>
 </Section>
 
 <style>
   .hero {
+    position: relative;
     display: grid;
     width: min(100% - (var(--gutter) * 2), var(--container-wide));
     min-height: var(--hero-min-height);
@@ -138,60 +77,34 @@ if (image && hasMediaSlot) {
     align-items: center;
     padding-block: var(--hero-padding);
   }
-
-  .hero--compact {
-    --hero-min-height: var(--hero-height-compact);
-    --hero-padding: var(--space-section-compact);
-  }
-
-  .hero--standard {
-    --hero-min-height: var(--hero-height-standard);
-    --hero-padding: var(--space-section);
-  }
-
-  .hero--large {
-    --hero-min-height: var(--hero-height-large);
-    --hero-padding: var(--space-section-spacious);
-  }
-
-  .hero__copy {
-    display: grid;
-    min-width: 0;
-    gap: var(--space-6);
-  }
-
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-  }
-
-  .hero--center {
-    justify-items: center;
-    text-align: center;
-  }
-
-  .hero--center .hero__actions { justify-content: center; }
-
-  .hero__media {
-    min-width: 0;
-    overflow: hidden;
-    border-radius: var(--radius-hero-media);
-    box-shadow: var(--shadow-media);
-  }
-
-  .hero__media :global(img) {
-    min-height: clamp(18rem, 48vw, 36rem);
-  }
-
+  .hero--compact { --hero-min-height: var(--hero-height-compact); --hero-padding: var(--space-section-compact); }
+  .hero--standard { --hero-min-height: var(--hero-height-standard); --hero-padding: var(--space-section); }
+  .hero--large { --hero-min-height: var(--hero-height-large); --hero-padding: var(--space-section-spacious); }
+  .hero__copy { display: grid; min-width: 0; gap: var(--space-6); }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .hero__media { min-width: 0; overflow: clip; border-radius: var(--radius-hero-media); box-shadow: var(--shadow-media); }
+  .hero__media :global(img) { min-height: clamp(18rem, 48vw, 36rem); }
+  .hero__decoration { position: absolute; inset: 0; overflow: clip; pointer-events: none; }
+  .hero--centered { justify-items: center; text-align: center; }
+  .hero--centered .hero__copy { justify-items: center; }
+  .hero--centered .hero__actions { justify-content: center; }
+  .hero--centered .hero__media { width: min(100%, 68rem); order: 2; }
+  .hero--immersive { width: 100%; padding-inline: max(var(--gutter), calc((100% - var(--container-wide)) / 2)); align-items: end; isolation: isolate; }
+  .hero--immersive::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(10 15 25 / 84%), rgb(10 15 25 / 30%)); }
+  .hero--immersive .hero__media { position: absolute; inset: 0; z-index: -2; border-radius: 0; box-shadow: none; }
+  .hero--immersive .hero__media :global(:is(picture, img)) { width: 100%; height: 100%; }
+  .hero--immersive .hero__media :global(img) { min-height: 100%; object-fit: cover; }
+  .hero--immersive .hero__copy { width: min(100%, var(--measure-heading-wide)); padding-block: var(--hero-padding); }
   @media (min-width: 52rem) {
-    .hero--with-media:not(.hero--center) {
-      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
-    }
-
-    .hero--media-start .hero__media { grid-column: 1; grid-row: 1; }
-    .hero--media-start .hero__copy { grid-column: 2; grid-row: 1; }
-    .hero--center.hero--with-media { grid-template-rows: auto auto; }
-    .hero--center .hero__media { width: min(100%, 64rem); }
+    .hero--split.hero--with-media { grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr); }
+    .hero--split.hero--media-start .hero__media { grid-column: 1; grid-row: 1; }
+    .hero--split.hero--media-start .hero__copy { grid-column: 2; grid-row: 1; }
+    .hero--split.hero--media-end .hero__copy { grid-column: 1; grid-row: 1; }
+    .hero--split.hero--media-end .hero__media { grid-column: 2; grid-row: 1; }
+    .hero--centered.hero--with-media { grid-template-rows: auto auto; }
+  }
+  @media (max-width: 34rem) {
+    .hero__actions { align-items: stretch; flex-direction: column; }
+    .hero__actions :global(*) { width: 100%; }
   }
 </style>

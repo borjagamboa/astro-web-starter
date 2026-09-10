@@ -16,6 +16,7 @@ interface Props {
   surface?: 'default' | 'accent' | 'inverse';
   alignment?: 'start' | 'center' | 'split';
   emphasis?: 'plain' | 'subtle' | 'featured';
+  layout?: 'contained' | 'band';
   as?: 'section' | 'aside';
   id?: string;
 }
@@ -29,6 +30,7 @@ const {
   surface = 'accent',
   alignment = 'split',
   emphasis = 'featured',
+  layout = 'contained',
   as = 'aside',
   id,
 } = Astro.props;
@@ -37,23 +39,26 @@ const Tag = as;
 
 <Tag
   id={id}
-  class:list={['action-panel', `action-panel--${surface}`, `action-panel--${alignment}`, `action-panel--${emphasis}`]}
+  class:list={['action-panel', `action-panel--${surface}`, `action-panel--${alignment}`, `action-panel--${emphasis}`, `action-panel--${layout}`, { 'action-panel--with-visual': Astro.slots.has('visual') }]}
   aria-labelledby={id ? `${id}-title` : undefined}
   data-reveal="fade"
 >
-  <HeadingGroup
-    eyebrow={eyebrow}
-    title={heading}
-    intro={text}
-    id={id ? `${id}-title` : undefined}
-    align={alignment === 'center' ? 'center' : 'start'}
-    measure="default"
-    tone={surface === 'inverse' ? 'inverse' : 'default'}
-  />
-  <div class="action-panel__actions">
-    <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>
-    {secondaryAction && <Button href={secondaryAction.href} variant="secondary" size="large">{secondaryAction.label}</Button>}
+  <div class="action-panel__content">
+    <HeadingGroup
+      eyebrow={eyebrow}
+      title={heading}
+      intro={text}
+      id={id ? `${id}-title` : undefined}
+      align={alignment === 'center' ? 'center' : 'start'}
+      measure="default"
+      tone={surface === 'inverse' ? 'inverse' : 'default'}
+    />
+    <div class="action-panel__actions">
+      <Button href={primaryAction.href} size="large">{primaryAction.label}</Button>
+      {secondaryAction && <Button href={secondaryAction.href} variant="secondary" size="large">{secondaryAction.label}</Button>}
+    </div>
   </div>
+  {Astro.slots.has('visual') && <div class="action-panel__visual"><slot name="visual" /></div>}
 </Tag>
 
 <style>
@@ -61,32 +66,20 @@ const Tag = as;
     position: relative;
     display: grid;
     gap: var(--space-6);
-    overflow: hidden;
+    overflow: clip;
     border-radius: var(--radius-panel);
     padding: clamp(var(--space-5), 6vw, var(--space-8));
   }
 
   .action-panel--subtle { border: var(--border-subtle); }
   .action-panel--plain { border-radius: 0; box-shadow: none; }
+  .action-panel--band { border-radius: 0; }
   .action-panel--featured { box-shadow: var(--shadow-panel); }
   .action-panel--default { background: var(--color-surface); }
   .action-panel--accent { background: var(--color-accent-soft); }
   .action-panel--inverse { background: var(--color-surface-inverse); color: var(--color-text-on-inverse); }
 
-  .action-panel--featured::after {
-    content: '';
-    position: absolute;
-    right: -5rem;
-    bottom: -7rem;
-    width: 18rem;
-    aspect-ratio: 1;
-    border: 3.5rem solid var(--color-secondary-soft);
-    border-radius: 50%;
-    opacity: 0.42;
-    pointer-events: none;
-  }
-
-  .action-panel > * { position: relative; z-index: 1; }
+  .action-panel__content { display: grid; min-width: 0; gap: var(--space-6); }
 
   .action-panel__actions {
     display: flex;
@@ -97,13 +90,16 @@ const Tag = as;
 
   .action-panel--center { justify-items: center; text-align: center; }
   .action-panel--center .action-panel__actions { justify-content: center; }
+  .action-panel__visual { min-width: 0; align-self: stretch; }
+  .action-panel__visual :global(:is(img, svg)) { width: 100%; height: 100%; object-fit: cover; }
 
   @media (min-width: 52rem) {
-    .action-panel--split {
+    .action-panel--split:not(.action-panel--with-visual) .action-panel__content {
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
     }
 
     .action-panel--split .action-panel__actions { justify-content: end; }
+    .action-panel--with-visual { grid-template-columns: minmax(0, 1.2fr) minmax(14rem, 0.8fr); align-items: stretch; }
   }
 </style>

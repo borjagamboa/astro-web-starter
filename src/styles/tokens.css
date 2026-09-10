@@ -37,10 +37,17 @@
   --text-md: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
   --text-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
   --text-xl: clamp(2rem, 1.55rem + 1.8vw, 3.25rem);
+  --text-subsection: clamp(1.35rem, 1.15rem + 1vw, 2rem);
+  --text-section: clamp(1.9rem, 1.45rem + 2.2vw, 3.25rem);
+  --text-title: clamp(2.5rem, 1.7rem + 4vw, 4.5rem);
+  --text-display: clamp(2.65rem, 1.55rem + 5.5vw, 5.75rem);
 
   --line-height-tight: 1.12;
   --line-height-body: 1.65;
   --measure-copy: 68ch;
+  --measure-heading-compact: 32rem;
+  --measure-heading-default: 44rem;
+  --measure-heading-wide: 58rem;
   --container-max: 72rem;
   --container-narrow: 48rem;
   --container-wide: 82rem;
@@ -58,6 +65,9 @@
   --space-section: clamp(3.5rem, 8vw, 6rem);
   --space-section-spacious: clamp(5rem, 11vw, 8rem);
   --card-padding: clamp(1.1rem, 3vw, 1.6rem);
+  --grid-min-small: 12rem;
+  --grid-min-medium: 17rem;
+  --grid-min-large: 22rem;
 
   --hero-height-compact: clamp(26rem, 58vh, 38rem);
   --hero-height-standard: clamp(34rem, 72vh, 48rem);

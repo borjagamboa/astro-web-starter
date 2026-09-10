@@ -14,24 +14,25 @@ export interface FooterNavigationGroup {
   items: readonly NavigationItem[];
 }
 
-// Development-only navigation for the CORE showcase. Replace it per project.
+// Development-only navigation for the visual showcase. Replace it per project.
 export const primaryNavigation = [
   { label: 'Inicio', href: '/' },
   {
-    label: 'Catálogo',
-    href: '/#catalogo',
+    label: 'Composición',
+    href: '/#heroes',
     children: [
-      { label: 'Features', href: '/#features' },
-      { label: 'Evidencia', href: '/#evidencia' },
-      { label: 'Contenido', href: '/#contenido' },
+      { label: 'Heroes', href: '/#heroes' },
+      { label: 'ContentSplit', href: '/#split' },
+      { label: 'Cards', href: '/#cards' },
+      { label: 'Grid', href: '/#grid' },
     ],
   },
-  { label: 'Contacto', href: '/#contacto' },
+  { label: 'CTA', href: '/#cta' },
 ] as const satisfies readonly NavigationItem[];
 
 export const navigationAction = {
-  label: 'Revisar FAQ',
-  href: '/#faq',
+  label: 'Ver showcase',
+  href: '/#heroes',
 } as const satisfies NavigationAction;
 
 export const footerNavigation = [
