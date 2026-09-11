@@ -1,12 +1,8 @@
 ---
-interface StatItem {
-  value: string;
-  label: string;
-  context?: string;
-}
+import type { ProofItem } from './types';
 
 interface Props {
-  items: readonly StatItem[];
+  items: readonly ProofItem[];
   treatment?: 'plain' | 'bordered' | 'accent';
   ariaLabel?: string;
 }
@@ -16,6 +12,10 @@ const { items, treatment = 'plain', ariaLabel = 'Datos destacados' } = Astro.pro
 if (items.length < 2 || items.length > 4) {
   throw new Error('Stats requires between 2 and 4 items.');
 }
+
+if (items.some((item) => !item.value.trim() || !item.label.trim())) {
+  throw new Error('Stats items require a non-empty value and label.');
+}
 ---
 
 <dl class:list={['stats', `stats--${treatment}`, `stats--count-${items.length}`]} aria-label={ariaLabel}>
@@ -23,8 +23,8 @@ if (items.length < 2 || items.length > 4) {
     <div>
       <dt>{item.label}</dt>
       <dd>
-        <strong>{item.value}</strong>
-        {item.context && <span>{item.context}</span>}
+        <strong class:list={{ 'stats__value--compact': item.value.length > 5 }}>{item.value}</strong>
+        {(item.description || item.context) && <span>{item.description ?? item.context}</span>}
       </dd>
     </div>
   ))}
@@ -63,7 +63,10 @@ if (items.length < 2 || items.length > 4) {
     color: var(--color-heading);
     font-size: clamp(2rem, 7vw, 4rem);
     line-height: 1;
+    overflow-wrap: anywhere;
   }
+
+  dd strong.stats__value--compact { font-size: clamp(1.45rem, 4vw, 2.4rem); line-height: 1.1; }
 
   dd span { color: var(--color-text-muted); font-size: var(--text-sm); }
 

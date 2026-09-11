@@ -1,6 +1,7 @@
 ---
 import Button from '../primitives/Button.astro';
 import HeadingGroup from '../primitives/HeadingGroup.astro';
+import type { ContactDetail } from './types';
 
 interface Action {
   label: string;
@@ -8,15 +9,27 @@ interface Action {
 }
 
 interface Props {
-  heading: string;
+  heading?: string;
   text?: string;
   eyebrow?: string;
   phone?: string;
   email?: string;
   location?: string;
+  hours?: string;
+  details?: readonly ContactDetail[];
+  primaryAction?: Action;
+  secondaryAction?: Action;
+  /** @deprecated Use primaryAction instead. */
   action?: Action;
   surface?: 'default' | 'accent' | 'inverse';
   id?: string;
+  ariaLabel?: string;
+  labels?: {
+    phone?: string;
+    email?: string;
+    location?: string;
+    hours?: string;
+  };
 }
 
 const {
@@ -26,43 +39,89 @@ const {
   phone,
   email,
   location,
+  hours,
+  details = [],
+  primaryAction,
+  secondaryAction,
   action,
   surface = 'default',
   id,
+  ariaLabel = 'Información de contacto',
+  labels = {},
 } = Astro.props;
-const hasMethods = Boolean(phone || email || location || action);
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+const toUsableHref = (href?: string) => {
+  const value = href?.trim();
+  if (!value) return undefined;
+  if (/^(?:https?:\/\/|\/|#|\.\.?\/)/.test(value)) return value;
+  if (value.startsWith('mailto:') && isValidEmail(value.slice(7))) return value;
+  if (value.startsWith('tel:')) {
+    const telephone = value.slice(4).replace(/[^+\d]/g, '');
+    return /^\+?\d{6,15}$/.test(telephone) ? `tel:${telephone}` : undefined;
+  }
+  return undefined;
+};
+const normalizedPhone = phone?.replace(/[^+\d]/g, '');
+const validPhone = normalizedPhone && /^\+?\d{6,15}$/.test(normalizedPhone) ? phone?.trim() : undefined;
+const validEmail = email?.trim() && isValidEmail(email.trim()) ? email.trim() : undefined;
+const validLocation = location?.trim() || undefined;
+const validHours = hours?.trim() || undefined;
+const validDetails = details
+  .filter((detail) => detail.label.trim() && detail.value.trim())
+  .map((detail) => ({ ...detail, href: toUsableHref(detail.href) }));
+const resolvedPrimaryAction = primaryAction ?? action;
+const normalizeAction = (candidate?: Action): Action | undefined => {
+  const href = toUsableHref(candidate?.href);
+  return candidate?.label.trim() && href ? { label: candidate.label.trim(), href } : undefined;
+};
+const usablePrimaryAction = normalizeAction(resolvedPrimaryAction);
+const usableSecondaryAction = normalizeAction(secondaryAction);
+const hasMethods = Boolean(validPhone || validEmail || validLocation || validHours || validDetails.length);
+const hasActions = Boolean(usablePrimaryAction || usableSecondaryAction);
 const hasForm = Astro.slots.has('form');
-const phoneHref = phone?.replace(/[^+\d]/g, '');
+const hasContent = Boolean(heading?.trim() || text?.trim() || hasMethods || hasActions || Astro.slots.has('default') || hasForm);
+const headingId = heading?.trim() && id ? `${id}-title` : undefined;
 ---
 
-<section
+{hasContent && <section
   id={id}
   class:list={['contact-block', `contact-block--${surface}`, { 'contact-block--with-form': hasForm }]}
-  aria-labelledby={id ? `${id}-title` : undefined}
+  aria-labelledby={headingId}
+  aria-label={!headingId ? ariaLabel : undefined}
 >
   <div class="contact-block__content">
-    <HeadingGroup
+    {heading?.trim() && <HeadingGroup
       eyebrow={eyebrow}
       title={heading}
       intro={text}
-      id={id ? `${id}-title` : undefined}
+      id={headingId}
       tone={surface === 'inverse' ? 'inverse' : 'default'}
-    />
+    />}
 
     {hasMethods && (
       <ul class="contact-block__methods">
-        {phone && <li><span>Teléfono</span><a href={`tel:${phoneHref}`}>{phone}</a></li>}
-        {email && <li><span>Email</span><a href={`mailto:${email}`}>{email}</a></li>}
-        {location && <li><span>Ubicación</span><strong>{location}</strong></li>}
+        {validPhone && <li><span>{labels.phone ?? 'Teléfono'}</span><a href={`tel:${normalizedPhone}`}>{validPhone}</a></li>}
+        {validEmail && <li><span>{labels.email ?? 'Email'}</span><a href={`mailto:${validEmail}`}>{validEmail}</a></li>}
+        {validLocation && <li><span>{labels.location ?? 'Ubicación'}</span><strong>{validLocation}</strong></li>}
+        {validHours && <li><span>{labels.hours ?? 'Horario'}</span><strong>{validHours}</strong></li>}
+        {validDetails.map((detail) => (
+          <li>
+            <span>{detail.label}</span>
+            {detail.href?.trim() ? <a href={detail.href}>{detail.value}</a> : <strong>{detail.value}</strong>}
+          </li>
+        ))}
       </ul>
     )}
 
-    {action && <Button href={action.href} size="large">{action.label}</Button>}
+    {hasActions && <div class="contact-block__actions">
+      {usablePrimaryAction && <Button href={usablePrimaryAction.href} size="large">{usablePrimaryAction.label}</Button>}
+      {usableSecondaryAction && <Button href={usableSecondaryAction.href} variant="secondary" size="large">{usableSecondaryAction.label}</Button>}
+    </div>}
     <slot />
   </div>
 
   {hasForm && <div class="contact-block__form"><slot name="form" /></div>}
-</section>
+</section>}
 
 <style>
   .contact-block {
@@ -96,6 +155,8 @@ const phoneHref = phone?.replace(/[^+\d]/g, '');
   .contact-block__methods a,
   .contact-block__methods strong { width: fit-content; color: inherit; overflow-wrap: anywhere; }
 
+  .contact-block__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
   .contact-block--inverse .contact-block__methods span { color: var(--color-text-on-inverse); }
 
   .contact-block__form {
@@ -108,5 +169,10 @@ const phoneHref = phone?.replace(/[^+\d]/g, '');
 
   @media (min-width: 52rem) {
     .contact-block--with-form { grid-template-columns: minmax(0, 0.85fr) minmax(20rem, 1.15fr); }
+  }
+
+  @media (max-width: 34rem) {
+    .contact-block__actions { align-items: stretch; flex-direction: column; }
+    .contact-block__actions :global(*) { width: 100%; }
   }
 </style>

@@ -1,65 +1,70 @@
 ---
-interface Avatar {
-  src: string;
-  width: number;
-  height: number;
-}
+import type { TestimonialData } from './types';
 
-interface Source {
-  label: string;
-  href?: string;
-}
-
-interface Props {
-  quote: string;
-  name?: string;
-  context?: string;
-  rating?: number;
-  ratingMax?: number;
-  source?: Source;
-  avatar?: Avatar;
+interface Props extends TestimonialData {
   treatment?: 'quiet' | 'bordered' | 'elevated';
 }
 
 const {
   quote,
   name,
+  role,
+  organization,
   context,
   rating,
   ratingMax = 5,
   source,
   avatar,
+  publicable,
   treatment = 'bordered',
 } = Astro.props;
-const hasAttribution = Boolean(name || context || source || avatar);
+const displayName = name?.trim() || undefined;
+const attributionContext = context?.trim() || [role?.trim(), organization?.trim()].filter(Boolean).join(' · ');
+const sourceLabel = source?.label.trim() || undefined;
+const sourceHref = source?.href?.trim();
+const usableSourceHref = sourceHref && /^(?:https?:\/\/|\/|#|\.\.?\/)/.test(sourceHref) ? sourceHref : undefined;
+const hasAttribution = Boolean(displayName || attributionContext || sourceLabel || avatar);
+const shouldRender = publicable !== false;
 
-if (rating !== undefined && (rating < 0 || rating > ratingMax || ratingMax <= 0)) {
+if (!quote.trim()) throw new Error('Testimonial requires a non-empty quote.');
+
+if (rating !== undefined && (
+  !Number.isFinite(rating)
+  || !Number.isFinite(ratingMax)
+  || rating < 0
+  || rating > ratingMax
+  || ratingMax <= 0
+)) {
   throw new Error('Testimonial rating must be between 0 and ratingMax.');
+}
+
+if (avatar && (!avatar.src.trim() || avatar.width <= 0 || avatar.height <= 0)) {
+  throw new Error('Testimonial avatar requires a source and positive dimensions.');
 }
 ---
 
-<figure class:list={['testimonial', `testimonial--${treatment}`]}>
+{shouldRender && <figure class:list={['testimonial', `testimonial--${treatment}`]}>
   {rating !== undefined && (
     <p class="testimonial__rating" aria-label={`Valoración: ${rating} de ${ratingMax}`}>
       <strong>{rating}</strong><span aria-hidden="true">/{ratingMax}</span>
     </p>
   )}
-  <blockquote><p>“{quote}”</p></blockquote>
+  <blockquote cite={usableSourceHref}><p>“{quote}”</p></blockquote>
   {hasAttribution && (
     <figcaption>
-      {avatar && <img src={avatar.src} width={avatar.width} height={avatar.height} alt="" loading="lazy" decoding="async" />}
+      {avatar && <img src={avatar.src} width={avatar.width} height={avatar.height} alt={avatar.alt ?? ''} loading="lazy" decoding="async" />}
       <span class="testimonial__identity">
-        {name && <strong>{name}</strong>}
-        {context && <span>{context}</span>}
+        {displayName && <strong>{displayName}</strong>}
+        {attributionContext && <span>{attributionContext}</span>}
       </span>
-      {source && (
-        source.href
-          ? <a href={source.href}>{source.label}</a>
-          : <span class="testimonial__source">{source.label}</span>
+      {sourceLabel && (
+        usableSourceHref
+          ? <a href={usableSourceHref}>{sourceLabel}</a>
+          : <span class="testimonial__source">{sourceLabel}</span>
       )}
     </figcaption>
   )}
-</figure>
+</figure>}
 
 <style>
   .testimonial {
@@ -107,6 +112,7 @@ if (rating !== undefined && (rating < 0 || rating > ratingMax || ratingMax <= 0)
 
   figcaption img {
     width: 2.75rem;
+    height: 2.75rem;
     aspect-ratio: 1;
     border-radius: 50%;
     object-fit: cover;

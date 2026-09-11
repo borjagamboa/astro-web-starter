@@ -1,10 +1,6 @@
 ---
 import HeadingGroup from '../primitives/HeadingGroup.astro';
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
+import type { FAQItem } from './types';
 
 interface Props {
   items: readonly FAQItem[];
@@ -18,6 +14,18 @@ interface Props {
 const { items, heading, eyebrow, intro, id, openFirst = false } = Astro.props;
 const Tag = heading ? 'section' : 'div';
 const headingId = id ? `${id}-title` : undefined;
+const itemIds = new Set<string>();
+const resolvedItems = items.map((item, index) => {
+  if (!item.question.trim() || !item.answer.trim()) {
+    throw new Error('FAQ items require a non-empty question and answer.');
+  }
+
+  const itemId = item.id?.trim() || (id ? `${id}-item-${index + 1}` : undefined);
+  if (itemId && itemIds.has(itemId)) throw new Error(`FAQ item IDs must be unique: ${itemId}`);
+  if (itemId) itemIds.add(itemId);
+
+  return { ...item, itemId };
+});
 ---
 
 {items.length > 0 && (
@@ -32,8 +40,8 @@ const headingId = id ? `${id}-title` : undefined;
       />
     )}
     <div class="faq__items">
-      {items.map((item, index) => (
-        <details open={openFirst && index === 0}>
+      {resolvedItems.map((item, index) => (
+        <details id={item.itemId} open={openFirst && index === 0}>
           <summary>
             <span>{item.question}</span>
             <span class="faq__marker" aria-hidden="true"></span>
@@ -70,6 +78,10 @@ const headingId = id ? `${id}-title` : undefined;
   }
 
   summary::-webkit-details-marker { display: none; }
+
+  summary:focus-visible {
+    border-radius: var(--radius-sm);
+  }
 
   .faq__marker {
     position: relative;

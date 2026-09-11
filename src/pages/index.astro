@@ -4,8 +4,13 @@ import ActionPanel from '../components/patterns/ActionPanel.astro';
 import Card from '../components/patterns/Card.astro';
 import CardGrid from '../components/patterns/CardGrid.astro';
 import ContentSplit from '../components/patterns/ContentSplit.astro';
+import ContactBlock from '../components/patterns/ContactBlock.astro';
+import FAQ from '../components/patterns/FAQ.astro';
 import Hero from '../components/patterns/Hero.astro';
 import SectionHeading from '../components/patterns/SectionHeading.astro';
+import Stats from '../components/patterns/Stats.astro';
+import Testimonial from '../components/patterns/Testimonial.astro';
+import type { FAQItem, ProofItem, TestimonialData } from '../components/patterns/types';
 import Button from '../components/primitives/Button.astro';
 import Section from '../components/primitives/Section.astro';
 import SectionDivider from '../components/primitives/SectionDivider.astro';
@@ -13,6 +18,35 @@ import { site } from '../data/site';
 
 const gridImage = { src: '/images/starter-grid.svg', width: 1600, height: 1000, alt: 'Retícula abstracta de demostración' };
 const orbitImage = { src: '/images/starter-orbit.svg', width: 1600, height: 1200, alt: 'Órbitas abstractas de demostración' };
+const proofItems = [
+  { value: 'Tipado', label: 'Contratos', description: 'Contenido explícito y comprobable desde cada proyecto.' },
+  { value: '2–4', label: 'Elementos', description: 'La retícula se adapta a la cantidad real disponible.' },
+  { value: 'Sin JS', label: 'Base funcional', description: 'La información permanece visible sin hidratación.' },
+] satisfies readonly ProofItem[];
+const showcaseQuote = {
+  quote: 'Una cita breve puede aportar contexto sin imponer una fuente, una puntuación ni una plataforma.',
+  name: 'Nombre de demostración',
+  role: 'Contexto editorial ficticio',
+  source: { label: 'Contenido interno del showcase' },
+  publicable: true,
+} satisfies TestimonialData;
+const faqItems = [
+  {
+    id: 'faq-native',
+    question: '¿Necesita JavaScript para abrir una respuesta?',
+    answer: 'No. El pattern utiliza details y summary nativos, por lo que mantiene su función básica sin JavaScript.',
+  },
+  {
+    id: 'faq-heading',
+    question: '¿Debe incluir siempre su propio título?',
+    answer: 'No. Puede recibir un heading interno o colocarse bajo un SectionHeading compuesto por la página.',
+  },
+  {
+    id: 'faq-schema',
+    question: '¿Genera schema FAQPage automáticamente?',
+    answer: 'No. Los datos estructurados se añaden por página únicamente cuando el contenido y su contexto lo justifican.',
+  },
+] satisfies readonly FAQItem[];
 ---
 
 <BaseLayout title={`${site.name} · Showcase de composición`} description="Showcase interno de patrones visuales reutilizables del starter.">
@@ -129,6 +163,53 @@ const orbitImage = { src: '/images/starter-orbit.svg', width: 1600, height: 1200
     </CardGrid>
   </Section>
 
+  <Section id="proof" surface="accent" spacing="spacious" container="wide" ariaLabelledby="proof-title">
+    <SectionHeading
+      id="proof-title"
+      eyebrow="Confianza y prueba"
+      title="Datos y citas sin asumir números ni plataformas."
+      text="Stats admite propiedades descriptivas y Testimonial conserva atribución, fuente y publicación como datos optativos."
+      measure="wide"
+    />
+    <div class="proof-layout">
+      <Stats items={proofItems} treatment="plain" ariaLabel="Capacidades verificables del pattern" />
+      <Testimonial {...showcaseQuote} treatment="quiet" />
+    </div>
+  </Section>
+
+  <Section id="faq" surface="muted" spacing="spacious" container="wide" ariaLabelledby="faq-title">
+    <div class="faq-layout">
+      <SectionHeading
+        id="faq-title"
+        eyebrow="FAQ nativa"
+        title="Preguntas frecuentes que funcionan antes que el JavaScript."
+        text="La página controla el título; el pattern se limita a la lista accesible de preguntas y respuestas."
+      />
+      <FAQ items={faqItems} id="showcase-faq" openFirst={true} />
+    </div>
+  </Section>
+
+  <Section id="contact" spacing="spacious" container="wide" ariaLabelledby="contact-showcase-title">
+    <SectionHeading
+      id="contact-showcase-title"
+      eyebrow="Contacto configurable"
+      title="Conversión sin formulario ni proveedor."
+      text="ContactBlock muestra únicamente los canales disponibles. Este ejemplo usa datos reservados y explícitamente ficticios."
+      measure="wide"
+    />
+    <ContactBlock
+      heading="Punto de contacto de demostración"
+      text="La configuración de cada proyecto decide qué vías son públicas y qué acciones tienen sentido."
+      email="equipo@starter.invalid"
+      hours="Horario por configurar en el proyecto"
+      details={[{ label: 'Estado', value: 'Contenido ficticio de desarrollo' }]}
+      primaryAction={{ label: 'Volver al inicio', href: '#inicio' }}
+      secondaryAction={{ label: 'Revisar FAQ', href: '#faq' }}
+      surface="default"
+      id="contact-example"
+    />
+  </Section>
+
   <Section id="cta" surface="inverse" spacing="spacious" container="full" ariaLabel="Cierres de llamada a la acción">
     <div class="cta-wrap">
       <ActionPanel
@@ -147,18 +228,6 @@ const orbitImage = { src: '/images/starter-orbit.svg', width: 1600, height: 1200
     </div>
   </Section>
 
-  <Section spacing="compact" container="wide">
-    <ActionPanel
-      layout="contained"
-      emphasis="featured"
-      surface="accent"
-      alignment="split"
-      eyebrow="CTA contained"
-      heading="Una acción contenida conserva su propio borde visual."
-      text="Puede insertarse entre secciones sin convertirse en una plantilla de página."
-      primaryAction={{ label: 'Acción de muestra', href: '#inicio' }}
-    />
-  </Section>
 </BaseLayout>
 
 <style>
@@ -170,6 +239,11 @@ const orbitImage = { src: '/images/starter-orbit.svg', width: 1600, height: 1200
   .metric { display: grid; min-height: 11rem; align-content: space-between; border-top: var(--border-strong); padding-block: var(--space-4); }
   .metric strong { color: var(--color-heading); font-size: var(--text-xl); }
   .metric span { color: var(--color-text-muted); }
+  .proof-layout { display: grid; gap: clamp(var(--space-6), 6vw, var(--space-8)); margin-top: var(--space-7); }
+  .proof-layout :global(.testimonial) { align-self: stretch; border-top: var(--border-strong); }
+  .faq-layout { display: grid; gap: clamp(var(--space-6), 7vw, var(--space-8)); }
+  #contact :global(.contact-block) { margin-top: var(--space-7); }
   .cta-wrap { width: 100%; }
+  @media (min-width: 56rem) { .proof-layout { grid-template-columns: minmax(0, 1.5fr) minmax(17rem, 0.75fr); } .faq-layout { grid-template-columns: minmax(17rem, 0.75fr) minmax(0, 1.25fr); align-items: start; } }
   @media (max-width: 34rem) { .inline-actions { align-items: stretch; flex-direction: column; } .inline-actions :global(*) { width: 100%; } }
 </style>

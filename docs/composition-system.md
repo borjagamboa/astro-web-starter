@@ -10,6 +10,12 @@ El CORE separa tres niveles: los tokens definen decisiones visuales, los primiti
 - `Card` admite contenido, visual, medio, metadatos, enlace y pie optativos con tratamientos `plain`, `bordered` y `elevated`.
 - `CardGrid` organiza contenido arbitrario en columnas fijas o mediante `auto-fit`.
 - `ActionPanel` ofrece cierre `contained` o `band` y un slot visual opcional.
+- `FAQ` representa preguntas y respuestas con `details`/`summary` nativos, título interno optativo e IDs estables por item.
+- `Testimonial` cubre citas editoriales o testimonios con atribución, fuente, imagen, rating y estado publicable optativos.
+- `Stats` presenta de dos a cuatro señales de confianza numéricas o descriptivas mediante una lista semántica.
+- `ContactBlock` reúne vías de contacto, horario, datos breves y acciones explícitas sin asumir formulario ni proveedor.
+
+No existe un `ConversionBlock` adicional: `ActionPanel` ya resuelve una llamada a la acción pura y puede componerse con `ContactBlock` cuando la página también necesita datos de contacto. Los contratos se exportan desde `components/patterns/types.ts`; el CORE no incluye datasets de testimonios, FAQ o métricas porque esos datos pertenecen a cada proyecto.
 
 ## Variación entre proyectos
 
