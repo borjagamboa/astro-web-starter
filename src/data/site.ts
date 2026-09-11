@@ -35,6 +35,7 @@ export interface OrganizationConfig {
 export interface SiteConfig {
   name: string;
   shortName?: string;
+  homeHref?: string;
   description: string;
   language: string;
   locale: string;

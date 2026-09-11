@@ -18,3 +18,7 @@ La identidad debe cambiar desde tokens, assets, tipografía, densidad y composic
 ## Efectos avanzados
 
 El CORE no implementa tilt, parallax, cursor tracking, SVG animado, GSAP ni WebGL. Los slots de medio y decoración crean puntos de extensión, y las microinteracciones existentes usan propiedades CSS individuales para no reservar `transform`. Un efecto que necesite recorte exterior o stacking complejo debe envolverse en la página o en un componente especializado, sin ampliar el pattern genérico.
+
+## Validación de flexibilidad
+
+Un stress test temporal confirmó que el CORE admite direcciones visuales radicalmente diferentes mediante tokens, composición, CSS aislado, SVG y JavaScript nativo. Esta flexibilidad no debe convertirse en un sistema rígido de themes: cada proyecto debe añadir los efectos avanzados solo cuando aporten valor. Cuando una landing, campaña o microsite necesite identidad propia, `BaseLayout` puede recibir `siteConfig`, `headerConfig` y `footerConfig` locales, manteniendo la configuración global como fallback.

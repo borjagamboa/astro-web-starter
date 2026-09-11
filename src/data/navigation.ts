@@ -14,6 +14,19 @@ export interface FooterNavigationGroup {
   items: readonly NavigationItem[];
 }
 
+export interface HeaderNavigationConfig {
+  items?: readonly NavigationItem[];
+  action?: NavigationAction | null;
+  navigationLabel?: string;
+  menuLabel?: string;
+}
+
+export interface FooterNavigationConfig {
+  groups?: readonly FooterNavigationGroup[];
+  legalLinks?: readonly NavigationItem[];
+  showDescription?: boolean;
+}
+
 // Development-only navigation for the visual showcase. Replace it per project.
 export const primaryNavigation = [
   { label: 'Inicio', href: '/' },

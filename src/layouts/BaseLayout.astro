@@ -1,5 +1,6 @@
 ---
-import { site } from '../data/site';
+import { site, type SiteConfig } from '../data/site';
+import type { FooterNavigationConfig, HeaderNavigationConfig } from '../data/navigation';
 import Footer from '../components/navigation/Footer.astro';
 import Header from '../components/navigation/Header.astro';
 import RevealObserver from '../components/utilities/RevealObserver.astro';
@@ -28,16 +29,20 @@ interface Props {
   showHeader?: boolean;
   showFooter?: boolean;
   enableReveal?: boolean;
+  siteConfig?: SiteConfig;
+  headerConfig?: HeaderNavigationConfig;
+  footerConfig?: FooterNavigationConfig;
 }
 
+const activeSite = Astro.props.siteConfig ?? site;
 const {
-  title = site.name,
-  description = site.description,
+  title = activeSite.name,
+  description = activeSite.description,
   canonical,
   ogTitle,
   ogDescription,
-  ogImage = site.brand.socialImage?.src,
-  ogImageAlt = site.brand.socialImage?.alt,
+  ogImage = activeSite.brand.socialImage?.src,
+  ogImageAlt = activeSite.brand.socialImage?.alt,
   ogType = 'website',
   robots,
   noindex = false,
@@ -46,21 +51,25 @@ const {
   modifiedTime,
   schema,
   includeWebsiteSchema = true,
-  lang = site.language,
+  lang = activeSite.language,
   showHeader = true,
   showFooter = true,
   enableReveal = true,
+  headerConfig,
+  footerConfig,
 } = Astro.props;
+const resolvedHeaderConfig = headerConfig ?? {};
+const resolvedFooterConfig = footerConfig ?? {};
 
 const suppliedSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const baseSchemas: StructuredData[] = [];
 
 if (Astro.site && includeWebsiteSchema) {
-  baseSchemas.push(buildWebsiteSchema(site.name, Astro.site, lang));
+  baseSchemas.push(buildWebsiteSchema(activeSite.name, Astro.site, lang));
 }
 
-if (Astro.site && site.organization) {
-  baseSchemas.push(buildOrganizationSchema(site.organization.name, Astro.site, site.organization.logo));
+if (Astro.site && activeSite.organization) {
+  baseSchemas.push(buildOrganizationSchema(activeSite.organization.name, Astro.site, activeSite.organization.logo));
 }
 
 const schemas = [...baseSchemas, ...suppliedSchemas];
@@ -91,11 +100,11 @@ const schemas = [...baseSchemas, ...suppliedSchemas];
   </head>
   <body>
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
-    {showHeader && <Header />}
+    {showHeader && <Header siteConfig={activeSite} {...resolvedHeaderConfig} />}
     <main id="main-content" tabindex="-1">
       <slot />
     </main>
-    {showFooter && <Footer />}
+    {showFooter && <Footer siteConfig={activeSite} {...resolvedFooterConfig} />}
     {enableReveal && <RevealObserver />}
   </body>
 </html>
