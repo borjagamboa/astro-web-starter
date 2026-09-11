@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/forms/ContactForm.astro';
 import ActionPanel from '../components/patterns/ActionPanel.astro';
 import Card from '../components/patterns/Card.astro';
 import CardGrid from '../components/patterns/CardGrid.astro';
@@ -193,8 +194,8 @@ const faqItems = [
     <SectionHeading
       id="contact-showcase-title"
       eyebrow="Contacto configurable"
-      title="Conversión sin formulario ni proveedor."
-      text="ContactBlock muestra únicamente los canales disponibles. Este ejemplo usa datos reservados y explícitamente ficticios."
+      title="Formulario visible, proveedor desacoplado."
+      text="ContactBlock compone canales públicos y ContactForm aporta la interfaz. Este ejemplo usa datos reservados y mantiene el envío desactivado."
       measure="wide"
     />
     <ContactBlock
@@ -207,7 +208,18 @@ const faqItems = [
       secondaryAction={{ label: 'Revisar FAQ', href: '#faq' }}
       surface="default"
       id="contact-example"
-    />
+    >
+      <ContactForm
+        slot="form"
+        id="showcase-contact-form"
+        fields={{ phone: { required: false } }}
+        privacy={{
+          label: 'Checkbox de privacidad de muestra; el proyecto debe sustituir este texto antes de publicar.',
+        }}
+        honeypot={true}
+        submitLabel="Enviar demostración"
+      />
+    </ContactBlock>
   </Section>
 
   <Section id="cta" surface="inverse" spacing="spacious" container="full" ariaLabel="Cierres de llamada a la acción">

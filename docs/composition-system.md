@@ -14,6 +14,7 @@ El CORE separa tres niveles: los tokens definen decisiones visuales, los primiti
 - `Testimonial` cubre citas editoriales o testimonios con atribución, fuente, imagen, rating y estado publicable optativos.
 - `Stats` presenta de dos a cuatro señales de confianza numéricas o descriptivas mediante una lista semántica.
 - `ContactBlock` reúne vías de contacto, horario, datos breves y acciones explícitas sin asumir formulario ni proveedor.
+- `ContactForm` aporta el formulario visual configurable y se inserta en el slot `form` de `ContactBlock`; su contrato de envío es neutral y los adaptadores son opt-in.
 
 No existe un `ConversionBlock` adicional: `ActionPanel` ya resuelve una llamada a la acción pura y puede componerse con `ContactBlock` cuando la página también necesita datos de contacto. Los contratos se exportan desde `components/patterns/types.ts`; el CORE no incluye datasets de testimonios, FAQ o métricas porque esos datos pertenecen a cada proyecto.
 

@@ -1,0 +1,319 @@
+---
+import Button from '../primitives/Button.astro';
+import type {
+  ContactFieldConfig,
+  ContactFormErrors,
+  ContactFormFields,
+  ContactFormValues,
+  FormSubmissionConfig,
+  HoneypotConfig,
+  PrivacyConsentConfig,
+} from '../../lib/forms';
+
+interface Props {
+  id: string;
+  submission?: FormSubmissionConfig;
+  fields?: ContactFormFields;
+  privacy?: PrivacyConsentConfig;
+  honeypot?: boolean | HoneypotConfig;
+  values?: ContactFormValues;
+  errors?: ContactFormErrors;
+  submitLabel?: string;
+  submittingLabel?: string;
+  disabled?: boolean;
+  submitting?: boolean;
+  statusMessage?: string;
+}
+
+const {
+  id,
+  submission,
+  fields = {},
+  privacy,
+  honeypot = false,
+  values = {},
+  errors = {},
+  submitLabel = 'Enviar consulta',
+  submittingLabel = 'Enviando…',
+  disabled = false,
+  submitting = false,
+  statusMessage,
+} = Astro.props;
+
+if (!/^[A-Za-z][\w:.-]*$/.test(id)) {
+  throw new Error('ContactForm requires a unique, HTML-safe id.');
+}
+
+const isUsableUrl = (value?: string) => {
+  if (!value?.trim()) return false;
+  try {
+    const url = new URL(value, 'https://local.invalid');
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+const isUsableAction = (value?: string) => !value?.trim().startsWith('#') && isUsableUrl(value);
+
+if (submission?.mode === 'native' && !isUsableAction(submission.action)) {
+  throw new Error('Native form submission requires a valid action.');
+}
+
+if (submission?.mode === 'custom' && !submission.handler.trim()) {
+  throw new Error('Custom form submission requires a handler identifier.');
+}
+
+if (submission?.action && !isUsableAction(submission.action)) {
+  throw new Error('ContactForm action must be an HTTP(S) or relative URL.');
+}
+
+if (privacy && !privacy.label.trim()) {
+  throw new Error('Privacy consent requires an explicit label supplied by the project.');
+}
+
+if (privacy?.policy && (!privacy.policy.label.trim() || !isUsableUrl(privacy.policy.href))) {
+  throw new Error('Privacy policy links require an explicit label and a valid URL.');
+}
+
+const resolveField = (
+  key: keyof ContactFormFields,
+  fallbackLabel: string,
+  fallbackRequired: boolean,
+): (ContactFieldConfig & { label: string; required: boolean }) | undefined => {
+  const configured = fields[key];
+  if (configured === false) return undefined;
+  return {
+    label: configured?.label?.trim() || fallbackLabel,
+    required: configured?.required ?? fallbackRequired,
+  };
+};
+
+const nameField = resolveField('name', 'Nombre', true);
+const emailField = resolveField('email', 'Email', true);
+const phoneField = resolveField('phone', 'Teléfono', false);
+const messageField = resolveField('message', 'Mensaje', true);
+const privacyRequired = privacy?.required ?? true;
+const isConfigured = Boolean(submission);
+const formDisabled = disabled || submitting || !isConfigured;
+const method = submission?.method ?? 'post';
+const action = submission?.action;
+const customHandler = submission?.mode === 'custom' ? submission.handler : undefined;
+const honeypotConfig = typeof honeypot === 'object' ? honeypot : {};
+const honeypotName = honeypotConfig.name?.trim() || '_contact_check';
+const honeypotLabel = honeypotConfig.label?.trim() || 'Deja este campo vacío';
+const describedBy = (field: keyof ContactFormErrors) => errors[field] ? `${id}-${field}-error` : undefined;
+---
+
+<form
+  id={id}
+  class="contact-form"
+  action={action}
+  method={method}
+  aria-busy={submitting ? 'true' : undefined}
+  data-contact-form
+  data-form-handler={customHandler}
+>
+  {!isConfigured && (
+    <p class="contact-form__development-note" role="status">
+      Desarrollo: formulario sin proveedor configurado. El envío permanece desactivado.
+    </p>
+  )}
+
+  {errors.form && <p id={`${id}-form-error`} class="contact-form__status contact-form__status--error" role="alert">{errors.form}</p>}
+  {statusMessage && <p class="contact-form__status" role="status">{statusMessage}</p>}
+
+  <fieldset disabled={disabled || submitting}>
+    <legend class="visually-hidden">Datos de contacto</legend>
+
+    <div class="contact-form__fields">
+      {nameField && <div class="contact-form__field">
+        <label for={`${id}-name`}>{nameField.label}{nameField.required && <span aria-hidden="true"> *</span>}</label>
+        <input
+          id={`${id}-name`}
+          name="name"
+          type="text"
+          autocomplete="name"
+          required={nameField.required}
+          value={values.name}
+          aria-invalid={errors.name ? 'true' : undefined}
+          aria-describedby={describedBy('name')}
+        />
+        {errors.name && <p id={`${id}-name-error`} class="contact-form__error">{errors.name}</p>}
+      </div>}
+
+      {emailField && <div class="contact-form__field">
+        <label for={`${id}-email`}>{emailField.label}{emailField.required && <span aria-hidden="true"> *</span>}</label>
+        <input
+          id={`${id}-email`}
+          name="email"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          required={emailField.required}
+          value={values.email}
+          aria-invalid={errors.email ? 'true' : undefined}
+          aria-describedby={describedBy('email')}
+        />
+        {errors.email && <p id={`${id}-email-error`} class="contact-form__error">{errors.email}</p>}
+      </div>}
+
+      {phoneField && <div class="contact-form__field">
+        <label for={`${id}-phone`}>{phoneField.label}{phoneField.required && <span aria-hidden="true"> *</span>}</label>
+        <input
+          id={`${id}-phone`}
+          name="phone"
+          type="tel"
+          inputmode="tel"
+          autocomplete="tel"
+          required={phoneField.required}
+          value={values.phone}
+          aria-invalid={errors.phone ? 'true' : undefined}
+          aria-describedby={describedBy('phone')}
+        />
+        {errors.phone && <p id={`${id}-phone-error`} class="contact-form__error">{errors.phone}</p>}
+      </div>}
+
+      {messageField && <div class="contact-form__field contact-form__field--wide">
+        <label for={`${id}-message`}>{messageField.label}{messageField.required && <span aria-hidden="true"> *</span>}</label>
+        <textarea
+          id={`${id}-message`}
+          name="message"
+          rows="6"
+          autocomplete="off"
+          required={messageField.required}
+          aria-invalid={errors.message ? 'true' : undefined}
+          aria-describedby={describedBy('message')}
+        >{values.message}</textarea>
+        {errors.message && <p id={`${id}-message-error`} class="contact-form__error">{errors.message}</p>}
+      </div>}
+    </div>
+
+    {privacy && <div class="contact-form__consent">
+      <input
+        id={`${id}-privacy`}
+        name="privacy"
+        type="checkbox"
+        value="accepted"
+        checked={values.privacy}
+        required={privacyRequired}
+        aria-invalid={errors.privacy ? 'true' : undefined}
+        aria-describedby={describedBy('privacy')}
+      />
+      <div>
+        <label for={`${id}-privacy`}>
+          {privacy.label}{privacyRequired && <span aria-hidden="true"> *</span>}
+        </label>
+        {privacy.policy && <> <a href={privacy.policy.href}>{privacy.policy.label}</a></>}
+        {errors.privacy && <p id={`${id}-privacy-error`} class="contact-form__error">{errors.privacy}</p>}
+      </div>
+    </div>}
+
+    {honeypot && <div class="contact-form__honeypot" aria-hidden="true">
+      <label for={`${id}-honeypot`}>{honeypotLabel}</label>
+      <input id={`${id}-honeypot`} name={honeypotName} type="text" tabindex="-1" autocomplete="off" />
+    </div>}
+
+    <div class="contact-form__submit">
+      <Button type="submit" size="large" disabled={formDisabled}>
+        {submitting ? submittingLabel : submitLabel}
+      </Button>
+    </div>
+  </fieldset>
+</form>
+
+<style>
+  .contact-form { display: grid; gap: var(--space-4); }
+
+  .contact-form__development-note,
+  .contact-form__status {
+    margin: 0;
+    border: var(--border-subtle);
+    border-radius: var(--radius-control);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-action-soft);
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+  }
+
+  .contact-form__status--error {
+    border-color: var(--color-focus);
+    background: var(--color-secondary-soft);
+  }
+
+  fieldset { min-width: 0; margin: 0; border: 0; padding: 0; }
+  fieldset:disabled { opacity: 0.7; }
+
+  .contact-form__fields { display: grid; gap: var(--space-4); }
+  .contact-form__field { display: grid; min-width: 0; gap: var(--space-2); }
+
+  label { width: fit-content; color: var(--color-heading); font-weight: 700; }
+
+  :is(input:not([type='checkbox']), textarea) {
+    width: 100%;
+    min-height: 3rem;
+    border: var(--border-subtle);
+    border-radius: var(--radius-control);
+    padding: 0.75rem 0.9rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  textarea { min-height: 8rem; resize: vertical; }
+  :is(input, textarea)[aria-invalid='true'] { border-color: var(--color-focus); }
+
+  .contact-form__error {
+    margin: 0;
+    color: var(--color-heading);
+    font-size: var(--text-sm);
+    font-weight: 650;
+  }
+
+  .contact-form__consent {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+    margin-top: var(--space-4);
+  }
+
+  .contact-form__consent input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.1rem 0 0;
+  }
+
+  .contact-form__consent div { min-width: 0; }
+  .contact-form__consent a { overflow-wrap: anywhere; }
+
+  .contact-form__honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact-form__submit { margin-top: var(--space-5); }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 42rem) {
+    .contact-form__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .contact-form__field--wide { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 34rem) {
+    .contact-form__submit :global(.button) { width: 100%; }
+  }
+</style>

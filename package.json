@@ -10,6 +10,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "validate": "node scripts/validate-config.mjs",
+    "check:leakage": "node scripts/check-leakage.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

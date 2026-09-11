@@ -1,3 +1,12 @@
+import type { ContactFormFeatureConfig } from '../lib/forms';
+
+export type PublicationMode = 'starter' | 'development' | 'production';
+
+export interface PublicationConfig {
+  mode: PublicationMode;
+  demoContent: boolean;
+}
+
 export interface SiteContact {
   email?: string;
   phone?: string;
@@ -33,6 +42,7 @@ export interface OrganizationConfig {
 }
 
 export interface SiteConfig {
+  publication: PublicationConfig;
   name: string;
   shortName?: string;
   homeHref?: string;
@@ -43,11 +53,16 @@ export interface SiteConfig {
   socialLinks: readonly SocialLink[];
   location?: string;
   primaryAction?: PrimaryAction;
+  contactForm?: ContactFormFeatureConfig;
   brand: BrandAssets;
   organization?: OrganizationConfig;
 }
 
 export const site: SiteConfig = {
+  publication: {
+    mode: 'starter',
+    demoContent: true,
+  },
   // Neutral development defaults. Replace these values for every real project.
   name: 'Astro Web Starter',
   shortName: 'Astro Starter',
@@ -58,6 +73,9 @@ export const site: SiteConfig = {
   socialLinks: [],
   location: undefined,
   primaryAction: undefined,
+  contactForm: {
+    enabled: false,
+  },
   brand: {},
   organization: undefined,
 } satisfies SiteConfig;

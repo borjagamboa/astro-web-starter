@@ -4,7 +4,7 @@
 
 Su propósito no es ofrecer una web terminada ni imponer una marca. Define un contrato técnico y operativo para que cada proyecto nuevo empiece con decisiones explícitas, límites claros y una arquitectura mantenible.
 
-> Estado actual: el repositorio contiene un bootstrap Astro mínimo y compilable. El sistema visual, las recetas de página, el SEO avanzado y los módulos opcionales se implementarán en fases posteriores.
+> Estado actual: el repositorio contiene un CORE Astro compilable con sistema visual, composición, SEO técnico, contenido editorial opt-in, formulario desacoplado y guardrails previos a publicación.
 
 ## Base implementada
 
@@ -60,28 +60,28 @@ La propuesta completa está en [`docs/architecture.md`](docs/architecture.md).
 
 ChatGPT dirige el proceso, Codex trabaja en el repositorio y la persona usuaria conserva el control de las decisiones, accesos, commits y publicación.
 
-## Cómo iniciar una nueva web
+## Crear una nueva web en pocos pasos
 
-1. Crea un repositorio nuevo a partir del starter, sin copiar la historia ni datos de otro cliente salvo que exista una decisión consciente y revisada.
-2. Completa [`PROJECT-BRIEF.md`](PROJECT-BRIEF.md) con la información disponible y marca las dudas.
-3. Copia y adapta [`CHATGPT-PROJECT-INSTRUCTIONS.md`](CHATGPT-PROJECT-INSTRUCTIONS.md) en el proyecto de ChatGPT que coordinará el trabajo.
-4. Revisa [`AGENTS.md`](AGENTS.md) y añade reglas específicas del proyecto de forma explícita si fueran necesarias.
-5. Sustituye todos los placeholders y decide dominio, idiomas, rutas, contenido, identidad visual, SEO, formularios, legal, hosting e integraciones.
-6. Implementa por fases pequeñas, validando cada una antes de continuar.
-7. Solo conecta servicios, dominios o producción tras una revisión específica de lanzamiento.
+1. Crea un proyecto separado a partir del starter.
+2. Completa el `QUICK START` de [`PROJECT-BRIEF.md`](PROJECT-BRIEF.md); debe llevar unos cinco minutos.
+3. Añade el logo, las imágenes y los contenidos disponibles con sus derechos conocidos.
+4. Usa [`CHATGPT-PROJECT-INSTRUCTIONS.md`](CHATGPT-PROJECT-INSTRUCTIONS.md) para convertir el brief en prompts concretos para Codex y generar una primera versión visible.
+5. Revisa la web local y sus capturas en móvil y desktop; itera sobre identidad, composición y copy.
+6. Completa únicamente el `ADVANCED` necesario para SEO, legal, migración, formularios, integraciones o infraestructura.
+7. Ejecuta `npm run validate`, `npm run check:leakage` y `npm run build`.
+8. Publica solo tras revisar el resultado y autorizar explícitamente dominio, servicios y producción.
+
+Las decisiones visuales no críticas pueden quedar como propuestas provisionales. Los datos factuales ausentes se omiten: una primera versión puede contener copy de trabajo, pero nunca teléfonos, claims, testimonios, precios o credenciales inventados. El flujo operativo completo está en [`docs/quick-start-workflow.md`](docs/quick-start-workflow.md).
 
 ## Qué debe personalizarse
 
-Cada proyecto debe definir, como mínimo:
+Para la primera versión cada proyecto debe definir, como mínimo:
 
-- identidad, público, propuesta de valor y tono;
-- páginas, navegación, contenidos, productos o servicios;
-- dominio, locale, idiomas, rutas y política de trailing slash;
-- colores, tipografías, logos, imágenes y licencias;
-- estrategia SEO, canonicals, schemas y redirects de migración;
-- formularios, consentimientos, textos legales y tratamiento de datos;
-- analytics, proveedores externos, hosting y entornos;
-- criterios de éxito, validación y lanzamiento.
+- nombre y actividad, objetivo, público, oferta y CTA;
+- contenido existente o permiso para redactar un borrador;
+- cualquier restricción que cambie materialmente la propuesta.
+
+Codex puede proponer páginas, navegación, tono y dirección artística cuando falten. Dominio, SEO avanzado, legal, formularios reales, analytics, proveedores, hosting y migraciones se resuelven después, cuando apliquen y siempre antes de producción.
 
 ## Qué no debe copiarse entre proyectos
 
@@ -114,5 +114,6 @@ Mientras este directorio no esté inicializado como repositorio Git, esos comand
 ## Documentos clave
 
 - [`PROJECT-BRIEF.md`](PROJECT-BRIEF.md): ficha editable que convierte necesidades de negocio en requisitos concretos y registra dudas y riesgos.
+- [`docs/quick-start-workflow.md`](docs/quick-start-workflow.md): procedimiento corto para pasar del input mínimo a una primera revisión visible.
 - [`AGENTS.md`](AGENTS.md): reglas permanentes para que Codex trabaje de forma segura y consistente dentro del repositorio.
 - [`CHATGPT-PROJECT-INSTRUCTIONS.md`](CHATGPT-PROJECT-INSTRUCTIONS.md): plantilla para configurar a ChatGPT como responsable del proceso técnico y supervisor de las tareas delegadas.

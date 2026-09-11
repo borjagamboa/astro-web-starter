@@ -1,183 +1,146 @@
 # Brief del proyecto
 
-> Escribe `Por decidir` cuando falte un dato, indica quién debe resolverlo y no inventes contenido. No incluyas secretos, credenciales ni datos personales que no deban publicarse.
+El objetivo es empezar con muy poca información y obtener pronto una primera web completa y coherente. Responde con frases breves. No hace falta resolver decisiones técnicas, SEO avanzado, legal, proveedores o publicación para comenzar.
 
-## QUICK START
+# QUICK START · 5 minutos
 
-Estas 12 respuestas bastan para empezar una primera versión local de una web sencilla. Los detalles avanzados pueden completarse después, antes de integrar servicios o publicar.
-
-| # | Información esencial | Respuesta |
-| --- | --- | --- |
-| 1 | Nombre del negocio o proyecto | [Respuesta] |
-| 2 | Descripción pública: qué ofrece y qué resultado aporta | [Respuesta breve y verificable] |
-| 3 | Público principal | [Quién es, qué necesita y dónde actúa] |
-| 4 | Servicios, productos o contenidos prioritarios | [Lista ordenada] |
-| 5 | Páginas iniciales | [Inicio, servicios, contacto…] |
-| 6 | Acción principal | [Qué debe hacer la persona y adónde conduce] |
-| 7 | Datos de contacto publicables | [Teléfono, email, ubicación o ninguno] |
-| 8 | Identidad y configuración global disponibles | [Logo, colores, tipografías, dominio si existe, imagen OG y ubicación de archivos] |
-| 9 | Estilo visual deseado | [Tres adjetivos concretos] |
-| 10 | Referencias visuales | [Una a tres referencias y qué interesa de cada una] |
-| 11 | Contenido y assets disponibles | [Textos, fotos, vídeos, documentos y derechos] |
-| 12 | Restricciones o fecha relevante | [Técnicas, legales, de marca, alcance o plazo] |
-
-Antes de construir, confirma que no se estén inventando testimonios, valoraciones, estadísticas, certificaciones, datos de contacto ni afirmaciones comerciales. Si faltan assets o decisiones visuales, se pueden proponer opciones provisionales claramente marcadas para revisión.
-
-# ADVANCED PROJECT DETAILS
-
-Completa estas secciones cuando el alcance, la publicación o las integraciones lo requieran. No son un requisito para empezar una web local simple, pero sí para tomar decisiones que afecten a datos, SEO, migración, terceros o producción.
-
-## 1. Identificación, responsables y éxito
-
-| Campo | Respuesta |
-| --- | --- |
-| Nombre legal y nombre comercial | [Respuesta] |
-| Persona responsable y aprobadores | [Nombre o rol] |
-| Repositorio | [URL o ruta, cuando exista] |
-| Fecha y versión del brief | [AAAA-MM-DD · v0.1] |
-| Objetivo principal | [Resultado de negocio o comunicación] |
-| Criterios de éxito | [Métricas, fuente y horizonte temporal] |
-| Ámbito e idiomas | [Geografía, idioma principal y traducciones] |
-| Límites de la oferta | [Qué no se ofrece o no debe afirmarse] |
-
-## 2. Arquitectura de información y alcance
-
-| Página | Objetivo | Contenido disponible | Prioridad | Responsable |
-| --- | --- | --- | --- | --- |
-| [Página] | [Objetivo] | [Sí / Parcial / No] | [Alta / Media / Baja] | [Rol] |
-
-- Cabecera y orden de navegación: [Respuesta]
-- Submenús: [Respuesta]
-- Acción principal y secundarias: [Respuesta]
-- Pie, legales y contacto: [Respuesta]
-- Funcionalidades previstas: [Buscador, catálogo, reservas, área privada, mapa…]
-
-### Blog o recursos
-
-| Campo | Respuesta |
-| --- | --- |
-| Necesidad y objetivo editorial | [Sí / No / Más adelante; propósito] |
-| Categorías iniciales | [Lista o Por decidir] |
-| Ritmo y responsable | [Frecuencia y rol] |
-| Contenido que migrar | [Cantidad, formatos y estado] |
-
-## 3. Contenido, marca y derechos
-
-| Campo | Respuesta |
-| --- | --- |
-| Inventario de contenido | [Ubicación, propietario y estado] |
-| Voz y tono | [Criterios y mensajes que evitar] |
-| Logos y guía de marca | [Variantes, formatos y ubicación] |
-| Colores y tipografías | [Referencias, licencias y archivos] |
-| Fotos, vídeo, iconos y documentos | [Inventario y formatos] |
-| Derechos y licencias | [Confirmados / Pendientes; responsable] |
-| Contenido por crear | [Texto, fotografía, traducción, legal…] |
-| Aprobación final | [Nombre o rol] |
-
-### Reseñas, testimonios y evidencia
-
-| Campo | Respuesta |
-| --- | --- |
-| Evidencia que se mostrará | [Testimonios, casos, métricas o ninguna] |
-| Fuente y derecho de uso | [Procedencia, consentimiento y responsable] |
-| Datos disponibles | [Texto, atribución, fecha, valoración y anonimización] |
-
-## 4. Formularios y llamadas a la acción
-
-| Formulario | Campos necesarios | Destino | Consentimiento | Resultado esperado |
-| --- | --- | --- | --- | --- |
-| [Formulario] | [Campos mínimos] | [Servicio o Por decidir] | [Requisito] | [Confirmación] |
-
-| Contexto | Texto provisional | Destino | Prioridad |
+| # | Información | Estado | Respuesta breve |
 | --- | --- | --- | --- |
-| [Contexto] | [Etiqueta] | [Ruta o acción] | [Primaria / Secundaria] |
+| 1 | Nombre y actividad | **Obligatorio** | [Qué se llama y qué hace] |
+| 2 | Objetivo principal de la web | **Obligatorio** | [Qué resultado debe conseguir] |
+| 3 | Público principal | **Obligatorio** | [Para quién es] |
+| 4 | Ubicación o ámbito | Opcional | [Dónde actúa, si aplica] |
+| 5 | Oferta principal | **Obligatorio** | [Servicios, productos o contenidos prioritarios] |
+| 6 | Páginas o menú inicial | Codex puede proponer | [Lista breve o “Propón tú”] |
+| 7 | CTA principal | **Obligatorio** | [Acción deseada: pedir cita, contactar, comprar…] |
+| 8 | Contenido | **Obligatorio** | [Ubicación del contenido existente o permiso para redactar borradores] |
+| 9 | Datos de contacto publicables | Opcional | [Solo datos reales disponibles; si no existen, omitir] |
+| 10 | Logo y assets disponibles | Opcional | [Rutas de logo, fotos, vídeo o documentos y derechos conocidos] |
+| 11 | Dirección visual | Codex puede proponer | [Adjetivos, colores o “No tengo ni idea. Propón tú”] |
+| 12 | Referencias visuales | Opcional | [Hasta 3 webs y qué interesa de ellas] |
 
-## 5. SEO y descubrimiento
+Si existe una restricción imprescindible para la primera versión —algo que debe aparecer, evitarse o conservarse— añádela junto a la respuesta correspondiente. No conviertas el Quick Start en una entrevista: pregunta de nuevo solo cuando falte un bloqueante real.
 
-| Campo | Respuesta |
-| --- | --- |
-| Objetivo SEO | [Visibilidad, demanda o temas prioritarios] |
-| Temáticas y consultas | [Lista basada en investigación] |
-| SEO local | [Localidades, fichas y consistencia de datos; si aplica] |
-| Competidores | [Referencias y por qué son relevantes] |
-| Datos disponibles | [Search Console, analytics, crawler, backlinks] |
-| Metadatos y contenido social | [Criterios y assets] |
-| Canonicals e indexación | [Reglas conocidas o Por decidir] |
-| Datos estructurados | [Tipos validados; no inferir] |
+## Regla de incertidumbre
 
-## 6. Dominios y migración
+Cuando falte una decisión no crítica, Codex debe elegir una opción razonable, registrarla como **decisión provisional** y continuar. Puede proponer:
 
-| Campo | Respuesta |
-| --- | --- |
-| Dominio actual y objetivo | [Valores o No existe / Por decidir] |
-| Web actual y tecnología | [Inventario] |
-| Tipo de migración | [Nueva web / rediseño / CMS / dominio] |
-| URLs que preservar | [Mapa o ubicación del inventario] |
-| Redirecciones | [Responsable y criterio] |
-| Continuidad | [Correo, campañas, integraciones y ventana de cambio] |
+- composición del Hero, cards y Home;
+- orden, densidad y superficies de las secciones;
+- dirección artística y tono visual;
+- textos preliminares claramente identificados como borrador;
+- tokens, SVG original, iconografía decorativa, CSS específico e interacción ligera;
+- selección y combinación de patterns existentes.
 
-## 7. Legal, privacidad y accesibilidad
+La estética neutral del showcase no es un destino obligatorio. Una dirección puede ser sobria y elegante, extrema e interactiva o completamente propuesta por Codex, siempre dentro del brief, la accesibilidad y el rendimiento.
 
-| Campo | Respuesta |
-| --- | --- |
-| Textos y requisitos legales | [Aviso, privacidad, cookies, sector] |
-| Responsable legal | [Persona, empresa o asesor] |
-| Datos personales tratados | [Formularios, analytics, embeds, terceros] |
-| Consentimiento y retención | [Criterios aplicables] |
-| Objetivo de accesibilidad | [Nivel, auditoría y excepciones aprobadas] |
+Codex nunca debe inventar como hechos:
 
-## 8. Medición y marketing
+- teléfonos, emails, direcciones u horarios;
+- certificaciones, licencias o años de experiencia;
+- clientes, testimonios, valoraciones o casos;
+- precios, resultados, métricas o claims verificables;
+- credenciales, cuentas, endpoints o datos legales.
 
-| Campo | Respuesta |
-| --- | --- |
-| Analytics | [Proveedor, objetivos, consentimiento e ID por entorno] |
-| Eventos y conversiones | [Qué se medirá y con qué criterio] |
-| Herramientas de marketing | [Tag manager, píxeles, CRM, newsletter] |
-| Propiedad y acceso | [Cuenta responsable; nunca credenciales] |
+Los datos factuales ausentes se marcan como pendientes o se omiten. La primera versión puede usar copy provisional, pero no hechos ficticios presentados como reales.
 
-## 9. Integraciones
+# ADVANCED · CUANDO APLIQUE / ANTES DE PRODUCCIÓN
 
-| Servicio | Propósito | Datos enviados | Entorno | Responsable |
-| --- | --- | --- | --- | --- |
-| [Email, CRM, reservas, mapas, vídeo, captcha…] | [Uso] | [Datos] | [Local / Preview / Producción] | [Rol] |
+Completa únicamente las áreas necesarias para el proyecto. Su ausencia no bloquea la primera propuesta visual si la capacidad correspondiente puede permanecer desactivada.
 
-Documenta costes, límites, dependencia operativa, requisitos de consentimiento y alternativa si el servicio falla.
-
-## 10. Infraestructura y publicación
+## 1. Alcance, contenido e idiomas
 
 | Campo | Respuesta |
 | --- | --- |
-| Hosting y cuenta responsable | [Proveedor o Por decidir] |
-| Entornos | [Local, preview, staging, producción] |
-| Entorno local | [SO, Node y restricciones] |
-| Dominio y DNS | [Proveedor y responsable] |
-| Gestión de secretos | [Dónde se configuran, nunca sus valores] |
-| Despliegue y reversión | [Proceso, responsables y validación] |
-| Rendimiento y navegadores | [Objetivos y soporte] |
+| Páginas definitivas, jerarquía y funcionalidades | [Alcance aprobado] |
+| Idiomas, regiones y estrategia de rutas | [Cuando exista más de un idioma o mercado] |
+| CMS o workflow editorial | [Proveedor, roles y publicación, si aplica] |
+| Inventario y migración de contenido | [Origen, volumen, estado y responsable] |
+| Derechos de textos, imágenes, fuentes y otros assets | [Confirmados / Pendientes] |
+| Aprobadores y criterio de éxito | [Roles, evidencias y métricas] |
 
-## 11. Restricciones, riesgos y decisiones
+## 2. SEO y descubrimiento
 
-### Restricciones técnicas o de negocio
+| Campo | Respuesta |
+| --- | --- |
+| Objetivos, temáticas y keywords | [Basados en investigación] |
+| Competidores y referencias de mercado | [Qué se compara y por qué] |
+| SEO local | [Áreas, fichas y consistencia de datos, si aplica] |
+| Search Console, analytics o datos previos | [Propiedad y acceso; nunca credenciales] |
+| Canonicals, indexación y metadatos | [Reglas aprobadas] |
+| Schemas especiales y datos estructurados | [Solo tipos justificados con datos reales] |
 
-- [Proveedor obligatorio o prohibido, compatibilidad, presupuesto, plazo…]
+## 3. Migración y continuidad
 
-| Riesgo | Impacto | Probabilidad | Mitigación | Responsable |
-| --- | --- | --- | --- | --- |
-| [Riesgo] | [Alto / Medio / Bajo] | [Alta / Media / Baja] | [Acción] | [Rol] |
+| Campo | Respuesta |
+| --- | --- |
+| Web o CMS de origen | [URL, tecnología y acceso autorizado] |
+| Inventario de URLs | [Ubicación y responsable] |
+| Redirects | [Mapa revisado; no copiar de otros proyectos] |
+| Dominio, correo y servicios que deben conservarse | [Plan de continuidad] |
+| Ventana de cambio y reversión | [Responsables y procedimiento] |
 
-| Duda o decisión | Impacto si no se resuelve | Responsable | Fecha objetivo |
+## 4. Legal, privacidad y accesibilidad
+
+| Campo | Respuesta |
+| --- | --- |
+| Aviso legal, privacidad y cookies | [Textos aprobados y responsable legal] |
+| Datos personales tratados | [Formularios, embeds, medición y terceros] |
+| Consentimiento y retención | [Requisitos aplicables] |
+| Testimonios, métricas y claims | [Fuente, permiso y derecho de publicación] |
+| Accesibilidad especial | [Objetivo, auditoría o excepciones aprobadas] |
+| Requisitos sectoriales | [Normativa o revisión especializada] |
+
+## 5. Formularios e integraciones
+
+| Campo | Respuesta |
+| --- | --- |
+| Formularios, campos y resultado esperado | [Necesidad real y datos mínimos] |
+| Proveedor o endpoint | [Por decidir hasta integrar] |
+| Email, CRM, reservas, mapas u otros servicios | [Propósito y datos enviados] |
+| Controles antiabuso | [Validación de servidor, límites, honeypot, CAPTCHA si se justifica] |
+| Costes, límites y responsable de cada servicio | [Información operativa] |
+
+## 6. Medición y marketing
+
+| Campo | Respuesta |
+| --- | --- |
+| Analytics y Search Console | [Cuenta responsable y entorno] |
+| Eventos, conversiones y tracking | [Qué se mide y con qué consentimiento] |
+| Tag manager, píxeles, campañas o newsletter | [Solo si están aprobados] |
+
+## 7. Infraestructura y publicación
+
+| Campo | Respuesta |
+| --- | --- |
+| Dominio, hosting y DNS | [Proveedor, cuenta responsable y entorno] |
+| Local, preview, staging y producción | [Flujo y diferencias] |
+| Requisitos técnicos especiales | [Runtime, navegadores, rendimiento u otros] |
+| Gestión de secretos | [Dónde se configuran; nunca incluir sus valores aquí ni en Git] |
+| Despliegue, monitorización y reversión | [Proceso y responsables] |
+
+## 8. Restricciones, riesgos y decisiones
+
+| Elemento | Impacto | Responsable | Estado o fecha |
 | --- | --- | --- | --- |
-| [Pregunta concreta] | [Qué bloquea o condiciona] | [Rol] | [AAAA-MM-DD] |
+| [Restricción técnica o de negocio] | [Qué condiciona] | [Rol] | [Estado] |
+| [Riesgo] | [Consecuencia y mitigación] | [Rol] | [Estado] |
+| [Decisión pendiente] | [Qué bloquea] | [Rol] | [Fecha, si aplica] |
 
-## 12. Aprobación antes de publicar
+## 9. Revisión antes de publicar
 
-- [ ] Objetivo, público, alcance y responsables están confirmados.
-- [ ] El contenido y las afirmaciones comerciales están aprobados.
-- [ ] Los assets tienen procedencia, licencia y derechos identificados.
-- [ ] Testimonios, valoraciones y métricas tienen fuente y permiso de uso.
-- [ ] SEO, URLs y redirecciones se han revisado cuando existe migración.
-- [ ] Formularios, privacidad, cookies y servicios externos están configurados.
-- [ ] Accesibilidad, rendimiento y responsive se han verificado.
-- [ ] Analytics usa los identificadores del entorno correcto.
-- [ ] DNS, despliegue y reversión tienen responsable.
-- [ ] No se han incluido secretos ni datos sensibles en el repositorio.
+- [ ] Contenido, datos factuales, claims y assets están aprobados.
+- [ ] No quedan decisiones provisionales que afecten a negocio, legal o publicación.
+- [ ] SEO, indexación, canonicals, schemas y redirects aplicables están revisados.
+- [ ] Formularios, privacidad, cookies e integraciones están configurados y probados.
+- [ ] Accesibilidad, responsive, rendimiento y enlaces están comprobados.
+- [ ] Dominio, hosting, secretos, despliegue y reversión tienen responsable.
+- [ ] `npm run validate`, `npm run check:leakage` y `npm run build` finalizan correctamente.
+
+## Criterio de éxito
+
+**Un brief de pocos minutos debe bastar para generar una primera web completa y coherente sin obligar al usuario a tomar decisiones técnicas.**
+
+## Próxima prueba
+
+El siguiente paso será crear un proyecto separado a partir del starter y generar una web completa utilizando únicamente el Quick Start. Esa prueba no se realiza dentro de este repositorio.
