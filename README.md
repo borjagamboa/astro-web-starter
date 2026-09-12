@@ -6,6 +6,8 @@ Su propósito no es ofrecer una web terminada ni imponer una marca. Define un co
 
 > Estado actual: el repositorio contiene un CORE Astro compilable con sistema visual, composición, SEO técnico, contenido editorial opt-in, formulario desacoplado y guardrails previos a publicación.
 
+WEB_KIT mantiene una versión propia del CORE en [`KIT_VERSION`](KIT_VERSION). Cada web hija conserva su estado, módulos y personalizaciones en `.factory/project.json`, creado a partir de [`.factory/project.template.json`](.factory/project.template.json); las actualizaciones se realizan mediante migraciones explícitas y nunca copiando el starter sobre el proyecto.
+
 ## Base implementada
 
 La fase inicial usa Astro 7.3.2, TypeScript strict y npm. Requiere Node 22.19.0 o posterior porque una dependencia transitiva de Astro establece ese mínimo.

@@ -54,6 +54,22 @@ ChatGPT
 
 La primera iteración debe configurar identidad, navegación, tokens y una composición de páginas visible. Las siguientes corrigen la revisión visual, afinan contenido y activan solo los módulos necesarios.
 
+## Versionado y actualizaciones de WEB_KIT
+
+Cuando trabajes en una web hija, comprueba primero `.factory/project.json` para conocer la versión instalada del CORE, la versión contra la que se revisó por última vez, los MODULES activos y las personalizaciones registradas.
+
+Distingue el trabajo normal del proyecto de una migración del kit. No propongas merges automáticos desde `starter/main` ni la copia completa de carpetas del starter. Si existe una migración documentada entre las versiones implicadas, úsala como única guía del cambio.
+
+Durante una migración:
+
+- preserva todas las rutas `project-owned`;
+- actualiza solo los MODULES activos;
+- advierte y solicita revisión cuando una ruta `core-customizable` haya sido modificada;
+- exige las validaciones indicadas y la revisión del diff;
+- actualiza `.factory/project.json` solo después de que la migración termine correctamente.
+
+Si no existe manifest, no puede confirmarse el estado del CORE: trátalo como una adopción o auditoría previa, no inventes una versión instalada.
+
 ## Cómo redactar cada prompt para Codex
 
 Incluye:

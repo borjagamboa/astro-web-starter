@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "kitId": "WEB_KIT",
+  "patternSyntax": "repo-relative-posix-glob",
+  "resolution": "last-match-wins",
+  "unmatched": "review-required",
+  "rules": [
+    { "pattern": "README.md", "category": "project-owned" },
+    { "pattern": "PROJECT-BRIEF.md", "category": "project-owned" },
+    { "pattern": "AGENTS.md", "category": "core-customizable" },
+    { "pattern": "CHATGPT-PROJECT-INSTRUCTIONS.md", "category": "core-customizable" },
+    { "pattern": ".gitignore", "category": "core-customizable" },
+    { "pattern": ".env.example", "category": "core-customizable" },
+    { "pattern": "astro.config.mjs", "category": "core-customizable" },
+    { "pattern": "package.json", "category": "core-customizable" },
+    { "pattern": "package-lock.json", "category": "core-customizable" },
+    { "pattern": "tsconfig.json", "category": "core-customizable" },
+
+    { "pattern": "KIT_VERSION", "category": "kit-managed" },
+    { "pattern": "CHANGELOG.md", "category": "kit-managed" },
+    { "pattern": ".factory/kit.json", "category": "kit-managed" },
+    { "pattern": ".factory/ownership.json", "category": "kit-managed" },
+    { "pattern": ".factory/project.template.json", "category": "preset" },
+    { "pattern": ".factory/project.json", "category": "project-owned" },
+
+    { "pattern": "src/components/primitives/**", "category": "kit-managed" },
+    { "pattern": "src/components/patterns/**", "category": "kit-managed" },
+    { "pattern": "src/components/utilities/**", "category": "kit-managed" },
+    { "pattern": "src/components/navigation/**", "category": "core-customizable" },
+    { "pattern": "src/components/navigation/Breadcrumbs.astro", "category": "kit-managed" },
+    { "pattern": "src/components/forms/**", "category": "module", "moduleId": "contact-form" },
+
+    { "pattern": "src/layouts/**", "category": "kit-managed" },
+    { "pattern": "src/layouts/ArticleLayout.astro", "category": "module", "moduleId": "editorial" },
+
+    { "pattern": "src/data/**", "category": "project-owned" },
+    { "pattern": "src/data/site.ts", "category": "core-customizable" },
+    { "pattern": "src/data/navigation.ts", "category": "core-customizable" },
+
+    { "pattern": "src/lib/**", "category": "project-owned" },
+    { "pattern": "src/lib/seo.ts", "category": "kit-managed" },
+    { "pattern": "src/lib/structured-data.ts", "category": "kit-managed" },
+    { "pattern": "src/lib/content.ts", "category": "module", "moduleId": "editorial" },
+    { "pattern": "src/lib/forms.ts", "category": "module", "moduleId": "contact-form" },
+
+    { "pattern": "src/styles/**", "category": "project-owned" },
+    { "pattern": "src/styles/global.css", "category": "kit-managed" },
+    { "pattern": "src/styles/tokens.css", "category": "core-customizable" },
+
+    { "pattern": "src/content/**", "category": "project-owned" },
+    { "pattern": "src/content.config.ts", "category": "module", "moduleId": "editorial" },
+
+    { "pattern": "src/pages/**", "category": "project-owned" },
+    { "pattern": "src/pages/robots.txt.ts", "category": "kit-managed" },
+    { "pattern": "src/pages/blog/**", "category": "module", "moduleId": "editorial" },
+
+    { "pattern": "scripts/validate-config.mjs", "category": "kit-managed" },
+    { "pattern": "scripts/check-leakage.mjs", "category": "kit-managed" },
+    { "pattern": "scripts/validate-kit-metadata.mjs", "category": "kit-managed" },
+
+    { "pattern": "public/**", "category": "project-owned" },
+    { "pattern": "public/images/starter-grid.svg", "category": "preset" },
+    { "pattern": "public/images/starter-orbit.svg", "category": "preset" },
+
+    { "pattern": "docs/**", "category": "project-owned" },
+    { "pattern": "docs/architecture.md", "category": "kit-managed" },
+    { "pattern": "docs/seo-workflow.md", "category": "kit-managed" },
+    { "pattern": "docs/kit-versioning-plan.md", "category": "kit-managed" },
+    { "pattern": "docs/composition-system.md", "category": "core-customizable" },
+    { "pattern": "docs/content-workflow.md", "category": "module", "moduleId": "editorial" },
+    { "pattern": "docs/forms-and-validation.md", "category": "module", "moduleId": "contact-form" },
+    { "pattern": "docs/page-recipes.md", "category": "preset" },
+    { "pattern": "docs/quick-start-workflow.md", "category": "preset" },
+    { "pattern": "docs/starter-implementation-plan.md", "category": "preset" },
+    { "pattern": "docs/migrations/**", "category": "kit-managed" }
+  ]
+}

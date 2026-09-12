@@ -80,6 +80,17 @@ Este repositorio es un starter genérico para crear sitios web con Astro. No rep
 - No expongas secretos mediante variables públicas, logs, HTML generado, capturas o mensajes de error.
 - Antes de desplegar, comprueba que no quedan marcas, dominios, IDs, endpoints, previews o credenciales de otros proyectos.
 
+## Gobierno y migraciones de WEB_KIT
+
+- En una web hija, consulta `.factory/project.json` antes de proponer una actualización del kit: ese manifest declara la versión del CORE, los MODULES activos, las migraciones y las personalizaciones conocidas.
+- Preserva siempre las rutas `project-owned`. Una actualización del kit no puede sobrescribir contenido, configuración, páginas, assets ni CSS propios del proyecto.
+- Actualiza rutas `kit-managed` únicamente mediante una migración explícita. Si difieren del baseline instalado, detén el cambio y solicita revisión.
+- Revisa cualquier ruta `core-customizable` que el proyecto haya modificado; intégrala de forma consciente y nunca mediante reemplazo ciego.
+- Actualiza un MODULE solo cuando figure como activo en el manifest. Los PRESETS son optativos y no determinan si una web está actualizada.
+- No uses `git merge starter/main` ni copies árboles completos del starter sobre una web existente como estrategia de actualización.
+- Ejecuta los pasos y validaciones declarados por la migración y revisa el diff antes de darla por terminada.
+- Actualiza `.factory/project.json` únicamente después de completar correctamente la migración y todas sus validaciones. No marques una versión como instalada de forma anticipada.
+
 ## Documentación y validación
 
 - Actualiza la documentación cuando cambien arquitectura, configuración, scripts, comandos, despliegue, migraciones o cualquier workflow.
@@ -88,4 +99,3 @@ Este repositorio es un starter genérico para crear sitios web con Astro. No rep
 - Si no existe todavía un comando de validación o no puede ejecutarse, indícalo claramente; no simules un resultado.
 - Revisa `git status --short` cuando el repositorio esté inicializado y distingue tus cambios de los preexistentes.
 - Al finalizar, informa de los archivos modificados, validaciones ejecutadas, resultados, decisiones relevantes y riesgos o tareas pendientes.
-
