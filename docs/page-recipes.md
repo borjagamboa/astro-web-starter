@@ -2,6 +2,8 @@
 
 Estas recetas son marcos de decisión, no plantillas cerradas. Antes de componer una página, define la intención de la visita, el contenido disponible, la evidencia real y la acción comercial prioritaria. Omite cualquier bloque que no tenga contenido útil: una página más corta y específica es preferible a una secuencia rellena.
 
+Las recetas orientan composición y estructura narrativa; no proporcionan copy final. El texto `REVIEWED` o `FINAL` procede del content map del proyecto y no debe inferirse, completarse ni reescribirse para encajar en una receta visual.
+
 ## Home
 
 - **Objetivo:** explicar con rapidez qué ofrece el negocio, para quién y cuál es el siguiente paso.

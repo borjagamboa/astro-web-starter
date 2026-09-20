@@ -4,7 +4,7 @@ Este documento define el modelo propuesto para versionar y migrar, de forma cont
 
 El objetivo no es sincronizar repositorios ni mantener copias idénticas. El objetivo es que cada web pueda conocer el CORE que tiene instalado, recibir correcciones y mejoras compatibles, y preservar a la vez todo lo que pertenece al proyecto.
 
-> Estado de implementación: `WEB_KIT 1.0.0-rc.1` formaliza la identidad técnica, la versión canónica, los schemas iniciales de manifest y ownership, el changelog, la plantilla de migraciones y la validación mínima de metadata. Los baselines de checksums y la primera migración real siguen pendientes.
+> Estado de implementación: `WEB_KIT 1.0.0-rc.1` formaliza la identidad técnica, la versión canónica, los schemas iniciales de manifest y ownership, el changelog, la plantilla de migraciones, la validación mínima de metadata y el contrato editorial base. Los baselines de checksums y la primera migración real siguen pendientes.
 
 ## 1. Principios de versionado
 
@@ -39,6 +39,7 @@ La clasificación siguiente describe cómo debe tratar una futura migración los
 | `src/components/patterns/**` salvo módulos explícitos | CORE | Biblioteca común y tipada de composición. Los estilos específicos del cliente deben vivir fuera de estos archivos. |
 | `src/components/patterns/types.ts` | CORE | Contratos compartidos; los cambios incompatibles afectan al MAJOR. |
 | `src/lib/seo.ts` y `src/lib/structured-data.ts` | CORE | Infraestructura SEO y contratos comunes. |
+| `src/lib/editorial.ts` | CORE | Vocabulario tipado mínimo para estados y acciones editoriales; no contiene copy ni formas universales de página. |
 | `src/pages/robots.txt.ts` | CORE | Endpoint SEO común; cualquier política particular exige registrar una personalización. |
 | `src/styles/global.css` | CORE | Reset, accesibilidad y comportamiento global común. No debe acumular CSS de cliente. |
 | `scripts/validate-config.mjs` y `scripts/check-leakage.mjs` | CORE | Guardrails obligatorios del kit. |
@@ -64,13 +65,18 @@ La clasificación siguiente describe cómo debe tratar una futura migración los
 | `src/lib/forms.ts` | MODULE `contact-form` | Contratos y validación del formulario opcional. |
 | `docs/forms-and-validation.md` | MODULE `contact-form` | Documentación del módulo. |
 | `docs/page-recipes.md` y `docs/quick-start-workflow.md` | PRESET | Recetas y flujo de arranque. Ayudan a crear, pero no determinan compatibilidad. |
+| `docs/content-map-template.md` | PRESET | Plantilla editorial que se copia y pasa a ser documentación PROJECT. |
+| `docs/editorial-workflow.md` | CORE | Reglas operativas comunes sobre responsabilidades, estados y tratamiento del copy. |
 | `docs/starter-implementation-plan.md` | PRESET | Contexto histórico de construcción del starter; no debe sincronizarse con webs hijas. |
 | `src/pages/index.astro` | PRESET → PROJECT | Showcase inicial en el kit y Home propia tras crear el proyecto. Una migración debe preservarla siempre. |
 | `public/images/starter-grid.svg` y `public/images/starter-orbit.svg` | PRESET | Assets de demostración reemplazables; no forman parte del CORE instalado. |
 | `src/content/**` | PROJECT sobre MODULE | El módulo define el mecanismo; los Markdown y demás entradas pertenecen íntegramente al proyecto. |
+| `src/data/content/**` y `docs/content-map.md` | PROJECT | Copy comercial runtime y su fuente humana; una migración puede ayudar a crearlos, pero nunca reemplazarlos. |
 | Resto de `src/pages/**` creado por una web | PROJECT | Rutas, copy y composición del proyecto. La excepción actual es `robots.txt.ts`; las rutas de módulos se rigen por su módulo. |
 | Resto de `public/**` | PROJECT | Logos, fotos, fuentes y assets propios. |
 | CSS específico añadido por páginas o por el cliente | PROJECT | Se preserva. No debe migrarse al CORE solo por reutilizar tokens o componentes. |
+
+La capa de copy comercial basada en `src/lib/editorial.ts` pertenece al CORE y es independiente del MODULE `editorial` de blog y Content Collections. Compartir el término editorial no implica que una web necesite activar el módulo para usar content maps u objetos de contenido de página.
 
 ### Fronteras mixtas que conviene resolver antes de la primera release
 

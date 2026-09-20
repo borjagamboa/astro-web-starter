@@ -13,7 +13,7 @@ El objetivo es empezar con muy poca información y obtener pronto una primera we
 | 5 | Oferta principal | **Obligatorio** | [Servicios, productos o contenidos prioritarios] |
 | 6 | Páginas o menú inicial | Codex puede proponer | [Lista breve o “Propón tú”] |
 | 7 | CTA principal | **Obligatorio** | [Acción deseada: pedir cita, contactar, comprar…] |
-| 8 | Contenido | **Obligatorio** | [Ubicación del contenido existente o permiso para redactar borradores] |
+| 8 | Contenido y aprobación | **Obligatorio** | [Contenido existente, permiso o no para copy provisional y quién aprueba los textos] |
 | 9 | Datos de contacto publicables | Opcional | [Solo datos reales disponibles; si no existen, omitir] |
 | 10 | Logo y assets disponibles | Opcional | [Rutas de logo, fotos, vídeo o documentos y derechos conocidos] |
 | 11 | Dirección visual | Codex puede proponer | [Adjetivos, colores o “No tengo ni idea. Propón tú”] |
@@ -42,7 +42,7 @@ Codex nunca debe inventar como hechos:
 - precios, resultados, métricas o claims verificables;
 - credenciales, cuentas, endpoints o datos legales.
 
-Los datos factuales ausentes se marcan como pendientes o se omiten. La primera versión puede usar copy provisional, pero no hechos ficticios presentados como reales.
+Los datos factuales ausentes se marcan como pendientes o se omiten. La primera versión puede usar copy `PROVISIONAL` si se ha autorizado, pero no hechos ficticios presentados como reales. El copy detallado revisado se desarrolla después en `docs/content-map.md`, no en este brief.
 
 # ADVANCED · CUANDO APLIQUE / ANTES DE PRODUCCIÓN
 

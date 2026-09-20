@@ -38,6 +38,16 @@ Este repositorio es un starter genérico para crear sitios web con Astro. No rep
 - Mantén integraciones externas tras contratos o adaptadores sustituibles.
 - Mantén scripts de migración, auditoría o importación fuera del núcleo de producción y ejecútalos solo de forma explícita.
 
+## Contenido editorial
+
+- La persona responsable del proyecto y ChatGPT son responsables de la arquitectura editorial, jerarquía de información, mensajes, tono, copy, revisión y aprobación.
+- Codex implementa, conecta contenido y adapta la composición a su longitud real sin asumir la autoría del copy final.
+- Cuando un prompt declare un texto como exacto, `REVIEWED` o `FINAL`, cópialo literalmente: no lo resumas, corrijas, amplíes, traduzcas, reinterpretes, puntúes de otra forma, conviertas en slogan ni modifiques para “mejorar el SEO”. Solo realiza los ajustes expresamente autorizados.
+- Codex puede crear o modificar copy `PROVISIONAL` únicamente cuando el Quick Start lo autorice, todavía no exista un content map aprobado o sea necesario para una primera maqueta. Debe quedar identificado como `PROVISIONAL`.
+- El contenido provisional tampoco puede inventar datos factuales, testimonios, credenciales, cifras, precios, resultados ni claims verificables.
+- `docs/content-map.md` es la fuente humana y `src/data/content/*.ts` su representación runtime. Si difieren, no decidas cuál prevalece: informa del conflicto y solicita confirmación.
+- Mantén el copy comercial fuera de componentes reutilizables. Las páginas consumen objetos específicos por página y los conectan con layouts y componentes mediante props o slots.
+
 ## Calidad de producto
 
 ### Accesibilidad y responsive

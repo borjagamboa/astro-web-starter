@@ -36,10 +36,12 @@
     { "pattern": "src/data/**", "category": "project-owned" },
     { "pattern": "src/data/site.ts", "category": "core-customizable" },
     { "pattern": "src/data/navigation.ts", "category": "core-customizable" },
+    { "pattern": "src/data/content/**", "category": "project-owned" },
 
     { "pattern": "src/lib/**", "category": "project-owned" },
     { "pattern": "src/lib/seo.ts", "category": "kit-managed" },
     { "pattern": "src/lib/structured-data.ts", "category": "kit-managed" },
+    { "pattern": "src/lib/editorial.ts", "category": "kit-managed" },
     { "pattern": "src/lib/content.ts", "category": "module", "moduleId": "editorial" },
     { "pattern": "src/lib/forms.ts", "category": "module", "moduleId": "contact-form" },
 
@@ -63,14 +65,17 @@
     { "pattern": "public/images/starter-orbit.svg", "category": "preset" },
 
     { "pattern": "docs/**", "category": "project-owned" },
+    { "pattern": "docs/content-map.md", "category": "project-owned" },
     { "pattern": "docs/architecture.md", "category": "kit-managed" },
     { "pattern": "docs/seo-workflow.md", "category": "kit-managed" },
     { "pattern": "docs/kit-versioning-plan.md", "category": "kit-managed" },
+    { "pattern": "docs/editorial-workflow.md", "category": "kit-managed" },
     { "pattern": "docs/composition-system.md", "category": "core-customizable" },
     { "pattern": "docs/content-workflow.md", "category": "module", "moduleId": "editorial" },
     { "pattern": "docs/forms-and-validation.md", "category": "module", "moduleId": "contact-form" },
     { "pattern": "docs/page-recipes.md", "category": "preset" },
     { "pattern": "docs/quick-start-workflow.md", "category": "preset" },
+    { "pattern": "docs/content-map-template.md", "category": "preset" },
     { "pattern": "docs/starter-implementation-plan.md", "category": "preset" },
     { "pattern": "docs/migrations/**", "category": "kit-managed" }
   ]

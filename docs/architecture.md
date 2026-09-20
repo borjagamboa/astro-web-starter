@@ -14,6 +14,7 @@ astro-web-starter/
 │  ├─ components/
 │  ├─ content/
 │  ├─ data/
+│  ├─ lib/
 │  ├─ layouts/
 │  ├─ pages/
 │  └─ styles/
@@ -54,6 +55,11 @@ Contiene datos estructurados y configuración pública: identidad, locale, orige
 - Navegación y acciones pueden vivir en archivos propios, referenciando rutas centralizadas.
 - No contiene secretos, mensajes de formularios, contenido editorial largo ni duplicados heredados.
 - Los valores obligatorios de producción deben validarse; la ausencia se representa con valores opcionales, no con falsos textos finales.
+- El copy de páginas comerciales vive en objetos específicos por página bajo `src/data/content/`; esa carpeta pertenece al proyecto y no define un schema universal.
+
+### `src/lib`
+
+Contiene contratos y helpers compartidos sin datos de negocio. `src/lib/editorial.ts` define únicamente el vocabulario común de estado editorial y acciones; las formas concretas de Home, About, Contact u otras páginas pertenecen a sus propios objetos de contenido.
 
 ### `src/layouts`
 
