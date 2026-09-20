@@ -4,6 +4,16 @@ Los cambios relevantes de WEB_KIT se documentarán en este archivo. El formato s
 
 ## [Unreleased]
 
+## [1.0.0-rc.2] - 2026-09-20
+
+### Added
+
+- Arquitectura editorial CORE y contrato compartido en `src/lib/editorial.ts`.
+- Content map humano y representación runtime del copy en `src/data/content/**`.
+- Estados editoriales `PROVISIONAL`, `REVIEWED` y `FINAL`.
+- División de responsabilidades entre ChatGPT y Codex, con protección del copy revisado o final.
+- Ownership asociado para contratos, plantillas y contenido editorial de proyecto.
+
 ## [1.0.0-rc.1] - 2026-09-12
 
 ### Added

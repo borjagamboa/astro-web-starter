@@ -4,7 +4,7 @@ Este documento define el modelo propuesto para versionar y migrar, de forma cont
 
 El objetivo no es sincronizar repositorios ni mantener copias idénticas. El objetivo es que cada web pueda conocer el CORE que tiene instalado, recibir correcciones y mejoras compatibles, y preservar a la vez todo lo que pertenece al proyecto.
 
-> Estado de implementación: `WEB_KIT 1.0.0-rc.1` formaliza la identidad técnica, la versión canónica, los schemas iniciales de manifest y ownership, el changelog, la plantilla de migraciones, la validación mínima de metadata y el contrato editorial base. Los baselines de checksums y la primera migración real siguen pendientes.
+> Estado de implementación: `WEB_KIT 1.0.0-rc.2` formaliza la identidad técnica, la versión canónica, los schemas iniciales de manifest y ownership, el changelog, la plantilla de migraciones, la validación mínima de metadata y el contrato editorial base. Los baselines de checksums y la primera migración real siguen pendientes.
 
 ## 1. Principios de versionado
 
@@ -278,7 +278,7 @@ Quedan expresamente fuera de la primera implementación:
 
 El repositorio contiene hoy `version: 0.1.0` en `package.json`, diez commits funcionales y ninguna etiqueta Git. Ese número no acredita una release versionada del CORE: faltan identidad de kit, changelog, manifest, ownership y un primer recorrido de migración verificable.
 
-La infraestructura mínima queda identificada como **`WEB_KIT 1.0.0-rc.1`** y debe usarse para ensayar una web hija. Si el ensayo confirma las fronteras y el recorrido de migración, la primera baseline estable soportada debe ser **`WEB_KIT 1.0.0`**.
+La infraestructura mínima se formalizó en `WEB_KIT 1.0.0-rc.1`; tras incorporar la capa editorial, la release candidate actual es **`WEB_KIT 1.0.0-rc.2`** y debe usarse para ensayar una web hija. Si el ensayo confirma las fronteras y el recorrido de migración, la primera baseline estable soportada debe ser **`WEB_KIT 1.0.0`**.
 
 Empezar en `1.0.0` después del ensayo es preferible a perpetuar `0.x`: el CORE actual ya es utilizable por webs independientes y el sistema necesita un contrato de compatibilidad claro. La versión actual de `package.json` debe considerarse pre-baseline hasta que ese proceso termine.
 
